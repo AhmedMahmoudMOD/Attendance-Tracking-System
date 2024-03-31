@@ -1,4 +1,5 @@
-﻿
+﻿@using Attendance_Tracking_System.View_Models
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_SLayout.cshtml";
@@ -7,19 +8,22 @@
     SelectList ProgramsList = new SelectList(Programs, "Id", "Name");
     var Tracks = ViewBag.Tracks;
     SelectList TracksList = new SelectList(Tracks, "Id", "Name");
+    var cIntake = ViewBag.Intake;
 }
-
-<h1>Index</h1>
 <div id="container" class="container-fluid mt-3">
     <div class="row">
+        <input type="hidden" value="@cIntake.No" id="intake" />
         <div class="col-4">
             <select asp-items=ProgramsList id="pros" class="form-control" onchange="GetTracks(this.value)"></select>
         </div>
         <div class="col-4">
             <select asp-items=TracksList id="tracks" class="form-control"></select>
         </div>
-        <input type="submit" value="Submit" name="Submit" class="btn btn-success col-2" />
+        <input type="submit" value="Show Students" name="Submit" class="btn btn-success col-2" onclick="GetAttendanceList(pros.value,tracks.value,intake.value)" />
     </div>
+</div>
+<div id="AttList">
+
 </div>
 
 @section Scripts{
@@ -35,6 +39,16 @@
                }
         }});
     }
+
+        function GetAttendanceList(pid, tid, ino) {
+            $.ajax({
+                url: "/Security/GetAttendanceList",
+                data: { Pid: pid,Tid:tid,Ino:ino },
+                success: function (result) {
+                    $("#AttList").html(result)
+                }
+            });
+        }
     </script>
 }
 

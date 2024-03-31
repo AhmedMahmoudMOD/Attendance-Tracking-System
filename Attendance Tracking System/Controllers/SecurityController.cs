@@ -10,20 +10,25 @@ namespace Attendance_Tracking_System.Controllers
     {
         private readonly IProgramRepo programRepo;
         private readonly IEmployeeRepo employeeRepo;
+        private readonly IIntakeRepo intakeRepo;
+        private readonly IStudentRepo studentRepo;
 
-        public SecurityController(IProgramRepo programRepo,IEmployeeRepo employeeRepo)
+        public SecurityController(IProgramRepo programRepo,IEmployeeRepo employeeRepo,IIntakeRepo intakeRepo,IStudentRepo studentRepo )
         {
             this.programRepo = programRepo;
             this.employeeRepo = employeeRepo;
+            this.intakeRepo = intakeRepo;
+            this.studentRepo = studentRepo;
         }
         [HttpGet]
         public IActionResult Index()
         {
-            var list = programRepo.GetAll();
-            ViewBag.Programs = list;
-            var tlist = list[0].Tracks;
+            var plist = programRepo.GetAll();
+            ViewBag.Programs = plist;
+            var tlist = plist[0].Tracks;
             ViewBag.Tracks = tlist;
-
+            var currentIntake = intakeRepo.GetCurrentIntake();
+            ViewBag.Intake=currentIntake;
             return View();
         }
 
@@ -38,6 +43,11 @@ namespace Attendance_Tracking_System.Controllers
             }else { return Json(null); }
            
 
+        }
+
+        public IActionResult GetAttendanceList(int Pid,int Tid,int Ino) { 
+            var list = studentRepo.GetForAttendance(Pid, Tid, Ino);
+            return PartialView("_StudentAttendancePartial",list);
         }
 
         public IActionResult ViewProfile() {
