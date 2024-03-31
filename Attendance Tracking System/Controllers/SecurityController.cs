@@ -33,5 +33,11 @@ namespace Attendance_Tracking_System.Controllers
            
 
         }
+
+        public IActionResult ViewProfile() {
+            int EmpId = 4;
+            return View();
+        
+        }
     }
 }

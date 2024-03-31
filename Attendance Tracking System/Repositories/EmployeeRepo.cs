@@ -10,5 +10,7 @@ namespace Attendance_Tracking_System.Repositories
         {
             this.db = db;
         }
+
+
     }
 }
