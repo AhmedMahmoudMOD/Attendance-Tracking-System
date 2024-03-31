@@ -18,5 +18,20 @@ namespace Attendance_Tracking_System.Repositories
             return target;
         }
 
+        public bool Update(Employee employee) {
+            try
+            {
+                db.Employee.Update(employee);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+            
+           
+        }
+
     }
 }
