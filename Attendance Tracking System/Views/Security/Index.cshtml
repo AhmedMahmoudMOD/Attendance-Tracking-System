@@ -40,7 +40,7 @@
         }});
     }
 
-        function GetAttendanceList(pid, tid, ino) {
+    function GetAttendanceList(pid, tid, ino) {
             $.ajax({
                 url: "/Security/GetAttendanceList",
                 data: { Pid: pid,Tid:tid,Ino:ino },
@@ -48,7 +48,22 @@
                     $("#AttList").html(result)
                 }
             });
+    }
+        function GetCurrentIntake(pid) {
+            $.ajax({
+                url: "/Security/GetCurrentIntake",
+                data: { Pid: pid },
+                success: function (result) {
+                    document.getElementById("intake").value = result.no;
+                }
+            });
+    }
+    // Event Registeration
+        document.getElementById("pros").addEventListener("change", (ev)=> {
+
+            GetCurrentIntake(ev.target.value)
         }
+        );
     </script>
 }
 

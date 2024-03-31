@@ -27,7 +27,7 @@ namespace Attendance_Tracking_System.Controllers
             ViewBag.Programs = plist;
             var tlist = plist[0].Tracks;
             ViewBag.Tracks = tlist;
-            var currentIntake = intakeRepo.GetCurrentIntake();
+            var currentIntake = intakeRepo.GetCurrentIntake(plist[0].Id);
             ViewBag.Intake=currentIntake;
             return View();
         }
@@ -43,6 +43,12 @@ namespace Attendance_Tracking_System.Controllers
             }else { return Json(null); }
            
 
+        }
+
+        public IActionResult GetCurrentIntake(int Pid)
+        {
+            var currentIntake = intakeRepo.GetCurrentIntake(Pid);
+            return Json(currentIntake); 
         }
 
         public IActionResult GetAttendanceList(int Pid,int Tid,int Ino) { 

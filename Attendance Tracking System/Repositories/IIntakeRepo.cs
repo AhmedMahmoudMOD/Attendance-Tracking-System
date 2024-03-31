@@ -4,6 +4,6 @@ namespace Attendance_Tracking_System.Repositories
 {
     public interface IIntakeRepo
     {
-        Intake GetCurrentIntake();
+        Intake GetCurrentIntake(int Pid);
     }
 }
