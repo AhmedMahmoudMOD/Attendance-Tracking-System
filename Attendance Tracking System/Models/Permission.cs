@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Tracking_System.Models
 {
-    [PrimaryKey("StudentID","DateTime")]
+    [PrimaryKey("StudentID", "PermissionID")]
     public class Permission
     {
-
+        public int PermissionID { get; set; }
         public string Reason { get; set; }
 
         public bool? IsAccepted { get; set; }

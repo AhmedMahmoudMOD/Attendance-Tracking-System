@@ -1,4 +1,6 @@
-﻿using Attendance_Tracking_System.Repositories;
+﻿using Attendance_Tracking_System.Data;
+using Attendance_Tracking_System.Models;
+using Attendance_Tracking_System.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Attendance_Tracking_System.Controllers
@@ -18,6 +20,7 @@ namespace Attendance_Tracking_System.Controllers
             ViewBag.Programs = list;
             var tlist = list[0].Tracks;
             ViewBag.Tracks = tlist;
+
             return View();
         }
 
