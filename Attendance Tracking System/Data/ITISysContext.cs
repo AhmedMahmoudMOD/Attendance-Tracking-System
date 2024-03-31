@@ -34,6 +34,8 @@ namespace Attendance_Tracking_System.Data
         {
             modelBuilder.Entity<User>().UseTptMappingStrategy();
 
+            modelBuilder.Entity<Attendance>().HasDiscriminator(a => a.AttendanceType).HasValue<Attendance>("StaffAttendance");
+
             modelBuilder.Entity<Student>().Property(e => e.AttendanceDegrees).HasDefaultValue(250);
 
             modelBuilder.Entity<Instructor>()
@@ -45,6 +47,10 @@ namespace Attendance_Tracking_System.Data
             modelBuilder.Entity<Employee>().Property(e => e.Type).HasConversion<string>();
 
             modelBuilder.Entity<Permission>().Property(p => p.Type).HasConversion<string>();
+
+            modelBuilder.Entity<Attendance>().Property(a=>a.AttendanceStatus).HasConversion<string>();  
+
+            modelBuilder.Entity<Student>().Property(s=>s.RegisterationStatus).HasConversion<string>();
 
         }
     }

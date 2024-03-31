@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Attendance_Tracking_System.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Attendance_Tracking_System.Models
 {
@@ -13,6 +14,8 @@ namespace Attendance_Tracking_System.Models
         public string? Specialization { get; set; }
 
         public int AttendanceDegrees { get; set; } = 250;
+        [Column("RegStatus")]
+        public RegisterationStatus RegisterationStatus { get; set; } = RegisterationStatus.Pending;
 
         [ForeignKey("Program")]
         public int ProgramID { get; set; }
