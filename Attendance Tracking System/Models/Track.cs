@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Attendance_Tracking_System.Models
 {
@@ -14,6 +15,7 @@ namespace Attendance_Tracking_System.Models
 
         [ForeignKey("Program")]
         public int? ProgramID { get; set; }
+        [JsonIgnore]
         public virtual ITIProgram? Program { get; set; }
 
         public virtual ICollection<Intake>? Intakes { get; set; } = new HashSet<Intake>();

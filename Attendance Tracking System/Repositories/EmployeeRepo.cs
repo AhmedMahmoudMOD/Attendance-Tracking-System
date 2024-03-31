@@ -6,7 +6,7 @@ namespace Attendance_Tracking_System.Repositories
     {
         private readonly ITISysContext db;
 
-        EmployeeRepo(ITISysContext db)
+        public EmployeeRepo(ITISysContext db)
         {
             this.db = db;
         }

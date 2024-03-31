@@ -1,6 +1,7 @@
 using Attendance_Tracking_System.Data;
 using Attendance_Tracking_System.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Attendance_Tracking_System
 {
@@ -24,6 +25,13 @@ namespace Attendance_Tracking_System
             builder.Services.AddScoped<IStudentAttendanceRepo, StudentAttendanceRepo>();
             builder.Services.AddScoped<IScheduleRepo, ScheduleRepo>(); 
             builder.Services.AddScoped<IPermissionRepo, PermissionRepo>();
+
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                Formatting = Newtonsoft.Json.Formatting.Indented,
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            };
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -31,6 +39,8 @@ namespace Attendance_Tracking_System
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            
             app.UseStaticFiles();
 
             app.UseRouting();
