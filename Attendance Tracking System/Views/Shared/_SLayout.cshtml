@@ -10,6 +10,7 @@
         <link href="/css/styles.css" rel="stylesheet" />
         <link href="/css/ss.css" rel="stylesheet">
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand">
@@ -79,8 +80,10 @@
         </div>
        <script src="~/lib/jquery/dist/jquery.min.js"></script>
        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
        <script src="~/js/site.js" asp-append-version="true"></script>
         <script src="/js/scripts.js"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+         @await RenderSectionAsync("Scripts", required: false)
     </body>
 </html>

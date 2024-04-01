@@ -1,5 +1,20 @@
-﻿@model List<Student>
-<table class="table table-striped table-borderless">
+﻿@using Attendance_Tracking_System.Enums
+@model List<Student>
+@{
+    var today = DateOnly.FromDateTime(DateTime.Now);
+    
+    var timenow = TimeOnly.FromDateTime(DateTime.Now); 
+}
+<head>
+    <style>
+        
+        .AttCol {
+            width:150px;
+        }
+    </style>
+</head>
+<div class="col-10 mt-3">
+<table class="table text-center mt-3 table-striped table-responsive table-bordered" id="listTable">
     <thead>
         <tr>
             <th>
@@ -11,6 +26,9 @@
             <th>
                 Email
             </th>
+            <th class="AttCol">
+               Record Attendance
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -20,14 +38,37 @@
                 <td>
                     @std.Id
                 </td>
-                 <td>
+                <td>
                     @std.Name
                 </td>
                 <td>
                     @std.Email
                 </td>
-            </tr>
-               
+                <td class="AttCol">
+                    <form id="ArrForm" class="d-inline-block" asp-action="SetArrivalTime" asp-controller="Attendance">
+                        <input type="hidden" name="UserID" value="@std.Id" />
+                         <input type="hidden" name="AttendanceType" value="StudentAttendance"/>
+                         <input type="hidden" name="Date" value="@today" />
+                         <input type="hidden" name="ArrivalTime" value="@timenow" />
+                         <input type="hidden" name="TrackID" value="@ViewBag.CurentTrackId" />
+                        <button id="ArrBtn" class="btn btn-success" type="submit"><i class="fas fa-clock fa-lg"></i></button>
+                    </form>
+                    <form id="LeaveForm" class="d-inline-block" asp-action="SetLeaveTime" asp-controller="Attendance">
+                          <input type="hidden" name="UserID" value="@std.Id" />
+                          <input type="hidden" name="Date" value="@today" />
+                          <input type="hidden" name="LeaveTime" value="@timenow" />
+                          <button id="LeaveBtn" style="display:none" class="btn btn-danger" type="submit"><i class="fas fa-clock fa-lg"></i></button>
+                    </form>
+                </td>
+            </tr>             
         }
     </tbody>
 </table>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/attpartial.js"></script>
+
+
+
+
+
