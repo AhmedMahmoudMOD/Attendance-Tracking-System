@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewData["Title"] = "StaffAttendance";
+    Layout = "~/Views/Shared/_SLayout.cshtml";
+}
+<div id="container" class="container-fluid mt-3">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <select id="stafftype" class="form-control" onchange="GetStaffAttendanceList(this.value)">
+                <option selected value="1">Instructors</option>
+                <option value="2">Employees</option>
+            </select>
+        </div>
+        <input type="submit" value="Show" name="Submit" class="btn btn-success col-2" onclick="GetStaffAttendanceList(stafftype.value)" />
+    </div>
+</div>
+<div id="AttList" class="mt-3 container row justify-content-around">
+</div>
+
+@section Scripts{
+<script>
+    function GetStaffAttendanceList(typeno){
+        $.ajax({
+            url: "/Security/GetStaffAttendanceList",
+            data: { TypeNo: typeno},
+            success: function (result) {
+                $('#AttList').html('');
+                $("#AttList").html(result)
+            }
+        });
+    }
+    </script>
+
+}
+

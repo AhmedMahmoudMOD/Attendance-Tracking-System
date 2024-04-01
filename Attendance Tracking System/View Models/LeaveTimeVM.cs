@@ -4,7 +4,7 @@
     {
         public int UserId { get; set; } 
 
-        public TimeOnly LeaveTime { get; set; }
+        public TimeOnly? LeaveTime { get; set; }
 
         public DateOnly Date { get; set; }
     }

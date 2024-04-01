@@ -13,8 +13,9 @@ namespace Attendance_Tracking_System.Controllers
         private readonly IStudentRepo studentRepo;
         private readonly IScheduleRepo scheduleRepo;
         private readonly IStudentAttendanceRepo studentAttendanceRepo;
+        private readonly IAttendanceRepo attendanceRepo;
 
-        public AttendanceController(IProgramRepo programRepo, IEmployeeRepo employeeRepo, IIntakeRepo intakeRepo, IStudentRepo studentRepo,IScheduleRepo scheduleRepo , IStudentAttendanceRepo studentAttendanceRepo )
+        public AttendanceController(IProgramRepo programRepo, IEmployeeRepo employeeRepo, IIntakeRepo intakeRepo, IStudentRepo studentRepo,IScheduleRepo scheduleRepo , IStudentAttendanceRepo studentAttendanceRepo , IAttendanceRepo attendanceRepo )
         {
             this.programRepo = programRepo;
             this.employeeRepo = employeeRepo;
@@ -22,6 +23,7 @@ namespace Attendance_Tracking_System.Controllers
             this.studentRepo = studentRepo;
             this.scheduleRepo = scheduleRepo;
             this.studentAttendanceRepo = studentAttendanceRepo;
+            this.attendanceRepo = attendanceRepo;
         }
         [HttpPost]
         public IActionResult SetArrivalTime(StudentAttendance studentAttendance,int TrackID)
@@ -63,6 +65,80 @@ namespace Attendance_Tracking_System.Controllers
                 return Json(new { success = false });
 
             }
-        }   
+        }
+
+        public IActionResult SetAbsent(StudentAttendance studentAttendance, int TrackID)
+        {
+            // get the schedule of the track for today
+            var schedule = scheduleRepo.GetScheduleForToday(TrackID, DateOnly.FromDateTime(DateTime.Now));
+            studentAttendance.ScheduleID = schedule.Id;
+            if (ModelState.IsValid)
+            {
+                studentAttendance.AttendanceStatus = Enums.AttendanceStatus.Absent;
+                studentAttendanceRepo.Add(studentAttendance);
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false });
+            }
+
+
+        }
+
+        public IActionResult SetStaffArrivalTime(Attendance attendance)
+        {
+ 
+            if (ModelState.IsValid)
+            {
+                attendance.AttendanceStatus = Enums.AttendanceStatus.Present;
+                var timenow = TimeOnly.FromDateTime(DateTime.Now);
+                attendance.ArrivalTime = timenow;
+
+                attendanceRepo.Add(attendance);
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false });
+            }
+
+
+        }
+
+        public IActionResult SetStaffLeaveTime(LeaveTimeVM leaveTimeVM)
+        {
+            var attendance = attendanceRepo.GetAttendance(leaveTimeVM.UserId, leaveTimeVM.Date);
+            if (ModelState.IsValid)
+            {
+                var timenow = TimeOnly.FromDateTime(DateTime.Now);
+                attendance.LeaveTime = timenow;
+                attendanceRepo.Update(attendance);
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false });
+
+            }
+        }
+
+        public IActionResult SetStaffAbsent(Attendance attendance)
+        {
+           
+            
+            if (ModelState.IsValid)
+            {
+                attendance.AttendanceStatus = Enums.AttendanceStatus.Absent;
+                attendanceRepo.Add(attendance);
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false });
+            }
+
+
+        }
     }
 }

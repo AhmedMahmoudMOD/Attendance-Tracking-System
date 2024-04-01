@@ -59,6 +59,13 @@
                           <input type="hidden" name="LeaveTime" value="@timenow" />
                           <button id="LeaveBtn" style="display:none" class="btn btn-danger" type="submit"><i class="fas fa-clock fa-lg"></i></button>
                     </form>
+                    <form id="AbsentForm" class="d-inline-block" asp-action="SetAbsent" asp-controller="Attendance">
+                            <input type="hidden" name="UserID" value="@std.Id" />
+                            <input type="hidden" name="AttendanceType" value="StudentAttendance" />
+                            <input type="hidden" name="Date" value="@today" />
+                            <input type="hidden" name="TrackID" value="@ViewBag.CurentTrackId" />
+                            <button id="AbsentBtn" class="btn btn-dark" type="submit"><i class="fas fa-times fa-lg"></i></button>
+                    </form>
                 </td>
             </tr>             
         }
@@ -67,8 +74,3 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/js/attpartial.js"></script>
-
-
-
-
-

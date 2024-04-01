@@ -7,5 +7,7 @@ namespace Attendance_Tracking_System.Repositories
         Employee GetByID(int id);
 
         bool Update(Employee employee);
+
+        List<Employee> GetForAttendance();
     }
 }

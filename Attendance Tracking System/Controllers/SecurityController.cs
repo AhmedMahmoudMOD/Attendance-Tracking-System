@@ -12,13 +12,15 @@ namespace Attendance_Tracking_System.Controllers
         private readonly IEmployeeRepo employeeRepo;
         private readonly IIntakeRepo intakeRepo;
         private readonly IStudentRepo studentRepo;
+        private readonly IInstructorRepo instructorRepo;
 
-        public SecurityController(IProgramRepo programRepo,IEmployeeRepo employeeRepo,IIntakeRepo intakeRepo,IStudentRepo studentRepo )
+        public SecurityController(IProgramRepo programRepo,IEmployeeRepo employeeRepo,IIntakeRepo intakeRepo,IStudentRepo studentRepo  , IInstructorRepo instructorRepo)
         {
             this.programRepo = programRepo;
             this.employeeRepo = employeeRepo;
             this.intakeRepo = intakeRepo;
             this.studentRepo = studentRepo;
+            this.instructorRepo = instructorRepo;
         }
         [HttpGet]
         public IActionResult Index()
@@ -106,6 +108,27 @@ namespace Attendance_Tracking_System.Controllers
             else
             {
                 return View(Emp);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult StaffAttendance()
+        {
+            return View();
+        }
+
+        public IActionResult GetStaffAttendanceList(int TypeNo)
+        {
+            switch (TypeNo)
+            {
+                case 1:
+                    var instlist = instructorRepo.GetForAttendance();
+                    return PartialView("_StaffAttendancePartial", instlist);
+                case 2:
+                    var emplist = employeeRepo.GetForAttendance();
+                    return PartialView("_StaffAttendancePartial", emplist);
+                default:
+                    return PartialView("_StaffAttendancePartial", null);
             }
         }
     }
