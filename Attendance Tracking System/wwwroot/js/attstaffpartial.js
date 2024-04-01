@@ -73,7 +73,7 @@ $('.AbsentForm').submit(function (event) {
             Swal.fire({
                 icon: 'success',
                 title: 'Success',
-                text: 'This Student Has Been Marked As Absent For Today'
+                text: 'This Staff Member Has Been Marked As Absent For Today'
             });
             // Hide the row containing the form after successful submission
             form.closest('tr').hide();

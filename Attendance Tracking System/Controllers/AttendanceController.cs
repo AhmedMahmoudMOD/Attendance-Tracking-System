@@ -31,6 +31,7 @@ namespace Attendance_Tracking_System.Controllers
             // get the schedule of the track for today
             var schedule = scheduleRepo.GetScheduleForToday(TrackID, DateOnly.FromDateTime(DateTime.Now));
             studentAttendance.ScheduleID = schedule.Id;
+            studentAttendance.ArrivalTime = TimeOnly.FromDateTime(DateTime.Now);
             if (ModelState.IsValid)
             {
                 // check if the arrival time is within five minutes of the scheduled time
@@ -56,7 +57,7 @@ namespace Attendance_Tracking_System.Controllers
             var studentAttendance = studentAttendanceRepo.GetStudentAttendance(leaveTimeVM.UserId, leaveTimeVM.Date);
             if (ModelState.IsValid)
             {
-                studentAttendance.LeaveTime = leaveTimeVM.LeaveTime;
+                studentAttendance.LeaveTime = TimeOnly.FromDateTime(DateTime.Now);
                 studentAttendanceRepo.Update(studentAttendance);
                 return Json(new { success = true });
             }
