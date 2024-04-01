@@ -141,5 +141,25 @@ namespace Attendance_Tracking_System.Controllers
 
 
         }
+
+        public IActionResult ShowStudentsAttendance()
+        {
+            var plist = programRepo.GetAll();
+            ViewBag.Programs = plist;
+            var tlist = plist[0].Tracks;
+            ViewBag.Tracks = tlist;
+            var currentIntake = intakeRepo.GetCurrentIntake(plist[0].Id);
+            ViewBag.Intake = currentIntake;
+
+            return View("StudentsAttendance");
+
+        }
+
+        public IActionResult GetStudentsAttendace (int Pid, int Tid, int Ino,DateOnly Date)
+        {
+            var list = studentRepo.GetForAttendanceExplicit(Pid, Tid, Ino,Date);
+            ViewBag.CurentTrackId = Tid;
+            return PartialView("_StudentsAttListPartial", list);
+        }
     }
 }

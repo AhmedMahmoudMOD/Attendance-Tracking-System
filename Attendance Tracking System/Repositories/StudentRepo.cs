@@ -25,6 +25,17 @@ namespace Attendance_Tracking_System.Repositories
             return list;
         }
 
+        public List<Student> GetForAttendanceExplicit(int Pid, int Tid, int Ino,DateOnly date)
+        {
+           
+            var list = db.Student
+                .Include(s=>s.Attendances)
+                .Where(s => s.ProgramID == Pid && s.TrackID == Tid && s.IntakeNo == Ino&& s.Attendances.Any(a => a.Date == date))
+                .ToList();
+
+            return list;
+        }
+
         public void AddRange(List<Student> students)
         {
             

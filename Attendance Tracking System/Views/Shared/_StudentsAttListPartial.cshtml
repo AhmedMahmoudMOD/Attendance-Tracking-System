@@ -1,0 +1,48 @@
+﻿@model List<Student> 
+
+<div class="col-10 mt-3">
+    <table class="table text-center mt-3 table-striped table-responsive table-bordered" id="listTable">
+        <thead>
+           <tr>
+                <th>
+                    ID
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Attendance Status
+                </th>
+                <th>
+                    Arrival Time
+                </th>
+                <th>
+                    Leave Time
+                </th>
+          </tr>
+        </thead>
+        <tbody>
+            @foreach (var std in Model)
+            {
+                <tr>
+                    <td>@std.Id</td>
+                    <td>@std.Name</td>
+                    @if (std.Attendances.Any())
+                    {
+                        <td>@std.Attendances.First().AttendanceStatus</td>
+                        <td>@(std.Attendances.First().ArrivalTime.HasValue ? std.Attendances.First().ArrivalTime : "Not Set") </td>
+                        <td>@(std.Attendances.First().LeaveTime.HasValue ? std.Attendances.First().LeaveTime : "Not Set")</td>
+                    }
+                    else
+                    {
+                        <td colspan="3">No attendance record</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $('#listTable').DataTable();
+</script>
