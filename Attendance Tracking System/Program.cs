@@ -13,6 +13,8 @@ namespace Attendance_Tracking_System
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mgo+DSMBMAY9C3t2UFhhQlJBfV5AQmBIYVp/TGpJfl96cVxMZVVBJAtUQF1hTX5XdkRhW31YdXBRQ2Vd");
+
 
             builder.Services.AddDbContext<ITISysContext>(options => options.UseSqlServer("Data Source=.;Initial Catalog=ITISys;Integrated Security=True;Encrypt=False;Trust Server Certificate=True"));
             builder.Services.AddScoped<IStudentRepo, StudentRepo>();

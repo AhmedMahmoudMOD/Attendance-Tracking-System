@@ -23,7 +23,10 @@
         <div class="col-3">
             <select asp-items=TracksList id="tracks" class="form-control"></select>
         </div>
-        <input type="submit" value="Show Students" name="Submit" class="btn btn-success col-2" onclick="GetAttendanceList(pros.value,tracks.value,intake.value,date.value)" />
+        <div class="col-2">
+        <input type="submit" value="Show Students" name="Submit" class="btn btn-success" onclick="GetAttendanceList(pros.value,tracks.value,intake.value,date.value)" />
+        <button type="submit" value="Get Report" name="Submit" class="btn" onclick="GetAttendanceReport(pros.value,tracks.value,intake.value,date.value)"><i class="fa-solid fa-print fa-lg" style="color: #121212;"></i></button>
+        </div>
     </div>
 </div>
 <div id="AttList" class="mt-3 container row justify-content-around">
@@ -53,6 +56,14 @@
                 }
             });
     }
+        function GetAttendanceReport(pid, tid, ino, date) {
+            $.ajax({
+                url: "/Report/GetStdAttendanceReport",
+                data: { Pid: pid, Tid: tid, Ino: ino, Date: date },
+                success: function (result) {
+                }
+            });
+        }
         function GetCurrentIntake(pid) {
             $.ajax({
                 url: "/Security/GetCurrentIntake",
