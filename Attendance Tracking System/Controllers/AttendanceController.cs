@@ -14,8 +14,9 @@ namespace Attendance_Tracking_System.Controllers
         private readonly IScheduleRepo scheduleRepo;
         private readonly IStudentAttendanceRepo studentAttendanceRepo;
         private readonly IAttendanceRepo attendanceRepo;
+        private readonly IInstructorRepo instructorRepo;
 
-        public AttendanceController(IProgramRepo programRepo, IEmployeeRepo employeeRepo, IIntakeRepo intakeRepo, IStudentRepo studentRepo,IScheduleRepo scheduleRepo , IStudentAttendanceRepo studentAttendanceRepo , IAttendanceRepo attendanceRepo )
+        public AttendanceController(IProgramRepo programRepo, IEmployeeRepo employeeRepo, IIntakeRepo intakeRepo, IStudentRepo studentRepo,IScheduleRepo scheduleRepo , IStudentAttendanceRepo studentAttendanceRepo , IAttendanceRepo attendanceRepo , IInstructorRepo instructorRepo)
         {
             this.programRepo = programRepo;
             this.employeeRepo = employeeRepo;
@@ -24,6 +25,7 @@ namespace Attendance_Tracking_System.Controllers
             this.scheduleRepo = scheduleRepo;
             this.studentAttendanceRepo = studentAttendanceRepo;
             this.attendanceRepo = attendanceRepo;
+            this.instructorRepo = instructorRepo;
         }
         [HttpPost]
         public IActionResult SetArrivalTime(StudentAttendance studentAttendance,int TrackID)
@@ -160,6 +162,26 @@ namespace Attendance_Tracking_System.Controllers
             var list = studentRepo.GetForAttendanceExplicit(Pid, Tid, Ino,Date);
             ViewBag.CurentTrackId = Tid;
             return PartialView("_StudentsAttListPartial", list);
+        }
+
+        public IActionResult ShowStaffAttendance()
+        {
+            return View("StaffAttendance");
+        }
+
+        public IActionResult GetStaffAttendance(int TypeNo , DateOnly Date)
+        {
+            switch (TypeNo)
+            {
+                case 1:
+                    var instlist = instructorRepo.GetForAttendanceExplicit(Date);
+                    return PartialView("_StaffAttendancePartial", instlist);
+                case 2:
+                    var emplist = employeeRepo.GetForAttendanceExplicit(Date);
+                    return PartialView("_StaffAttendancePartial", emplist);
+                default:
+                    return PartialView("_StaffAttendancePartial", null);
+            }
         }
     }
 }

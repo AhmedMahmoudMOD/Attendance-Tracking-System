@@ -1,5 +1,6 @@
 ﻿using Attendance_Tracking_System.Data;
 using Attendance_Tracking_System.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Tracking_System.Repositories
 {
@@ -39,6 +40,17 @@ namespace Attendance_Tracking_System.Repositories
             var today = DateOnly.FromDateTime(DateTime.Now);
             var list = db.Employee
                 .Where(s => !db.Attendance.Any(a => a.UserID == s.Id && a.Date == today))
+                .ToList();
+
+            return list;
+        }
+
+        public List<Employee> GetForAttendanceExplicit(DateOnly date)
+        {
+            
+           
+            var list = db.Employee.Include(e=>e.Attendances)
+                .Where(e => e.Attendances.Any(a => a.Date == date))
                 .ToList();
 
             return list;

@@ -9,5 +9,7 @@ namespace Attendance_Tracking_System.Repositories
         bool Update(Employee employee);
 
         List<Employee> GetForAttendance();
+
+        List<Employee> GetForAttendanceExplicit(DateOnly date);
     }
 }
