@@ -175,12 +175,12 @@ namespace Attendance_Tracking_System.Controllers
             {
                 case 1:
                     var instlist = instructorRepo.GetForAttendanceExplicit(Date);
-                    return PartialView("_StaffAttendancePartial", instlist);
+                    return PartialView("_InstAttendancePartial", instlist);
                 case 2:
                     var emplist = employeeRepo.GetForAttendanceExplicit(Date);
-                    return PartialView("_StaffAttendancePartial", emplist);
+                    return PartialView("_EmpAttendancePartial", emplist);
                 default:
-                    return PartialView("_StaffAttendancePartial", null);
+                    return BadRequest();
             }
         }
     }

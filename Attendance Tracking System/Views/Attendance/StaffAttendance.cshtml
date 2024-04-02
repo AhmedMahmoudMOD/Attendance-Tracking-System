@@ -2,11 +2,14 @@
 @{
     ViewData["Title"] = "StaffAttendance";
     Layout = "~/Views/Shared/_SLayout.cshtml";
+    var today = DateOnly.FromDateTime(DateTime.Now);
+    string formattedDate = today.ToString("yyyy-MM-dd");
+
 }
 <div id="container" class="container-fluid mt-3">
     <div class="row justify-content-around">
         <div class="col-3">
-            <input type="date" class="form-control" id="date" />
+            <input type="date" class="form-control" id="date" value="@formattedDate" />
         </div>
         <div class="col-5">
             <select id="stafftype" class="form-control" onchange="GetStaffAttendanceList(this.value)">

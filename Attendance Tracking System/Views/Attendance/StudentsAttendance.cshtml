@@ -7,13 +7,15 @@
     var Tracks = ViewBag.Tracks;
     SelectList TracksList = new SelectList(Tracks, "Id", "Name");
     var cIntake = ViewBag.Intake;
+    var today = DateOnly.FromDateTime(DateTime.Now);
+    string formattedDate = today.ToString("yyyy-MM-dd");
 }
 
 <div id="container" class="container-fluid mt-3">
     <div class="row justify-content-around">
         <input type="hidden" value="@cIntake.No" id="intake" />
         <div class="col-3">
-           <input type="date" class="form-control" id="date" />
+           <input type="date" class="form-control" id="date" value="@formattedDate" />
         </div>
         <div class="col-3">
             <select asp-items=ProgramsList id="pros" class="form-control" onchange="GetTracks(this.value)"></select>
