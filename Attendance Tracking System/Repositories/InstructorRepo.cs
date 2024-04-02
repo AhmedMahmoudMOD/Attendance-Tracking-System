@@ -44,10 +44,10 @@ namespace Attendance_Tracking_System.Repositories
             return db.Instructor.SingleOrDefault(a => a.Id == id);
         }
 
-        public void UpdateInstructorImage(string stdImageName, int Id)
+        public void UpdateInstructorImage(string InsImgName, int Id)
         {
             var std = db.Instructor.FirstOrDefault(s => s.Id == Id);
-            std.UserImage = stdImageName;
+            std.UserImage = InsImgName;
             db.SaveChanges();
         }
     }
