@@ -4,6 +4,8 @@ using Syncfusion.Pdf.Grid;
 using Syncfusion.Pdf;
 using Attendance_Tracking_System.Repositories;
 using Syncfusion.Drawing;
+using Humanizer;
+using System.Security.Cryptography;
 
 namespace Attendance_Tracking_System.Controllers
 {
@@ -40,9 +42,13 @@ namespace Attendance_Tracking_System.Controllers
                     PdfBitmap image = new PdfBitmap(imageStream);
                     //Draw the image
                     graphics.DrawImage(image, 0, 0, 100, 100);
-
-                    //Add list to IEnumerable.
-                    IEnumerable<object> dataTable = data;
+                    PdfFont sfont = new PdfStandardFont(PdfFontFamily.Helvetica, 10);
+                    graphics.DrawString($"Program ID : {Pid}", sfont, PdfBrushes.Black, new PointF(440, 35));
+                    graphics.DrawString($"Intake No : {Ino}", sfont, PdfBrushes.Black, new PointF(440, 50));
+                    graphics.DrawString($"Track ID : {Tid}", sfont, PdfBrushes.Black, new PointF(440, 65));
+                    graphics.DrawString($"Date : {Date}", sfont, PdfBrushes.Black, new PointF(440, 80));
+                //Add list to IEnumerable.
+                IEnumerable<object> dataTable = data;
                     //Assign data source.
                     pdfGrid.DataSource = dataTable;
                     //Apply built-in table style
@@ -132,6 +138,8 @@ namespace Attendance_Tracking_System.Controllers
                 PdfBitmap image = new PdfBitmap(imageStream);
                 //Draw the image
                 graphics.DrawImage(image, 0, 0, 100, 100);
+                PdfFont sfont = new PdfStandardFont(PdfFontFamily.Helvetica, 10);
+                graphics.DrawString($"Date : {Date}", sfont, PdfBrushes.Black, new PointF(440, 55));
 
                 //Add list to IEnumerable.
                 IEnumerable<object> dataTable = data;
