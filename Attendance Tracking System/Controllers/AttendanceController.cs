@@ -2,6 +2,7 @@
 using Attendance_Tracking_System.Repositories;
 using Attendance_Tracking_System.View_Models;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.DependencyResolver;
 
 namespace Attendance_Tracking_System.Controllers
 {
@@ -154,6 +155,23 @@ namespace Attendance_Tracking_System.Controllers
             ViewBag.Intake = currentIntake;
 
             return View("StudentsAttendance");
+
+        }
+
+        public IActionResult MarkStdAbsence(int Pid,int Tid , int Ino)
+        {
+            var Schedule = scheduleRepo.GetScheduleForToday(Tid, DateOnly.FromDateTime(DateTime.Now));
+            var ScheduleID = Schedule.Id;
+            var stdlist = studentRepo.GetForAttendance(Pid, Tid, Ino);
+
+            if (studentAttendanceRepo.MarkAbsence(stdlist, ScheduleID))
+            {
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false });
+            }
 
         }
 

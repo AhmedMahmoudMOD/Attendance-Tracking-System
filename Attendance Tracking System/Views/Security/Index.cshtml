@@ -19,7 +19,10 @@
         <div class="col-4">
             <select asp-items=TracksList id="tracks" class="form-control"></select>
         </div>
-        <input type="submit" value="Show Students" name="Submit" class="btn btn-success col-2" onclick="GetAttendanceList(pros.value,tracks.value,intake.value)" />
+        <div class="col-3">
+          <input type="submit" value="Show Students" name="Submit" class="btn btn-success" onclick="GetAttendanceList(pros.value,tracks.value,intake.value)" />
+            <button class="btn btn-dark MarkBtn" type="submit" onclick="MarkAbsence(pros.value,tracks.value,intake.value)"><i class="fas fa-times fa-lg"></i></button>
+        </div>
     </div>
 </div>
 <div id="AttList" class="mt-3 container row justify-content-around">
@@ -58,6 +61,18 @@
                 }
             });
     }
+        function MarkAbsence(pid, tid, ino) {
+            $.ajax({
+                url: "/Attendance/MarkStdAbsence",
+                data: { Pid: pid, Tid: tid, Ino: ino },
+                success: function (result) {
+                    if (result) {
+                        // Reload the page upon successful marking of absence
+                        location.reload();
+                    }
+                }
+            });
+        }
     // Event Registeration
         document.getElementById("pros").addEventListener("change", (ev)=> {
 
