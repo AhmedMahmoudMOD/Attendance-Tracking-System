@@ -33,10 +33,10 @@ namespace Attendance_Tracking_System.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Add(Instructor instructor, IFormFile stdimg)
+        public async Task<IActionResult> Add(Instructor instructor, IFormFile InsImg)
         {
             instructorRepo.AddNewInstructor(instructor);
-            string fileName = $"{instructor.Id}.{stdimg.FileName.Split(".").Last()}";
+            string fileName = $"{instructor.Id}.{InsImg.FileName.Split(".").Last()}";
             string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
             if (!Directory.Exists(directoryPath))
             {
@@ -45,7 +45,7 @@ namespace Attendance_Tracking_System.Controllers
             string filePath = Path.Combine(directoryPath, fileName);
             using (var fs = new FileStream(filePath, FileMode.CreateNew))
             {
-                await stdimg.CopyToAsync(fs);
+                await InsImg.CopyToAsync(fs);
                 instructor.UserImage = fileName;
                 instructorRepo.UpdateInstructorImage(fileName, instructor.Id);
             }
