@@ -34,5 +34,21 @@ namespace Attendance_Tracking_System.Repositories
 
             return list;
         }
+        public List<object> GetForAttendanceReport(DateOnly date)
+        {
+            var list = db.Instructor
+                .SelectMany(i => i.Attendances.Where(a => a.Date == date)
+                                               .Select(a => new
+                                               {
+                                                   InstructorId = i.Id,
+                                                   InstructorName = i.Name,
+                                                   AttendanceStatus = a.AttendanceStatus,
+                                                   ArrivalTime = a.ArrivalTime,
+                                                   LeaveTime = a.LeaveTime
+                                               }))
+                .ToList();
+
+            return list.Cast<object>().ToList();
+        }
     }
 }

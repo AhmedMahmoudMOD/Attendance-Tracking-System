@@ -18,6 +18,8 @@
             </select>
         </div>
         <input type="submit" value="Show" name="Submit" class="btn btn-success col-2" onclick="GetStaffAttendanceList(stafftype.value,date.value)" />
+        <button type="submit" value="Get Report" name="Submit" class="btn" onclick="GetAttendanceReport(stafftype.value,date.value)"><i class="fa-solid fa-print fa-lg" style="color: #121212;"></i></button>
+
     </div>
 </div>
 <div id="AttList" class="mt-3 container row justify-content-around">
@@ -32,6 +34,15 @@
                 success: function (result) {
                     $('#AttList').html('');
                     $("#AttList").html(result)
+                }
+            });
+        }
+
+        function GetAttendanceReport(typeno, date) {
+            $.ajax({
+                url: "/Report/GetStaffAttendanceReport",
+                data: { TypeNo:typeno, Date: date },
+                success: function (result) {
                 }
             });
         }
