@@ -31,6 +31,7 @@ namespace Attendance_Tracking_System.Repositories
             OldInstructor.Age = Ins.Age;
             OldInstructor.Email = Ins.Email;
             OldInstructor.Salary=Ins.Salary;
+            OldInstructor.PhoneNumber=Ins.PhoneNumber;
             db.SaveChanges();
         }
 
@@ -46,8 +47,8 @@ namespace Attendance_Tracking_System.Repositories
 
         public void UpdateInstructorImage(string InsImgName, int Id)
         {
-            var std = db.Instructor.FirstOrDefault(s => s.Id == Id);
-            std.UserImage = InsImgName;
+            var instructor = db.Instructor.FirstOrDefault(s => s.Id == Id);
+            instructor.UserImage = InsImgName;
             db.SaveChanges();
         }
     }

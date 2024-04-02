@@ -36,7 +36,7 @@ namespace Attendance_Tracking_System.Controllers
         public async Task<IActionResult> Add(Instructor instructor, IFormFile InsImg)
         {
             instructorRepo.AddNewInstructor(instructor);
-            string fileName = $"{instructor.Id}.{InsImg.FileName.Split(".").Last()}";
+               string fileName = $"{instructor.Id}.{InsImg.FileName.Split(".").Last()}";
             string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
             if (!Directory.Exists(directoryPath))
             {
@@ -51,6 +51,7 @@ namespace Attendance_Tracking_System.Controllers
             }
             return RedirectToAction("index");
         }
+
 
         [HttpGet]
         public IActionResult Edit(int id)
