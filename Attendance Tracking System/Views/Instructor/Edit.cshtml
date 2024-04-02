@@ -1,0 +1,19 @@
+﻿@model Instructor
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+<body>
+    <form asp-action="Edit" asp-controller="Instructor" method="post">
+        <partial name="CreateEdit"></partial>
+    </form>
+</body>
+</html>

@@ -11,5 +11,9 @@
         public virtual ICollection<ITIProgram>? Programs { get; set; } = new HashSet<ITIProgram>();
 
         public virtual Track? SupTrack { get; set; }
+        public override string ToString()
+        {
+            return $"{Salary}";
+        }
     }
 }
