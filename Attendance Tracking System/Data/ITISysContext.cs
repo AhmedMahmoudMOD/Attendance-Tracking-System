@@ -17,14 +17,14 @@ namespace Attendance_Tracking_System.Data
 
         public DbSet<User> User { get; set; }
 
-        public DbSet<Student> Student { get; set; }
+        public virtual DbSet<Student> Student { get; set; }
 
         public DbSet<Instructor> Instructor { get; set; }
 
         public DbSet<Employee> Employee { get; set; }
-        public DbSet<Attendance> Attendance { get; set; }
+        public virtual DbSet<Attendance> Attendance { get; set; }
 
-        public DbSet<StudentAttendance> StudentAttendance { get; set; }
+        public virtual DbSet<StudentAttendance> StudentAttendance { get; set; }
 
         public DbSet<Schedule> Schedule { get; set; }
 

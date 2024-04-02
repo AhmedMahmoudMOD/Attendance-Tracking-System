@@ -1,0 +1,35 @@
+﻿@model Student
+@{
+    Layout = "_SLayout";
+}
+
+<!DOCTYPE html>
+    <html>
+    <head>
+        <title>Student</title>
+    </head>
+    <body>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <td>Student </td>
+                <td>Student Name</td>
+                <td>E-mail</td>
+                <td>Phone Number</td>
+                <td>Faculty</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+				<td>@Model.UserImage</td>
+				<td>@Model.Name</td>
+				<td>@Model.Email</td>
+				<td>@Model.PhoneNumber</td>
+				<td>@Model.Faculty</td>
+			</tr>
+        </tbody>
+    </table>
+    <a asp-action="AddStd" class="btn-danger">Add</a>
+    <a asp-route-id="@Model.Id" asp-action="ShowAttendence" class="btn btn-dark">Show Attendance</a>
+</body>
+    </html>

@@ -1,0 +1,61 @@
+﻿@model Student
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Student</title>
+</head>
+<body>
+    <form asp-action="AddStd">
+        <div class="form-group">
+            <label asp-for="Image">Image</label>
+            <input type="file" name="Image" class="form-control-file" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Name">Name</label>
+            <input type="text" name="Name" asp-for="Name" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Email">Email</label>
+            <input type="text" name="Email" asp-for="Email" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Password">Password</label>
+            <input type="password" name="Password" asp-for="Password" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="PhoneNumber">Phone Number</label>
+            <input type="text" name="PhoneNumber" asp-for="PhoneNumber" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Faculty">Faculty</label>
+            <input type="text" name="Faculty" asp-for="Faculty" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="University">University</label>
+            <input type="text" name="University" asp-for="University" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="IntakeNo">IntakeNo</label>
+            <input type="text" name="IntakeNo" asp-for="IntakeNo" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="ProgramID">ProgramID</label>
+            <input type="text" name="ProgramID" asp-for="ProgramID" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="TrackID">TrackID</label>
+            <input type="text" name="TrackID" asp-for="TrackID" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Specialization">Specialization</label>
+            <input type="text" name="Specialization" asp-for="Specialization" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add</button>
+
+
+    </form>
+</body>
+</html>
