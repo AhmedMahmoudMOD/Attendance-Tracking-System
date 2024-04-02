@@ -174,6 +174,35 @@ namespace Attendance_Tracking_System.Controllers
             }
 
         }
+        public IActionResult MarkStaffAbsence(int TypeNo)
+        {
+           switch (TypeNo)
+            {
+                case 1:
+                    var instlist = instructorRepo.GetForAttendance();
+                    if (attendanceRepo.MarkInstAbsence(instlist))
+                    {
+                        return Json(new { success = true });
+                    }
+                    else
+                    {
+                        return Json(new { success = false });
+                    }
+                case 2:
+                    var emplist = employeeRepo.GetForAttendance();
+                    if (attendanceRepo.MarkEmpAbsence(emplist))
+                    {
+                        return Json(new { success = true });
+                    }
+                    else
+                    {
+                        return Json(new { success = false });
+                    }
+                default:
+                    return BadRequest();
+            }
+
+        }
 
         public IActionResult GetStudentsAttendace (int Pid, int Tid, int Ino,DateOnly Date)
         {
