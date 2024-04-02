@@ -23,7 +23,7 @@ namespace Attendance_Tracking_System
             builder.Services.AddScoped<IIntakeRepo, IntakeRepo>();
             builder.Services.AddScoped<IAttendanceRepo, AttendacneRepo>();
             builder.Services.AddScoped<IStudentAttendanceRepo, StudentAttendanceRepo>();
-            builder.Services.AddScoped<IScheduleRepo, ScheduleRepo>(); 
+            builder.Services.AddScoped<IScheduleRepo, ScheduleRepo>();
             builder.Services.AddScoped<IPermissionRepo, PermissionRepo>();
 
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
@@ -40,7 +40,7 @@ namespace Attendance_Tracking_System
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            
+
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -52,6 +52,7 @@ namespace Attendance_Tracking_System
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
+
         }
     }
 }

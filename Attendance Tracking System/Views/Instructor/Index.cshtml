@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Instructor>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+<body>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Paasword</th>
+                <th>Age</th>
+                <th>Salary</th>
+            </tr>
+        </thead>
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Email</td>
+                <td>@item.Password</td>
+                <td>@item.Age</td>
+                <td>@item.Salary</td>
+                <td>
+                    <a asp-action="Edit" asp-controller="Instructor" asp-route-Id="@item.Id">Edit</a>
+                </td>
+                <td>
+                    <a asp-action="Details" asp-controller="Instructor" asp-route-Id="@item.Id">Details</a>
+                </td>
+            </tr>
+        }
+    </table>
+    <a asp-action="Add" asp-controller="Instructor">Create</a>
+</body>
+</html>
