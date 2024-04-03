@@ -4,6 +4,7 @@ using Attendance_Tracking_System.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Attendance_Tracking_System.Migrations
 {
     [DbContext(typeof(ITISysContext))]
-    partial class ITISysContextModelSnapshot : ModelSnapshot
+    [Migration("20240402165301_change")]
+    partial class change
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -233,7 +236,7 @@ namespace Attendance_Tracking_System.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Age")
+                    b.Property<int?>("Age")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
@@ -245,13 +248,11 @@ namespace Attendance_Tracking_System.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(11)
@@ -358,7 +359,11 @@ namespace Attendance_Tracking_System.Migrations
                 {
                     b.HasBaseType("Attendance_Tracking_System.Models.User");
 
-                    b.ToTable("admin");
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("Admin");
                 });
 
             modelBuilder.Entity("Attendance_Tracking_System.Models.Employee", b =>
@@ -401,10 +406,10 @@ namespace Attendance_Tracking_System.Migrations
                     b.Property<int>("GraduationYear")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IntakeNo")
+                    b.Property<int>("IntakeNo")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProgramID")
+                    b.Property<int>("ProgramID")
                         .HasColumnType("int");
 
                     b.Property<string>("RegisterationStatus")
@@ -415,7 +420,7 @@ namespace Attendance_Tracking_System.Migrations
                     b.Property<string>("Specialization")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TrackID")
+                    b.Property<int>("TrackID")
                         .HasColumnType("int");
 
                     b.Property<string>("University")
@@ -611,15 +616,21 @@ namespace Attendance_Tracking_System.Migrations
 
                     b.HasOne("Attendance_Tracking_System.Models.Intake", "Intake")
                         .WithMany("Students")
-                        .HasForeignKey("IntakeNo");
+                        .HasForeignKey("IntakeNo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Attendance_Tracking_System.Models.ITIProgram", "Program")
                         .WithMany("Students")
-                        .HasForeignKey("ProgramID");
+                        .HasForeignKey("ProgramID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Attendance_Tracking_System.Models.Track", "Track")
                         .WithMany("Students")
-                        .HasForeignKey("TrackID");
+                        .HasForeignKey("TrackID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Intake");
 

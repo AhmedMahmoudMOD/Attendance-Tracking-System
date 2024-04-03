@@ -1,6 +1,7 @@
 using Attendance_Tracking_System.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace Attendance_Tracking_System.Controllers
 {
@@ -15,7 +16,12 @@ namespace Attendance_Tracking_System.Controllers
 
         public IActionResult Index()
         {
-            return View();
+			ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
+			string userId = identity.FindFirst(ClaimTypes.Role)?.Value;
+            
+			Console.WriteLine(userId);
+			ViewBag.id = userId;
+			return View();
         }
 
         public IActionResult Privacy()

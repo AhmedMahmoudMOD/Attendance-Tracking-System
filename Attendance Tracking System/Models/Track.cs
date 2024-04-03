@@ -26,7 +26,7 @@ namespace Attendance_Tracking_System.Models
 
         public virtual ICollection<Schedule> Schedules { get; set; } = new HashSet<Schedule>();
 
-        public  Instructor? Supervisor { get; set; }
+        public virtual Instructor? Supervisor { get; set; }
         [ForeignKey("Supervisor")]
         public int? SuperID { get; set; }
     }

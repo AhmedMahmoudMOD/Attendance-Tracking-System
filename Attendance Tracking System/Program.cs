@@ -1,6 +1,7 @@
 using Attendance_Tracking_System.Data;
 using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -28,8 +29,12 @@ namespace Attendance_Tracking_System
             builder.Services.AddScoped<IStudentAttendanceRepo, StudentAttendanceRepo>();
             builder.Services.AddScoped<IScheduleRepo, ScheduleRepo>();
             builder.Services.AddScoped<IPermissionRepo, PermissionRepo>();
+            builder.Services.AddScoped<IRegisterStudentRepo,RegisterRepo>();   
+            builder.Services.AddScoped<IAdminRepo, AdminRepo>();
+			//register auth type "cookie"
+			builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
-            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+			JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
                 Formatting = Newtonsoft.Json.Formatting.Indented,
                 ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
@@ -47,12 +52,12 @@ namespace Attendance_Tracking_System
             app.UseStaticFiles();
 
             app.UseRouting();
-
-            app.UseAuthorization();
+			app.UseAuthentication();
+			app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=StudentRegister}/{action=SignUp}/{id?}");
 
             app.Run();
 
