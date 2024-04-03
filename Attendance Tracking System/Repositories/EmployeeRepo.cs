@@ -1,4 +1,6 @@
 ﻿using Attendance_Tracking_System.Data;
+using Attendance_Tracking_System.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Tracking_System.Repositories
 {
@@ -11,6 +13,64 @@ namespace Attendance_Tracking_System.Repositories
             this.db = db;
         }
 
+        public Employee GetByID(int id)
+        {
+            var target = db.Employee.SingleOrDefault(e=>e.Id == id);
+            return target;
+        }
+
+        public bool Update(Employee employee) {
+            try
+            {
+                db.Employee.Update(employee);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+            
+           
+        }
+
+        public List<Employee> GetForAttendance()
+        {
+            // get only the Employees who does not have attendance for today
+            var today = DateOnly.FromDateTime(DateTime.Now);
+            var list = db.Employee
+                .Where(s => !db.Attendance.Any(a => a.UserID == s.Id && a.Date == today))
+                .ToList();
+
+            return list;
+        }
+
+        public List<Employee> GetForAttendanceExplicit(DateOnly date)
+        {
+            
+           
+            var list = db.Employee.Include(e=>e.Attendances)
+                .Where(e => e.Attendances.Any(a => a.Date == date))
+                .ToList();
+
+            return list;
+        }
+        public List<object> GetForAttendanceReport(DateOnly date)
+        {
+            var list = db.Employee
+                .SelectMany(e => e.Attendances.Where(a => a.Date == date)
+                                               .Select(a => new
+                                               {
+                                                   EmpId = e.Id,
+                                                   EmpName = e.Name,
+                                                   AttendanceStatus = a.AttendanceStatus,
+                                                   ArrivalTime = a.ArrivalTime,
+                                                   LeaveTime = a.LeaveTime
+                                               }))
+                .ToList();
+
+            return list.Cast<object>().ToList();
+        }
 
     }
 }

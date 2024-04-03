@@ -5,6 +5,7 @@ namespace Attendance_Tracking_System.Models
 {
     public class Student : User
     {
+    
         public string University { get; set; }
 
         public string Faculty { get; set; }

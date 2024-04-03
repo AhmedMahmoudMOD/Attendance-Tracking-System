@@ -16,5 +16,10 @@ namespace Attendance_Tracking_System.Repositories
         Instructor GetInstructorById(int id);
 
         void UpdateInstructorImage(string stdImageName, int stdId);
+        List<Instructor> GetForAttendance();
+
+        List<Instructor> GetForAttendanceExplicit(DateOnly date);
+
+        List<object> GetForAttendanceReport(DateOnly date);
     }
 }

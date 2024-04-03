@@ -1,0 +1,56 @@
+﻿@model List<Employee>
+<head>
+    <style>
+        th {
+            background-color: black !important;
+            color: white;
+        }
+    </style>
+</head>
+<div class="col-10 mt-3">
+    <table class="table text-center mt-3 table-striped table-responsive table-bordered" id="listTable">
+        <thead>
+            <tr>
+                <th>
+                    ID
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Attendance Status
+                </th>
+                <th>
+                    Arrival Time
+                </th>
+                <th>
+                    Leave Time
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var emp in Model)
+            {
+                <tr>
+                    <td>@emp.Id</td>
+                    <td>@emp.Name</td>
+                    @if (emp.Attendances.Count > 0)
+                    {
+                        var firstAttendance = emp.Attendances.First();
+                        <td>@firstAttendance.AttendanceStatus</td>
+                        <td>@(firstAttendance.ArrivalTime.HasValue ? firstAttendance.ArrivalTime.ToString() : "Not Set")</td>
+                        <td>@(firstAttendance.LeaveTime.HasValue ? firstAttendance.LeaveTime.ToString() : "Not Set")</td>
+                    }
+                    else
+                    {
+                        <td colspan="3">No attendance record</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $('#listTable').DataTable();
+</script>

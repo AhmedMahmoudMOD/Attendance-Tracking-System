@@ -1,0 +1,70 @@
+﻿@{
+    var today = DateOnly.FromDateTime(DateTime.Now);
+
+    var timenow = TimeOnly.FromDateTime(DateTime.Now);
+}
+<head>
+    <style>
+
+        .AttCol {
+            width: 150px;
+        }
+    </style>
+</head>
+<div class="col-10 mt-3">
+    <table class="table text-center mt-3 table-striped table-responsive table-bordered" id="listTable">
+        <thead>
+            <tr>
+                <th>
+                    ID
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Email
+                </th>
+                <th class="AttCol">
+                    Record Attendance
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var emp in Model)
+            {
+                <tr>
+                    <td>
+                        @emp.Id
+                    </td>
+                    <td>
+                        @emp.Name
+                    </td>
+                    <td>
+                        @emp.Email
+                    </td>
+                    <td class="AttCol">
+                        <form  class="d-inline-block ArrForm" asp-action="SetStaffArrivalTime" asp-controller="Attendance">
+                            <input type="hidden" name="UserID" value="@emp.Id" />
+                            <input type="hidden" name="AttendanceType" value="StaffAttendance" />
+                            <input type="hidden" name="Date" value="@today" />
+                            <button class="btn btn-success ArrBtn" type="submit"><i class="fas fa-clock fa-lg"></i></button>
+                        </form>
+                        <form  class="d-inline-block LeaveForm" asp-action="SetStaffLeaveTime" asp-controller="Attendance">
+                            <input type="hidden" name="UserID" value="@emp.Id" />
+                            <input type="hidden" name="Date" value="@today" />
+                            <button style="display:none" class="btn btn-danger LeaveBtn" type="submit"><i class="fas fa-clock fa-lg"></i></button>
+                        </form>
+                        <form class="d-inline-block AbsentForm" asp-action="SetStaffAbsent" asp-controller="Attendance">
+                            <input type="hidden" name="UserID" value="@emp.Id" />
+                            <input type="hidden" name="AttendanceType" value="StaffAttendance" />
+                            <input type="hidden" name="Date" value="@today" />
+                            <button class="btn btn-dark AbsentBtn" type="submit"><i class="fas fa-times fa-lg"></i></button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/attstaffpartial.js"></script>

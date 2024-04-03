@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewData["Title"] = "StudentsAttendance";
+    Layout = "~/Views/Shared/_SLayout.cshtml";
+    var Programs = ViewBag.Programs;
+    SelectList ProgramsList = new SelectList(Programs, "Id", "Name");
+    var Tracks = ViewBag.Tracks;
+    SelectList TracksList = new SelectList(Tracks, "Id", "Name");
+    var cIntake = ViewBag.Intake;
+    var today = DateOnly.FromDateTime(DateTime.Now);
+    string formattedDate = today.ToString("yyyy-MM-dd");
+}
+
+<div id="container" class="container-fluid mt-3">
+    <div class="row justify-content-around">
+        <form asp-action="GetAttPieChart" asp-controller="Chart" class="row col-12">
+        <input type="hidden" value="@cIntake.No" name="Ino" id="intake" />
+        <div class="col-3 ">
+           <input type="date" class="form-control" id="date" name="Date" value="@formattedDate" />
+        </div>
+        <div class="col-3 ">
+            <select asp-items=ProgramsList id="pros" class="form-control" name="Pid" onchange="GetTracks(this.value)"></select>
+        </div>
+        <div class="col-3">
+            <select asp-items=TracksList id="tracks" class="form-control" name="Tid"></select>
+        </div>
+        <div class="col-3">
+            
+        <input type="button" value="Show Students" name="Submit" class="btn btn-success" onclick="GetAttendanceList(pros.value,tracks.value,intake.value,date.value)" />
+        <button type="button" value="Get Report" name="Submit" class="btn" onclick="GetAttendanceReport(pros.value,tracks.value,intake.value,date.value)"><i class="fa-solid fa-print fa-lg" style="color: #121212;"></i></button>
+        <button type="submit" value="Get Chart" name="Submit" class="btn"><i class="fa-solid fa-chart-pie fa-lg" style="color: #0c0d0d;"></i></button>
+        
+        </div>
+        </form>
+    </div>
+</div>
+<div id="AttList" class="mt-3 container row justify-content-around">
+
+</div>
+
+@section Scripts{
+    <script>
+    function GetTracks(id){
+        $.ajax({
+            url: "/Security/GetTracks",
+            data: {id:id},
+            success: function(result){
+                document.getElementById("tracks").innerHTML = '';
+                for (let item of result) { 
+                        document.getElementById("tracks").innerHTML += `<option value=${item.id}>${item.name}</option>`
+               }
+        }});
+    }
+
+    function GetAttendanceList(pid, tid, ino,date) {
+            $.ajax({
+                url: "/Attendance/GetStudentsAttendace",
+                data: { Pid: pid,Tid:tid,Ino:ino , Date:date },
+                success: function (result) {
+                    $("#AttList").html(result)
+                }
+            });
+    }
+        function GetAttendanceReport(pid, tid, ino, date) {
+            $.ajax({
+                url: "/Report/GetStdAttendanceReport",
+                data: { Pid: pid, Tid: tid, Ino: ino, Date: date },
+                success: function (result) {
+                }
+            });
+        }
+        function GetAttendanceChart(pid, tid, ino, date) {
+            $.ajax({
+                url: "/Chart/GetAttPieChart",
+                data: { Pid: pid, Tid: tid, Ino: ino, Date: date },
+                success: function (result) {
+                    $("#AttList").html(result)
+                }
+            });
+        }
+        function GetCurrentIntake(pid) {
+            $.ajax({
+                url: "/Security/GetCurrentIntake",
+                data: { Pid: pid },
+                success: function (result) {
+                    document.getElementById("intake").value = result.no;
+                }
+            });
+    }
+    // Event Registeration
+        document.getElementById("pros").addEventListener("change", (ev)=> {
+
+            GetCurrentIntake(ev.target.value)
+        }
+        );
+    </script>
+    }
+
+

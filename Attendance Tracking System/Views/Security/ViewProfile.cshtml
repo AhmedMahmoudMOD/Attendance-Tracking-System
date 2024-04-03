@@ -3,6 +3,7 @@
     ViewData["Title"] = "ViewProfile";
     Layout = "~/Views/Shared/_SLayout.cshtml";
 }
+@model Employee
 <div class="container mt-4">
     <div class="main-body">
         <div class="row gutters-sm">
@@ -10,18 +11,13 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex flex-column align-items-center text-center">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png"
-                                 alt="Admin"
+                            <img src="/Images/@Model.UserImage"
                                  class="rounded-circle"
-                                 width="150" />
+                                 width="150"
+                                 height="150"   />
                             <div class="mt-3">
-                                <h4>John Doe</h4>
-                                <p class="text-secondary mb-1">Full Stack Developer</p>
-                                <p class="text-muted font-size-sm">
-                                    Bay Area, San Francisco, CA
-                                </p>
-                                <button class="btn btn-primary">Follow</button>
-                                <button class="btn btn-outline-primary">Message</button>
+                                <h4>@Model.Name</h4>
+                                <p class="text-secondary mb-1">ITI Security Employee</p>
                             </div>
                         </div>
                     </div>
@@ -33,9 +29,9 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">Full Name</h6>
+                                <h6 class="mb-0">Name</h6>
                             </div>
-                            <div class="col-sm-9 text-secondary">Kenneth Valdez</div>
+                            <div class="col-sm-9 text-secondary">@Model.Name</div>
                         </div>
                         <hr />
                         <div class="row">
@@ -43,40 +39,29 @@
                                 <h6 class="mb-0">Email</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <a href="/cdn-cgi/l/email-protection"
-                                   class="__cf_email__"
-                                   data-cfemail="bbddd2cbfbd1ced0d6ced395dad7">[email&#160;protected]</a>
+                               @Model.Email
                             </div>
                         </div>
                         <hr />
                         <div class="row">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">Phone</h6>
+                                <h6 class="mb-0">Age</h6>
                             </div>
-                            <div class="col-sm-9 text-secondary">(239) 816-9029</div>
+                            <div class="col-sm-9 text-secondary">@Model.Age</div>
                         </div>
                         <hr />
                         <div class="row">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">Mobile</h6>
+                                <h6 class="mb-0">PhoneNumber</h6>
                             </div>
-                            <div class="col-sm-9 text-secondary">(320) 380-4539</div>
-                        </div>
-                        <hr />
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Address</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                Bay Area, San Francisco, CA
-                            </div>
+                            <div class="col-sm-9 text-secondary">@Model.PhoneNumber</div>
                         </div>
                         <hr />
                         <div class="row">
                             <div class="col-sm-12">
                                 <a class="btn btn-info"
                                    target="__blank"
-                                   href="https://www.bootdey.com/snippets/view/profile-edit-data-and-skills">Edit</a>
+                                   asp-action="EditProfile" asp-route-id="@Model.Id">Edit</a>
                             </div>
                         </div>
                     </div>
