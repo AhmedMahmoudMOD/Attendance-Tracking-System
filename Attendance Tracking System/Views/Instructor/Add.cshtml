@@ -1,0 +1,21 @@
+﻿@model Instructor
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+<body>
+    <form asp-action="Add" asp-controller="Instructor" method="post" enctype="multipart/form-data">
+       <partial name="CreateEdit"></partial>
+       <input type="file" name="InsImg"/>
+       <input type="submit" />
+    </form>
+</body>
+</html>

@@ -1,4 +1,5 @@
 using Attendance_Tracking_System.Data;
+using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ namespace Attendance_Tracking_System
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddDbContext<ITISysContext>(options => options.UseSqlServer("Data Source=.;Initial Catalog=ITISys;Integrated Security=True;Encrypt=False;Trust Server Certificate=True"));
+            builder.Services.AddDbContext<ITISysContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Azure")));
             builder.Services.AddScoped<IStudentRepo, StudentRepo>();
             builder.Services.AddScoped<IInstructorRepo, InstructorRepo>();
             builder.Services.AddScoped<IEmployeeRepo, EmployeeRepo>();
@@ -24,7 +25,7 @@ namespace Attendance_Tracking_System
             builder.Services.AddScoped<IIntakeRepo, IntakeRepo>();
             builder.Services.AddScoped<IAttendanceRepo, AttendacneRepo>();
             builder.Services.AddScoped<IStudentAttendanceRepo, StudentAttendanceRepo>();
-            builder.Services.AddScoped<IScheduleRepo, ScheduleRepo>(); 
+            builder.Services.AddScoped<IScheduleRepo, ScheduleRepo>();
             builder.Services.AddScoped<IPermissionRepo, PermissionRepo>();
 			//register auth type "cookie"
 			builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
@@ -43,7 +44,7 @@ namespace Attendance_Tracking_System
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            
+
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -55,6 +56,7 @@ namespace Attendance_Tracking_System
                 pattern: "{controller=StudentRegister}/{action=SignUp}/{id?}");
 
             app.Run();
+
         }
     }
 }

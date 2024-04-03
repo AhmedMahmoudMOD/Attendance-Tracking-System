@@ -32,12 +32,15 @@ namespace Attendance_Tracking_System.Data
         public DbSet<Schedule> Schedule { get; set; }
 
         public DbSet<Permission> Permission { get; set; }
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-			optionsBuilder.UseLazyLoadingProxies().UseSqlServer("Data Source=.;Initial Catalog=ITISys;Integrated Security=True;Encrypt=False;Trust Server Certificate=True");
-			base.OnConfiguring(optionsBuilder);
-		}
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+       /* protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=DESKTOP-U5TKJ2H;Database=ITISys;Integrated Security=true;TrustServerCertificate=true;");
+            base.OnConfiguring(optionsBuilder);
+        }*/
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+
         {
             modelBuilder.Entity<User>().UseTptMappingStrategy();
 
