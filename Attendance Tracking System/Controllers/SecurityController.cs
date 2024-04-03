@@ -33,8 +33,7 @@ namespace Attendance_Tracking_System.Controllers
                 return Json(tlist);
 
             }else { return Json(null); }
-           
-
+    
         }
 
         public IActionResult ViewProfile() {

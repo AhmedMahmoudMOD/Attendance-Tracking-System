@@ -30,6 +30,12 @@ namespace Attendance_Tracking_System.Data
 
         public DbSet<Permission> Permission { get; set; }
 
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+           optionsBuilder.UseLazyLoadingProxies();
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().UseTptMappingStrategy();

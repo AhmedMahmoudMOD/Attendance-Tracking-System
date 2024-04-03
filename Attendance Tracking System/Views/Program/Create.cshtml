@@ -1,0 +1,134 @@
+﻿@model ITIProgram
+@{
+    ViewData["Title"] = "Create";
+    List<Track> tracks = ViewBag.Tracks;
+    SelectList alltracks = new SelectList(tracks,"Id", "Name");
+    List<Intake> intakes = ViewBag.Intakes;
+    SelectList allintakes = new SelectList(intakes, "No", "Name");
+    List<Instructor> instructors = ViewBag.Instructors;
+    SelectList allinstructors = new SelectList(instructors,"Id","Name");
+    List<Student> students= ViewBag.Students;
+    SelectList allstudents = new SelectList(students,"Id","Name");
+}
+
+@*<div class="container-fluid">
+    <form method="post" class="row">
+     
+        <input type="hidden" name="Id" id="Id" />
+        <div class="form-group col-5 mb-3">
+            <label asp-for="Name" class="control-label mb-2"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group col-5 mb-3">
+            <label asp-for="Duration" class="control-label mb-2"></label>
+            <select asp-for="Duration" class="form-control" asp-items="Html.GetEnumSelectList<ProgramDuration>()">
+                <option value="">Select Duration</option>
+            </select>
+            <span asp-validation-for="Duration" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-5 mb-3">
+            <label asp-for="IsDeleted" class="control-label mb-2"></label>
+            <select asp-for="IsDeleted" class="form-control">
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+            </select>
+            <span asp-validation-for="IsDeleted" class="text-danger"></span>
+        </div>
+        <div class="form-group col-5 mb-3">
+            <label for="tracks"class="control-label mb-2"></label>
+            <select name="tracks" id="tracks" multiple class="form-control" asp-items="alltracks">
+                <option value="">Select Track</option>
+            </select>
+        </div>
+        <div class="form-group col-5 mb-3">
+            <label for="Intakes" class="control-label mb-2"></label>
+            <select name="Intakes" id="Intakes" multiple class="form-control" asp-items="allintakes">
+                <option value="">Select Intake</option>
+            </select>
+           
+        </div>
+        <div class="form-group col-5 mb-3">
+            <label for="Instructors" class="control-label mb-2"></label>
+            <select name="Instructors" id="Instructors" multiple class="form-control" asp-items="allinstructors">
+
+                <option value="">Select Instructor</option>
+            </select>
+
+        </div>
+        <div class="form-group col-5 mb-3">
+            <label for="Students" class="control-label mb-2"></label>
+            <select name="Students" id="Students" multiple class="form-control" asp-items="allstudents">
+                <option value="">Select Student</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Submit" class="btn btn-success" />
+        </div>
+    </form>
+</div>
+</div>*@
+
+<div class="container-fluid">
+    <form method="post" class="row">
+
+        <input hidden asp-for="Id"/>
+        <div class="form-group col-5 mb-3">
+            <label asp-for="Name" class="control-label mb-2"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group col-5 mb-3">
+            <label asp-for="Duration" class="control-label mb-2"></label>
+            <select asp-for="Duration" class="form-control">
+                <option value="">Select Duration</option>
+                @foreach (var duration in Enum.GetValues(typeof(ProgramDuration)))
+                {
+                    <option value="@duration">@duration</option>
+                }
+            </select>
+            <span asp-validation-for="Duration" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-5 mb-3">
+            <label asp-for="IsDeleted" class="control-label mb-2"></label>
+            <select asp-for="IsDeleted" class="form-control">
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+            </select>
+            <span asp-validation-for="IsDeleted" class="text-danger"></span>
+        </div>
+        <div class="form-group col-5 mb-3">
+            <label for="tracks" class="control-label mb-2">Tracks</label>
+            <select name="tracks" id="tracks"   class="form-control" asp-items="alltracks">
+              
+            </select>
+        </div>
+        <div class="form-group col-5 mb-3">
+            <label for="Intakes" class="control-label mb-2">Intakes</label>
+            <select name="Intakes" id="Intakes"  class="form-control" asp-items="allintakes">
+              
+            </select>
+        </div>
+        <div class="form-group col-5 mb-3">
+            <label for="Instructors" class="control-label mb-2">ins</label>
+            <select name="Instructors" id="Instructors"  class="form-control" asp-items="allinstructors">
+                <option value="">Select Instructor</option>
+            </select>
+        </div>
+        <div class="form-group col-5 mb-3">
+            <label for="Students" class="control-label mb-2">stu</label>
+            <select name="Students" id="Students"  class="form-control" asp-items="allstudents">
+                <option value="">Select Student</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Submit" class="btn btn-success" />
+        </div>
+    </form>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<partial name="_ValidationScriptsPartial" />
+

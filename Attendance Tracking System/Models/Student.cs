@@ -31,6 +31,6 @@ namespace Attendance_Tracking_System.Models
 
         public virtual Intake? Intake { get; set; }
 
-        public ICollection<Permission> Permissions { get; set; }
+        public virtual ICollection<Permission> Permissions { get; set; }
     }
 }

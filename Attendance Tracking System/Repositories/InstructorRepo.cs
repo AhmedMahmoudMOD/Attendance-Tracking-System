@@ -1,4 +1,5 @@
 ﻿using Attendance_Tracking_System.Data;
+using Attendance_Tracking_System.Models;
 
 namespace Attendance_Tracking_System.Repositories
 {
@@ -9,6 +10,10 @@ namespace Attendance_Tracking_System.Repositories
         public InstructorRepo(ITISysContext db)
         {
             this.db = db;
+        }
+        public List<Instructor> GetAll()
+        {
+            return db.Instructor.ToList();
         }
     }
 }
