@@ -1,5 +1,6 @@
 ﻿using Attendance_Tracking_System.Data;
 using Attendance_Tracking_System.Models;
+
 namespace Attendance_Tracking_System.Repositories
 {
     public class TrackRepo : ITrackRepo
@@ -13,6 +14,16 @@ namespace Attendance_Tracking_System.Repositories
         public List<Track> GetAll()
         {
             return db.Track.ToList();
+        }
+
+        public List<Track> getAllTracks()
+        {
+            return db.Track.ToList();
+        }
+
+        public Track getTrackById(int id)
+        {
+            return db.Track.SingleOrDefault(a => a.Id == id);
         }
     }
 }
