@@ -1,6 +1,7 @@
 ﻿using Attendance_Tracking_System.Controllers;
 using Attendance_Tracking_System.Data;
 using Attendance_Tracking_System.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Tracking_System.Repositories
 {
@@ -35,14 +36,14 @@ namespace Attendance_Tracking_System.Repositories
             db.SaveChanges();
         }
 
-        public ICollection<Instructor> GetAllInstructors()
+        public List<Instructor> GetAllInstructors()
         {
             return db.Instructor.ToList();
         }
 
         public Instructor GetInstructorById(int id)
         {
-            return db.Instructor.SingleOrDefault(a => a.Id == id);
+            return db.Instructor.Include(a=>a.Tracks).SingleOrDefault(a => a.Id == id);
         }
 
         public void UpdateInstructorImage(string InsImgName, int Id)
@@ -50,6 +51,14 @@ namespace Attendance_Tracking_System.Repositories
             var instructor = db.Instructor.FirstOrDefault(s => s.Id == Id);
             instructor.UserImage = InsImgName;
             db.SaveChanges();
+        }
+
+        
+
+        HashSet<Schedule> IInstructorRepo.getSheduleForTrack(int id)
+        {
+            var Track = db.Track.Include(a => a.Schedules).SingleOrDefault(a => a.SuperID == id);
+            return Track.Schedules.ToHashSet();
         }
     }
 }
