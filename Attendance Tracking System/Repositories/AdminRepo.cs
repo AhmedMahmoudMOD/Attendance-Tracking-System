@@ -4,9 +4,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Tracking_System.Repositories
 {
-	public class AdminRepo
+	public class AdminRepo:IAdminRepo
 	{
-		ITISysContext context = new ITISysContext();
+		private readonly ITISysContext context;
+
+		public AdminRepo(ITISysContext _context)
+		{
+			this.context = _context;
+		}
+
 		public User AdminData(int? id)
 		{
 			User user = context.User.FirstOrDefault(a => a.Id == id.Value);
@@ -32,11 +38,11 @@ namespace Attendance_Tracking_System.Repositories
 			res.UserImage = ImgName;
 			context.SaveChanges();
 		}
-		public bool checkEmailUniqueness(User admin)
+		public bool CheckEmailUniqueness(User admin)
 		{
-			return context.admin.Any(a=>a.Email!=admin.Email && a.Id!=admin.Id);
+			return !context.User.Any(a => a.Email == admin.Email && a.Id != admin.Id);
 		}
-		
+
 
 	}
 }

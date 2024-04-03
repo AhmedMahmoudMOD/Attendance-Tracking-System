@@ -17,8 +17,6 @@ namespace Attendance_Tracking_System.Controllers
         public IActionResult Index()
         {
 			ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
-
-			// Retrieve specific claims from the identity
 			string userId = identity.FindFirst(ClaimTypes.Role)?.Value;
             
 			Console.WriteLine(userId);

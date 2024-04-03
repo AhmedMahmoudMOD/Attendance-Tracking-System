@@ -6,7 +6,11 @@ namespace Attendance_Tracking_System.Controllers
 {
 	public class StudentRegisterController : Controller
 	{
-		RegisterRepo repo = new RegisterRepo();
+		IRegisterStudentRepo repo;
+		public StudentRegisterController(IRegisterStudentRepo _repo)
+		{
+			this.repo = _repo;
+		}
 		public IActionResult SignUp()
 		{
 			var AllTracks=repo.GetAllTracks();

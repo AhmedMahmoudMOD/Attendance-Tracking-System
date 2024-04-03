@@ -26,8 +26,6 @@ namespace Attendance_Tracking_System.Models
         public string? UserImage { get; set; }
 
         public bool IsDeleted { get; set; } = false;
-
-
         public virtual ICollection<Attendance> Attendances { get; set; } = new HashSet<Attendance>();
         public virtual ICollection<Role> role { get; set; }= new HashSet<Role>();
 

@@ -27,6 +27,8 @@ namespace Attendance_Tracking_System
             builder.Services.AddScoped<IStudentAttendanceRepo, StudentAttendanceRepo>();
             builder.Services.AddScoped<IScheduleRepo, ScheduleRepo>();
             builder.Services.AddScoped<IPermissionRepo, PermissionRepo>();
+            builder.Services.AddScoped<IRegisterStudentRepo,RegisterRepo>();   
+            builder.Services.AddScoped<IAdminRepo, AdminRepo>();
 			//register auth type "cookie"
 			builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 

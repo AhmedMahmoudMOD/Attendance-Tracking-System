@@ -23,14 +23,12 @@ namespace Attendance_Tracking_System.Controllers
 				return View(loginViewModel);
 
 			}
-			var res = context.User.Include(a=>a.role).FirstOrDefault(a => a.Email == loginViewModel.email && a.Password == loginViewModel.password);
+			var res = context.User.Include(a=>a.role).FirstOrDefault(a =>a!=null && a.Email == loginViewModel.email && a.Password == loginViewModel.password);
 			if (res == null)
 			{
 				ModelState.AddModelError("", "Invalid Email or Password");
 				return View(loginViewModel);
 			}
-			//to save data in cookie
-			//every thing i want to save about user
 			Claim claim = new Claim(ClaimTypes.Name, res.Name);
 			Claim claim1 = new Claim(ClaimTypes.Email, res.Email);
 			Claim claim3 = new Claim(ClaimTypes.NameIdentifier, res.Id.ToString());
@@ -39,17 +37,13 @@ namespace Attendance_Tracking_System.Controllers
 			{
 				claims.Add(new Claim(ClaimTypes.Role, item.RoleType));
 			}
-
-			//here i bind those data to a card representing user identity
 			ClaimsIdentity claimsIdentity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
 			claimsIdentity.AddClaim(claim);
 			claimsIdentity.AddClaim(claim1);
 			claimsIdentity.AddClaim(claim3);
 			claimsIdentity.AddClaims(claims);
-			//here i can add different auth types
 			ClaimsPrincipal principal = new ClaimsPrincipal();
 			principal.AddIdentity(claimsIdentity);
-			//it add data of cookie
 			await HttpContext.SignInAsync(principal);
 			; return RedirectToAction("index", "home");
 		}

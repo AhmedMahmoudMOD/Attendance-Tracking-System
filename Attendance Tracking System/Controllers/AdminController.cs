@@ -7,7 +7,12 @@ namespace Attendance_Tracking_System.Controllers
 {
 	public class AdminController : Controller
 	{
-		AdminRepo repo = new AdminRepo();
+		IAdminRepo repo;
+		public AdminController(IAdminRepo _repo)
+		{
+			repo = _repo;
+		}
+
 
 		public IActionResult Index()
 		{
@@ -50,7 +55,7 @@ namespace Attendance_Tracking_System.Controllers
 					admin.UserImage = fileName;
 					repo.uploadImg(fileName, admin.Id);
 				}
-				if (repo.checkEmailUniqueness(admin))
+				if (repo.CheckEmailUniqueness(admin))
 				{
 					await repo.EditAdminData(admin);
 					return RedirectToAction("Profile");

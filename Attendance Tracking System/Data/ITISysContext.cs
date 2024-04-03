@@ -33,11 +33,11 @@ namespace Attendance_Tracking_System.Data
 
         public DbSet<Permission> Permission { get; set; }
 
-       /* protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=DESKTOP-U5TKJ2H;Database=ITISys;Integrated Security=true;TrustServerCertificate=true;");
+            optionsBuilder.UseLazyLoadingProxies().UseSqlServer("Server=tcp:mvcproj.database.windows.net,1433;Initial Catalog=ITISys;Persist Security Info=False;User ID=Adminn;Password=mvc1234@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             base.OnConfiguring(optionsBuilder);
-        }*/
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 

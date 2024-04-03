@@ -4,10 +4,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Tracking_System.Repositories
 {
-    public class RegisterRepo
+    public class RegisterRepo:IRegisterStudentRepo
     {
-        ITISysContext context = new ITISysContext();
-        public bool checkEmailUniqueness(User user)
+		private readonly ITISysContext context;
+
+		public RegisterRepo(ITISysContext _context)
+		{
+			this.context = _context;
+		}
+
+		public bool checkEmailUniqueness(User user)
         {
             return context.Student.Any(a => a.Email != user.Email && a.Id != user.Id);
         }
