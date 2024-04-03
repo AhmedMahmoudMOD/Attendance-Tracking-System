@@ -89,5 +89,9 @@ namespace Attendance_Tracking_System.Repositories
             std.UserImage = InsImgName;
             db.SaveChanges();
         }
+        public List<Instructor> GetAll()
+        {
+            return db.Instructor.ToList();
+        }
     }
 }

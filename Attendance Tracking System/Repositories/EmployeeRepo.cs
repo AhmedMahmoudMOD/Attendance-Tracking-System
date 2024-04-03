@@ -1,6 +1,7 @@
 ﻿using Attendance_Tracking_System.Data;
-using Attendance_Tracking_System.Models;
 using Microsoft.EntityFrameworkCore;
+using Attendance_Tracking_System.Models;
+using Attendance_Tracking_System.Enums;
 
 namespace Attendance_Tracking_System.Repositories
 {
@@ -71,6 +72,14 @@ namespace Attendance_Tracking_System.Repositories
 
             return list.Cast<object>().ToList();
         }
+
+        public List<Employee> GetAllStudentAffairs()
+        {
+            var studentAffairs = db.Employee.Where(e => e.Type == Enums.EmployeeType.StudentAffairs).ToList();
+            return studentAffairs;
+        }
+
+
 
     }
 }

@@ -57,7 +57,7 @@ namespace Attendance_Tracking_System
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=StudentRegister}/{action=SignUp}/{id?}");
+                pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
 

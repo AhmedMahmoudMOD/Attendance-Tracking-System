@@ -1,0 +1,33 @@
+﻿@model List<Employee>
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<h1>All StudentAffairs</h1>
+<table class="table table-bordered">
+    <thead class="table-secondary"> 
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>show Profile</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Email</td>
+                <td>@item.PhoneNumber</td>
+                <td><a asp-action="ViewProfile" asp-controller="StudentAffairs" asp-route-id ="@item.Id">Profile</a></td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+

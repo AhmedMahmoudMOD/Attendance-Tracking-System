@@ -21,5 +21,6 @@ namespace Attendance_Tracking_System.Repositories
         List<Instructor> GetForAttendanceExplicit(DateOnly date);
 
         List<object> GetForAttendanceReport(DateOnly date);
+        public List<Instructor> GetAll();
     }
 }

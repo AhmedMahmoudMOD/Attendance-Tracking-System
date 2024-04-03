@@ -13,5 +13,7 @@ namespace Attendance_Tracking_System.Repositories
         List<Employee> GetForAttendanceExplicit(DateOnly date);
 
         List<object> GetForAttendanceReport(DateOnly date);
+
+        List<Employee> GetAllStudentAffairs();
     }
 }

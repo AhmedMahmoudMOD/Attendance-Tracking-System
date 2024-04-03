@@ -19,5 +19,9 @@ namespace Attendance_Tracking_System.Repositories
             var target = db.Intake.SingleOrDefault(i => i.StartDate < today && i.EndDate > today && i.ProgramID==Pid);
             return target;
         }
+        public List<Intake> GetAll()
+        {
+            return db.Intake.ToList();
+        }
     }
 }

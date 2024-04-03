@@ -60,5 +60,14 @@ namespace Attendance_Tracking_System.Repositories
             db.SaveChanges();
         }
 
+        public List<Student> GetAll()
+        {
+            return db.Student.ToList();
+        }   
+        public Student GetById(int id)
+        {
+            var student = db.Student.SingleOrDefault(x => x.Id == id);
+            return student;
+        }
     }
 }
