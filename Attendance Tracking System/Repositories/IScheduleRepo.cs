@@ -11,5 +11,6 @@ namespace Attendance_Tracking_System.Repositories
         
         void UpdateSchedule (Schedule schedule);
         void DeleteSchedule (int scheduleId);
+        Schedule GetScheduleForToday(int TrackId,DateOnly date);
     }
 }

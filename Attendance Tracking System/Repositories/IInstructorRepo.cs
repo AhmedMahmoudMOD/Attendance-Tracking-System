@@ -18,5 +18,11 @@ namespace Attendance_Tracking_System.Repositories
         void UpdateInstructorImage(string stdImageName, int stdId);
 
         HashSet<Schedule> getSheduleForTrack(int id);
-    }
+        List<Instructor> GetForAttendance();
+
+        List<Instructor> GetForAttendanceExplicit(DateOnly date);
+
+        List<object> GetForAttendanceReport(DateOnly date);
+        List<Instructor> GetAll();
+        }
 }

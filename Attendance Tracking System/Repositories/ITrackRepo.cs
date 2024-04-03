@@ -7,5 +7,7 @@ namespace Attendance_Tracking_System.Repositories
         List<Track> getAllTracks();
 
         Track getTrackById(int id);
+        public List<Track> GetAll();
+       // public Track GetById(int id);
     }
 }

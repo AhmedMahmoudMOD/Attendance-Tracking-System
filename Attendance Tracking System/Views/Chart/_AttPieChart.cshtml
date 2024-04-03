@@ -1,0 +1,16 @@
+﻿@{
+    Layout = "~/Views/Shared/_SLayout.cshtml";
+}
+<div class="mt-4 col-10">
+<ejs-accumulationchart id="container" enableBorderOnMouseMove="false">
+    <e-accumulationchart-legendsettings visible="true">
+    </e-accumulationchart-legendsettings>
+    <e-accumulationchart-tooltipsettings enable="true" header="Attendance"></e-accumulationchart-tooltipsettings>
+    <e-accumulation-series-collection>
+        <e-accumulation-series dataSource="ViewBag.ChartData" xName="xValue" yName="yValue" name="ITI" pointColorMapping="fill">
+        </e-accumulation-series>
+    </e-accumulation-series-collection>
+</ejs-accumulationchart>
+
+<ejs-scripts></ejs-scripts>
+</div>

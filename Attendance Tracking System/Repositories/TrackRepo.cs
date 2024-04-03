@@ -9,7 +9,11 @@ namespace Attendance_Tracking_System.Repositories
 
        public TrackRepo(ITISysContext db)
         {
-            this.db = db;
+            this.db = db; 
+        }
+        public List<Track> GetAll()
+        {
+            return db.Track.ToList();
         }
 
         public List<Track> getAllTracks()

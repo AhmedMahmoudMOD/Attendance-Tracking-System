@@ -37,6 +37,12 @@ namespace Attendance_Tracking_System.Repositories
         public void UpdateSchedule(Schedule schedule)
         {
             throw new NotImplementedException();
+       
+    }
+     public Schedule GetScheduleForToday(int TrackId,DateOnly date)
+        {
+            var schedule = db.Schedule.SingleOrDefault(s => s.TrackID == TrackId && s.Date == date);
+            return schedule;
         }
     }
 }
