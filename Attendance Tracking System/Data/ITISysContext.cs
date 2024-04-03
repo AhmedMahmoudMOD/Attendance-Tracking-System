@@ -1,5 +1,6 @@
 ﻿using Attendance_Tracking_System.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace Attendance_Tracking_System.Data
 {
@@ -19,7 +20,9 @@ namespace Attendance_Tracking_System.Data
 
         public DbSet<Student> Student { get; set; }
 
+        public DbSet<Admin> admin { get; set; }
         public DbSet<Instructor> Instructor { get; set; }
+        public DbSet<Role> roles { get; set; }
 
         public DbSet<Employee> Employee { get; set; }
         public DbSet<Attendance> Attendance { get; set; }
@@ -29,8 +32,12 @@ namespace Attendance_Tracking_System.Data
         public DbSet<Schedule> Schedule { get; set; }
 
         public DbSet<Permission> Permission { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		{
+			optionsBuilder.UseLazyLoadingProxies().UseSqlServer("Data Source=.;Initial Catalog=ITISys;Integrated Security=True;Encrypt=False;Trust Server Certificate=True");
+			base.OnConfiguring(optionsBuilder);
+		}
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().UseTptMappingStrategy();
 
@@ -52,6 +59,22 @@ namespace Attendance_Tracking_System.Data
 
             modelBuilder.Entity<Student>().Property(s=>s.RegisterationStatus).HasConversion<string>();
 
-        }
-    }
+			modelBuilder.Entity<Role>(entity =>
+			{
+				entity.HasMany(d => d.user).WithMany(p => p.role)
+					.UsingEntity<Dictionary<string, object>>(
+						"RoleUser",
+						r => r.HasOne<User>().WithMany().HasForeignKey("usersId"),
+						l => l.HasOne<Role>().WithMany().HasForeignKey("RolesId"),
+						j =>
+						{
+							j.HasKey("RolesId", "usersId");
+							j.ToTable("RoleUser");
+							j.HasIndex(new[] { "usersId" }, "IX_RoleUser_usersId");
+						});
+			});
+
+
+		}
+	}
 }

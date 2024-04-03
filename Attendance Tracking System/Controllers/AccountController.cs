@@ -1,0 +1,62 @@
+﻿using Attendance_Tracking_System.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using Attendance_Tracking_System;
+using Microsoft.EntityFrameworkCore;
+
+namespace Attendance_Tracking_System.Controllers
+{
+	public class AccountController : Controller
+	{
+		ITISysContext context = new ITISysContext();
+		public IActionResult Login()
+		{
+			return View();
+		}
+		[HttpPost]
+		public async Task<IActionResult> login(LoginViewModel loginViewModel)
+		{
+			if (!ModelState.IsValid)
+			{
+				return View(loginViewModel);
+
+			}
+			var res = context.User.Include(a=>a.role).FirstOrDefault(a => a.Email == loginViewModel.email && a.Password == loginViewModel.password);
+			if (res == null)
+			{
+				ModelState.AddModelError("", "Invalid Email or Password");
+				return View(loginViewModel);
+			}
+			//to save data in cookie
+			//every thing i want to save about user
+			Claim claim = new Claim(ClaimTypes.Name, res.Name);
+			Claim claim1 = new Claim(ClaimTypes.Email, res.Email);
+			Claim claim3 = new Claim(ClaimTypes.NameIdentifier, res.Id.ToString());
+			List<Claim> claims = new List<Claim>();
+			foreach (var item in res.role)
+			{
+				claims.Add(new Claim(ClaimTypes.Role, item.RoleType));
+			}
+
+			//here i bind those data to a card representing user identity
+			ClaimsIdentity claimsIdentity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+			claimsIdentity.AddClaim(claim);
+			claimsIdentity.AddClaim(claim1);
+			claimsIdentity.AddClaim(claim3);
+			claimsIdentity.AddClaims(claims);
+			//here i can add different auth types
+			ClaimsPrincipal principal = new ClaimsPrincipal();
+			principal.AddIdentity(claimsIdentity);
+			//it add data of cookie
+			await HttpContext.SignInAsync(principal);
+			; return RedirectToAction("index", "home");
+		}
+		public async Task<IActionResult> Logout()
+		{
+			await HttpContext.SignOutAsync();
+			return RedirectToAction("Login");
+		}
+	}
+}

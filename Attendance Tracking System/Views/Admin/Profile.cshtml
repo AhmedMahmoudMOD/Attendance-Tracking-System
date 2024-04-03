@@ -1,0 +1,94 @@
+﻿@model User
+@{
+    ViewData["Title"] = "Profile";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .profile-container {
+            width: 300px;
+            height: auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin:50px auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .profile-container-details {
+            width: 400px;
+            height: auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+             margin:50px auto;
+            padding: 20px;
+           
+        }
+
+        .profile-image {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 5px solid #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-role {
+            color: #7d2020;
+            margin-bottom: 10px;
+        }
+
+        .profile-info {
+            margin-bottom: 15px;
+        }
+
+            .profile-info h3 {
+                text-align:start;
+                margin: 5px 0;
+                font-size: 16px;
+                color: #333333;
+            }
+          
+    </style>
+</head>
+<body>
+    <div style="display:flex;flex-direction:row">
+        <div class="profile-container">
+            @if (!string.IsNullOrEmpty(@ViewBag.currentUser.UserImage))
+            {
+                <img class="profile-image" src="@Url.Content("~/images/" + @ViewBag.currentUser.UserImage)" alt="Student Image"  />
+            }
+            else
+            {
+                
+            <img class="profile-image" src="/images/user.png" alt="Profile Image" />
+            }
+            <h2 class="profile-role">@ViewBag.currentUser.Name</h2>
+            <hr />
+            <div class="profile-info">
+            <h3 style="font-weight:bold">Details:-</h3>
+            <h3 class="profile-role">Email : @ViewBag.currentUser.Email</h3>
+            <h3>Phone:@ViewBag.currentUser.PhoneNumber</h3>
+            <h3>Age : @ViewBag.currentUser.Age</h3>
+            <hr />
+            <a asp-action="EditProfile" class="profile-role"> <i class="fa fa-edit"></i> Edit profile</a>
+            </div>
+        </div>
+       
+    </div>
+   
+</body>
+</html>
