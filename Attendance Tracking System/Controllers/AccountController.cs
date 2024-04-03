@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Attendance_Tracking_System;
 using Microsoft.EntityFrameworkCore;
+using Attendance_Tracking_System.Enums;
 
 namespace Attendance_Tracking_System.Controllers
 {
@@ -26,15 +27,22 @@ namespace Attendance_Tracking_System.Controllers
 			var res = context.User.Include(a=>a.role).FirstOrDefault(a =>a!=null && a.Email == loginViewModel.email && a.Password == loginViewModel.password);
 			if (res == null)
 			{
-				ModelState.AddModelError("", "Invalid Email or Password");
+				ModelState.AddModelError("StudentNotFound", "Invalid Email or Password");
 				return View(loginViewModel);
 			}
 			Claim claim = new Claim(ClaimTypes.Name, res.Name);
 			Claim claim1 = new Claim(ClaimTypes.Email, res.Email);
 			Claim claim3 = new Claim(ClaimTypes.NameIdentifier, res.Id.ToString());
+			var std=context.Student.FirstOrDefault(a=>a.Id==res.Id && a.RegisterationStatus== RegisterationStatus.Pending);
+			if(std != null)
+			{
+				ModelState.AddModelError("StudentNotFound", "Sorry Your Data Is Still pending");
+				return View(loginViewModel);
+			}
 			List<Claim> claims = new List<Claim>();
 			foreach (var item in res.role)
 			{
+				
 				claims.Add(new Claim(ClaimTypes.Role, item.RoleType));
 			}
 			ClaimsIdentity claimsIdentity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
