@@ -34,10 +34,10 @@ namespace Attendance_Tracking_System
 			//register auth type "cookie"
 			builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
-			JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
                 Formatting = Newtonsoft.Json.Formatting.Indented,
-                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore,
             };
 
             var app = builder.Build();
