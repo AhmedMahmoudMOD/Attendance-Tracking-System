@@ -4,7 +4,7 @@ namespace Attendance_Tracking_System.Repositories
 {
     public interface IStudentAttendanceRepo
     {
-         StudentAttendance getAllAttendance(int id);
-        StudentAttendance getAttendanceById(int id);
+        public List<StudentAttendance> GetAllAttendance(int studentId);
+        StudentAttendance GetAttendanceById(int id);
     }
 }

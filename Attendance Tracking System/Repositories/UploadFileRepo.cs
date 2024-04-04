@@ -3,23 +3,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Tracking_System.Repositories
 {
-    public class UploadFile: IUploadFile
+    public class UploadFileRepo : IUploadFile
     {
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly ITISysContext db;
-        public UploadFile(IWebHostEnvironment hostingEnvironment,ITISysContext _context)
+        public UploadFileRepo(IWebHostEnvironment hostingEnvironment, ITISysContext context)
         {
             _hostingEnvironment = hostingEnvironment;
-            db = _context;
+            db = context;
         }
 
-        public async Task<string> uploadFile(IFormFile file)
+        public async Task<string> UploadFile(IFormFile file)
         {
             string fileName = null;
             if (file != null && file.Length > 0)
             {
                 fileName = Path.GetFileName(file.FileName);
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Upload", fileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);

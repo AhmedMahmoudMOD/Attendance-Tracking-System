@@ -2,6 +2,6 @@
 {
     public interface IUploadFile
     {
-        Task<string> uploadFile(IFormFile file);
+        public Task<string> UploadFile(IFormFile file);
     }
 }

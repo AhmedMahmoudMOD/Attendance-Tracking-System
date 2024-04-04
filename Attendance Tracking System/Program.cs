@@ -14,7 +14,6 @@ namespace Attendance_Tracking_System
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
             builder.Services.AddDbContext<ITISysContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Azure")));
             builder.Services.AddScoped<IStudentRepo, StudentRepo>();
             builder.Services.AddScoped<IInstructorRepo, InstructorRepo>();
@@ -26,6 +25,7 @@ namespace Attendance_Tracking_System
             builder.Services.AddScoped<IStudentAttendanceRepo, StudentAttendanceRepo>();
             builder.Services.AddScoped<IScheduleRepo, ScheduleRepo>();
             builder.Services.AddScoped<IPermissionRepo, PermissionRepo>();
+            builder.Services.AddScoped<IUploadFile, UploadFileRepo>();
 
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {

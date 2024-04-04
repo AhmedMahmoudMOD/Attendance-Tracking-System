@@ -26,7 +26,6 @@ namespace Attendance_Tracking_System.Models
         public bool IsDeleted { get; set; } = false;
 
         public virtual ICollection<Attendance> Attendances { get; set; } = new HashSet<Attendance>();
-        public ICollection<Attendance> Attendances { get; set; } = new HashSet<Attendance>();
 
         public override string ToString()
         {

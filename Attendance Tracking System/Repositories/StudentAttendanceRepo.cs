@@ -7,15 +7,19 @@ namespace Attendance_Tracking_System.Repositories
     {
         private readonly ITISysContext db;
 
+
         public StudentAttendanceRepo(ITISysContext db)
         {
             this.db = db;
         }
-        public StudentAttendance getAllAttendance(int id)
-        { 
-           return db.StudentAttendance.FirstOrDefault(s => s.UserID == id);
-        }
-        public StudentAttendance getAttendanceById(int id)
+		public List<StudentAttendance> GetAllAttendance(int studentId)
+		{
+			var att =db.StudentAttendance.Where(s => s.UserID == studentId).ToList();
+            return att;
+		}
+
+
+		public StudentAttendance GetAttendanceById(int id)
         {
             return db.StudentAttendance.FirstOrDefault(s => s.AttID == id);
         }
