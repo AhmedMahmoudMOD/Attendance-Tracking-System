@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using NuGet.Protocol;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Attendance_Tracking_System.Models
@@ -25,5 +26,11 @@ namespace Attendance_Tracking_System.Models
         public bool IsDeleted { get; set; } = false;
 
         public virtual ICollection<Attendance> Attendances { get; set; } = new HashSet<Attendance>();
+        public ICollection<Attendance> Attendances { get; set; } = new HashSet<Attendance>();
+
+        public override string ToString()
+        {
+            return $"{Id}:{Name}:{Email}:{Password}:{Age}:{PhoneNumber}";
+        }
     }
 }
