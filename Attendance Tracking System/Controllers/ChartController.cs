@@ -176,6 +176,57 @@ namespace Attendance_Tracking_System.Controllers
             return View("_StaffAttBarChart");
         }
 
+        public IActionResult GetRangeStdAttBarChart(int Pid, int Tid, int Ino, DateOnly Date, DateOnly EndDate)
+        {
+            List<Student> Students = studentRepo.GetForRangeAttendanceExplicit(Pid, Tid, Ino, Date, EndDate);
 
+            List<RangeBarStdChart> chartData = new List<RangeBarStdChart>(); // List to hold chart data
+            // Loop through each date in the range
+            for (DateOnly date = Date; date <= EndDate; date = date.AddDays(1))
+            {
+                int absentCount = 0;
+                int presentCount = 0;
+                int lateCount = 0;
+
+                foreach (var student in Students)
+                {
+                    foreach (var attendance in student.Attendances)
+                    {
+                        if (attendance.Date == date) // Check if attendance is for the current date
+                        {
+                            switch (attendance.AttendanceStatus)
+                            {
+                                case AttendanceStatus.Absent:
+                                    absentCount++;
+                                    break;
+                                case AttendanceStatus.Present:
+                                    presentCount++;
+                                    break;
+                                case AttendanceStatus.Late:
+                                    lateCount++;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+
+                    // Add the chart item to the lis
+                }
+
+                RangeBarStdChart chartItem = new RangeBarStdChart
+                {
+                    Date = date,
+                    AbsentCount = absentCount,
+                    PresentCount = presentCount,
+                    LateCount = lateCount
+                };
+
+                chartData.Add(chartItem);
+
+            }
+            ViewBag.chartData = chartData;
+            return View("_StudentsAttBarChart");
+        }
     }
 }

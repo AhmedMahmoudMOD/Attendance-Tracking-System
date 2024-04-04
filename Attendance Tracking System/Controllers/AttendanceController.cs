@@ -211,12 +211,30 @@ namespace Attendance_Tracking_System.Controllers
             return PartialView("_StudentsAttListPartial", list);
         }
 
+        public IActionResult GetRangeStudentsAttendace(int Pid, int Tid, int Ino, DateOnly Date,DateOnly EndDate)
+        {
+            var list = studentRepo.GetForRangeAttendanceExplicit(Pid, Tid, Ino, Date,EndDate);
+            ViewBag.CurentTrackId = Tid;
+            return PartialView("_StudentsRangeAttListPartial", list);
+        }
+
         public IActionResult ShowStaffAttendance()
         {
             return View("StaffAttendance");
         }
 
-        public IActionResult AttendanceStaffCharts()
+        public IActionResult StudentsRangeAttendance()
+        {
+            var plist = programRepo.GetAll();
+            ViewBag.Programs = plist;
+            var tlist = plist[0].Tracks;
+            ViewBag.Tracks = tlist;
+            var currentIntake = intakeRepo.GetCurrentIntake(plist[0].Id);
+            ViewBag.Intake = currentIntake;
+            return View();
+        }
+
+        public IActionResult StaffRangeAttendance()
         {
             return View();
         }

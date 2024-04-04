@@ -38,7 +38,7 @@ namespace Attendance_Tracking_System.Repositories
                     var studentAttendance = new StudentAttendance
                     {
                         Date = today,
-                        AttendanceStatus = AttendanceStatus.Late,
+                        AttendanceStatus = AttendanceStatus.Absent,
                         AttendanceType = "StudentAttendance",
                         UserID = student.Id,
                         ScheduleID = ScheduleID

@@ -8,6 +8,8 @@ namespace Attendance_Tracking_System.Repositories
 
         List<Student> GetForAttendanceExplicit(int Pid, int Tid, int Ino, DateOnly date);
 
+        List<Student> GetForRangeAttendanceExplicit(int Pid, int Tid, int Ino, DateOnly date, DateOnly EndDate);
+
        List<object> GetForAttendanceReport(int Pid, int Tid, int Ino, DateOnly date);
 
         void AddRange(List<Student> students);

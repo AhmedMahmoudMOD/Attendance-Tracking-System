@@ -35,6 +35,16 @@ namespace Attendance_Tracking_System.Repositories
             return list;
         }
 
+        public List<Student> GetForRangeAttendanceExplicit(int Pid, int Tid, int Ino, DateOnly date,DateOnly EndDate)
+        {
+            var list = db.Student
+                .Include(s => s.Attendances.Where(a => a.Date >= date && a.Date <= EndDate)) // Apply date constraint to Attendances
+                .Where(s => s.ProgramID == Pid && s.TrackID == Tid && s.IntakeNo == Ino && s.Attendances.Any())
+                .ToList();
+
+            return list;
+        }
+
         public List<object> GetForAttendanceReport(int Pid, int Tid, int Ino, DateOnly date)
         {
             var list = db.Student
