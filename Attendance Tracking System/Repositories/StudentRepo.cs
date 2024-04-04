@@ -63,6 +63,25 @@ namespace Attendance_Tracking_System.Repositories
             return list.Cast<object>().ToList();
         }
 
+        public List<object> GetForRangeAttendanceReport(int Pid, int Tid, int Ino, DateOnly date , DateOnly EndDate)
+        {
+            var list = db.Student
+                .Where(s => s.ProgramID == Pid && s.TrackID == Tid && s.IntakeNo == Ino)
+                .SelectMany(s => s.Attendances.Where(a => a.Date >= date && a.Date <=EndDate)
+                                               .Select(a => new
+                                               {
+                                                   StudentId = s.Id,
+                                                   StudentName = s.Name,
+                                                   Date = a.Date,
+                                                   AttendanceStatus = a.AttendanceStatus,
+                                                   ArrivalTime = a.ArrivalTime,
+                                                   LeaveTime = a.LeaveTime
+                                               }))
+                .ToList();
+
+            return list.Cast<object>().ToList();
+        }
+
         public void AddRange(List<Student> students)
         {
             

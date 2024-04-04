@@ -29,7 +29,7 @@
             <div class="col-2">
 
                 <input type="button" value="Show Students" name="Submit" class="btn btn-success" onclick="GetAttendanceList(pros.value,tracks.value,intake.value,date.value,enddate.value)" />
-                <button type="button" value="Get Report" name="Submit" class="btn" onclick="GetAttendanceReport(pros.value,tracks.value,intake.value,date.value)"><i class="fa-solid fa-print fa-lg" style="color: #121212;"></i></button>
+                <button type="button" value="Get Report" name="Submit" class="btn" onclick="GetAttendanceReport(pros.value,tracks.value,intake.value,date.value,enddate.value)"><i class="fa-solid fa-print fa-lg" style="color: #121212;"></i></button>
                 <button type="submit" value="Get Chart" name="Submit" class="btn"><i class="fa-solid fa-chart-pie fa-lg" style="color: #0c0d0d;"></i></button>
 
             </div>
@@ -63,10 +63,10 @@
                 }
             });
         }
-        function GetAttendanceReport(pid, tid, ino, date) {
+        function GetAttendanceReport(pid, tid, ino, date,endDate) {
             $.ajax({
-                url: "/Report/GetStdAttendanceReport",
-                data: { Pid: pid, Tid: tid, Ino: ino, Date: date },
+                url: "/Report/GetStdRangeAttendanceReport",
+                data: { Pid: pid, Tid: tid, Ino: ino, Date: date , EndDate : endDate },
                 success: function (result) {
                 }
             });

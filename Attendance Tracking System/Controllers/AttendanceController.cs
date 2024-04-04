@@ -260,10 +260,10 @@ namespace Attendance_Tracking_System.Controllers
             {
                 case 1:
                     var instlist = instructorRepo.GetForRangeAttendanceExplicit(Date,EndDate);
-                    return PartialView("_InstAttendancePartial", instlist);
+                    return PartialView("_InstRangeAttListPartial", instlist);
                 case 2:
                     var emplist = employeeRepo.GetForRangeAttendanceExplicit(Date, EndDate);
-                    return PartialView("_EmpAttendancePartial", emplist);
+                    return PartialView("_EmpRangeAttListPartial", emplist);
                 default:
                     return BadRequest();
             }
