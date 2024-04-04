@@ -99,26 +99,35 @@ namespace Attendance_Tracking_System.Repositories
             OldInstructor.Age = Ins.Age;
             OldInstructor.Email = Ins.Email;
             OldInstructor.Salary=Ins.Salary;
+            OldInstructor.PhoneNumber=Ins.PhoneNumber;
             db.SaveChanges();
         }
 
-        public ICollection<Instructor> GetAllInstructors()
+        public List<Instructor> GetAllInstructors()
         {
             return db.Instructor.ToList();
         }
 
         public Instructor GetInstructorById(int id)
         {
-            return db.Instructor.SingleOrDefault(a => a.Id == id);
+            return db.Instructor.Include(a=>a.Tracks).SingleOrDefault(a => a.Id == id);
         }
 
         public void UpdateInstructorImage(string InsImgName, int Id)
         {
-            var std = db.Instructor.FirstOrDefault(s => s.Id == Id);
-            std.UserImage = InsImgName;
+            var instructor = db.Instructor.FirstOrDefault(s => s.Id == Id);
+            instructor.UserImage = InsImgName;
             db.SaveChanges();
         }
-        public List<Instructor> GetAll()
+
+        
+
+        HashSet<Schedule> IInstructorRepo.getSheduleForTrack(int id)
+        {
+            var Track = db.Track.Include(a => a.Schedules).SingleOrDefault(a => a.SuperID == id);
+            return Track.Schedules.ToHashSet();
+    }
+      public List<Instructor> GetAll()
         {
             return db.Instructor.ToList();
         }
