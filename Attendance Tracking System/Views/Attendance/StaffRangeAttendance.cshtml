@@ -23,7 +23,7 @@
             </div>
             <div class="col-3">
                 <input type="button" value="Show Staff" name="Submit" class="btn btn-success" onclick="GetStaffAttendanceList(stafftype.value,date.value,Enddate.value)" />
-                <button type="button" value="Get Report" name="Submit" class="btn" onclick="GetAttendanceReport(stafftype.value,date.value)"><i class="fa-solid fa-print fa-lg" style="color: #121212;"></i></button>
+                <button type="button" value="Get Report" name="Submit" class="btn" onclick="GetAttendanceReport(stafftype.value,date.value,Enddate.value)"><i class="fa-solid fa-print fa-lg" style="color: #121212;"></i></button>
                 <button type="submit" value="Get Chart" name="Submit" class="btn"><i class="fa-solid fa-chart-bar fa-lg" style="color: #0c0d0d;"></i></button>
             </div>
         </form>
@@ -45,10 +45,10 @@
             });
         }
 
-        function GetAttendanceReport(typeno, date) {
+        function GetAttendanceReport(typeno, date , endDate) {
             $.ajax({
-                url: "/Report/GetStaffAttendanceReport",
-                data: { TypeNo: typeno, Date: date },
+                url: "/Report/GetRangeStaffAttendanceReport",
+                data: { TypeNo: typeno, Date: date, EndDate : endDate },
                 success: function (result) {
                 }
             });

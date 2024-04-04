@@ -113,6 +113,24 @@ namespace Attendance_Tracking_System.Repositories
             return list.Cast<object>().ToList();
         }
 
+        public List<object> GetForRangeAttendanceReport(DateOnly date,DateOnly EndDate)
+        {
+            var list = db.Employee
+                .SelectMany(e => e.Attendances.Where(a => a.Date >= date && a.Date <= EndDate)
+                                               .Select(a => new
+                                               {
+                                                   EmpId = e.Id,
+                                                   EmpName = e.Name,
+                                                   Date = a.Date,
+                                                   AttendanceStatus = a.AttendanceStatus,
+                                                   ArrivalTime = a.ArrivalTime,
+                                                   LeaveTime = a.LeaveTime
+                                               }))
+                .ToList();
+
+            return list.Cast<object>().ToList();
+        }
+
         public List<Employee> GetAllStudentAffairs()
         {
             var studentAffairs = db.Employee.Where(e => e.Type == Enums.EmployeeType.StudentAffairs).ToList();

@@ -20,6 +20,8 @@ namespace Attendance_Tracking_System.Repositories
 
         List<object> GetForAttendanceReport(DateOnly date);
 
+        List<object> GetForRangeAttendanceReport(DateOnly date, DateOnly EndDate);
+
         List<Employee> GetAllStudentAffairs();
     }
 }
