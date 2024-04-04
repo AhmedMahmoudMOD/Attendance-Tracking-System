@@ -35,6 +35,16 @@ namespace Attendance_Tracking_System.Repositories
 
             return list;
         }
+        public List<Instructor> GetForRangeAttendanceExplicit(DateOnly date,DateOnly endDate)
+        {
+
+
+            var list = db.Instructor.Include(i => i.Attendances)
+                .Where(i => i.Attendances.Any(a => a.Date >= date && a.Date <=endDate))
+                .ToList();
+
+            return list;
+        }
         public List<object> GetForAttendanceReport(DateOnly date)
         {
             var list = db.Instructor

@@ -22,6 +22,7 @@ namespace Attendance_Tracking_System.Controllers
             this.employeeRepo = employeeRepo;
             this.instructorRepo = instructorRepo;
         }
+       
         public IActionResult GetAttPieChart(int Pid,int Tid,int Ino,DateOnly Date)
         {
             List<Student> students = studentRepo.GetForAttendanceExplicit(Pid, Tid, Ino, Date);
@@ -115,6 +116,66 @@ namespace Attendance_Tracking_System.Controllers
             return View("_StaffAttPieChart");
 
         }
+
+        public IActionResult GetRangeStaffAttBarChart(int TypeNo, DateOnly Date, DateOnly EndDate)
+        {
+            IEnumerable<User> Staff = null;
+            switch (TypeNo)
+            {
+                case 1:
+                    Staff = instructorRepo.GetForRangeAttendanceExplicit(Date, EndDate);
+                    break;
+                case 2:
+                    Staff = employeeRepo.GetForRangeAttendanceExplicit(Date, EndDate);
+                    break;
+                default:
+                    break;
+            }
+
+            List<RangeBarStaffChart> chartData = new List<RangeBarStaffChart>(); // List to hold chart data
+
+            // Loop through each date in the range
+            for (DateOnly date = Date; date <= EndDate; date = date.AddDays(1))
+            {
+                int absentCount = 0;
+                int presentCount = 0;
+
+                foreach (var member in Staff)
+                {
+                    foreach (var attendance in member.Attendances)
+                    {
+                        if (attendance.Date == date) // Check if attendance is for the current date
+                        {
+                            switch (attendance.AttendanceStatus)
+                            {
+                                case AttendanceStatus.Absent:
+                                    absentCount++;
+                                    break;
+                                case AttendanceStatus.Present:
+                                    presentCount++;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                }
+
+                // Create a RangeBarChart object for the current date and counts
+                RangeBarStaffChart chartItem = new RangeBarStaffChart
+                {
+                    Date = date,
+                    AbsentCount = absentCount,
+                    PresentCount = presentCount
+                };
+
+                chartData.Add(chartItem); // Add the chart item to the list
+            }
+
+            ViewBag.chartData = chartData;
+            return View("_StaffAttBarChart");
+        }
+
 
     }
 }

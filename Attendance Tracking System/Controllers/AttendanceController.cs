@@ -216,6 +216,11 @@ namespace Attendance_Tracking_System.Controllers
             return View("StaffAttendance");
         }
 
+        public IActionResult AttendanceStaffCharts()
+        {
+            return View();
+        }
+
         public IActionResult GetStaffAttendance(int TypeNo , DateOnly Date)
         {
             switch (TypeNo)

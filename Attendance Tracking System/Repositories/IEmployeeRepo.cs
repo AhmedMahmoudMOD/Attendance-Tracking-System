@@ -12,6 +12,8 @@ namespace Attendance_Tracking_System.Repositories
 
         List<Employee> GetForAttendanceExplicit(DateOnly date);
 
+        List<Employee> GetForRangeAttendanceExplicit(DateOnly date, DateOnly endDate);
+
         List<object> GetForAttendanceReport(DateOnly date);
 
         List<Employee> GetAllStudentAffairs();
