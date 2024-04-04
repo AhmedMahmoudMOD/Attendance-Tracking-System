@@ -35,6 +35,35 @@ namespace Attendance_Tracking_System.Repositories
            
         }
 
+        public bool Add(Employee employee)
+        {
+            try
+            {
+                db.Employee.Add(employee);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool Delete(int id)
+        {
+            try
+            {
+                var target = db.Employee.SingleOrDefault(e => e.Id == id);
+                target.IsDeleted = true;
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public List<Employee> GetForAttendance()
         {
             // get only the Employees who does not have attendance for today
