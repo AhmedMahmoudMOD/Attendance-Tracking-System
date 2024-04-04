@@ -35,6 +35,7 @@ namespace Attendance_Tracking_System.Repositories
 
             return list;
         }
+        
         public List<Instructor> GetForRangeAttendanceExplicit(DateOnly date,DateOnly endDate)
         {
 

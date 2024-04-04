@@ -235,5 +235,20 @@ namespace Attendance_Tracking_System.Controllers
                     return BadRequest();
             }
         }
+
+        public IActionResult GetRangeStaffAttendance(int TypeNo, DateOnly Date,DateOnly EndDate)
+        {
+            switch (TypeNo)
+            {
+                case 1:
+                    var instlist = instructorRepo.GetForRangeAttendanceExplicit(Date,EndDate);
+                    return PartialView("_InstAttendancePartial", instlist);
+                case 2:
+                    var emplist = employeeRepo.GetForRangeAttendanceExplicit(Date, EndDate);
+                    return PartialView("_EmpAttendancePartial", emplist);
+                default:
+                    return BadRequest();
+            }
+        }
     }
 }
