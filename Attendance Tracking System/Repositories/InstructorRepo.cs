@@ -1,7 +1,10 @@
 ﻿using Attendance_Tracking_System.Controllers;
 using Attendance_Tracking_System.Data;
 using Attendance_Tracking_System.Models;
+using Microsoft.AspNetCore.Http.Metadata;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Attendance_Tracking_System.Repositories
 {
@@ -91,16 +94,34 @@ namespace Attendance_Tracking_System.Repositories
             db.SaveChanges();
         }
 
-        
-
         HashSet<Schedule> IInstructorRepo.getSheduleForTrack(int id)
         {
             var Track = db.Track.Include(a => a.Schedules).SingleOrDefault(a => a.SuperID == id);
             return Track.Schedules.ToHashSet();
-    }
+        }
       public List<Instructor> GetAll()
         {
             return db.Instructor.ToList();
         }
+
+        public List<Schedule>getWeeklyTable(int id, DateOnly date)
+        {
+            int TrackId = db.Track.SingleOrDefault(a => a.SuperID == id).Id;
+            Schedule schedule = db.Schedule.SingleOrDefault(sh => sh.TrackID == TrackId && sh.Date == date);
+            int StartDay = schedule.Date.Day;
+            int StartMonth = schedule.Date.Month;
+            int StartYear = schedule.Date.Year;
+            int scheduleId = schedule.Id;
+            List<Schedule> WeeklySchedule = new List<Schedule>();
+            for (int i = StartDay; i < StartDay + 6; i++)
+            {
+                Schedule sc = db.Schedule.FirstOrDefault(
+                      a => a.Date.Day == i && a.Date.Month == StartMonth && a.Date.Year == StartYear);
+                WeeklySchedule.Add(sc);
+            }
+            return WeeklySchedule;
+        }
+
+        
     }
 }

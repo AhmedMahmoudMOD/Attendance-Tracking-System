@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Attendance_Tracking_System.Enums;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace Attendance_Tracking_System.Models
 {
@@ -21,6 +22,7 @@ namespace Attendance_Tracking_System.Models
 
         [ForeignKey("Student")]
         public int StudentID { get; set; }
+        [JsonIgnore]
         public virtual Student? Student { get; set; }
     }
 }

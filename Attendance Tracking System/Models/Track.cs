@@ -17,15 +17,15 @@ namespace Attendance_Tracking_System.Models
         public int? ProgramID { get; set; }
         [JsonIgnore]
         public virtual ITIProgram? Program { get; set; }
-
+        [JsonIgnore]
         public virtual ICollection<Intake>? Intakes { get; set; } = new HashSet<Intake>();
-
+        [JsonIgnore]
         public virtual ICollection<Instructor>? Instructors { get; set; } = new HashSet<Instructor>();
-
+        [JsonIgnore]
         public virtual ICollection<Student>? Students { get; set; } = new HashSet<Student>();
-
+        [JsonIgnore]
         public virtual ICollection<Schedule> Schedules { get; set; } = new HashSet<Schedule>();
-
+        [JsonIgnore]
         public virtual Instructor? Supervisor { get; set; }
         [ForeignKey("Supervisor")]
         public int? SuperID { get; set; }

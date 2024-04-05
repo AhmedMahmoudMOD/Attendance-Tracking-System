@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Attendance_Tracking_System.Enums;
+using System.Text.Json.Serialization;
 
 namespace Attendance_Tracking_System.Models
 {
@@ -20,6 +21,7 @@ namespace Attendance_Tracking_System.Models
 
         [ForeignKey("User")]
         public int UserID { get; set; }
+         [JsonIgnore]
         public virtual User? User { get; set; }
     }
 }

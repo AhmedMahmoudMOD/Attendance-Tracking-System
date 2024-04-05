@@ -44,5 +44,12 @@ namespace Attendance_Tracking_System.Repositories
             var schedule = db.Schedule.SingleOrDefault(s => s.TrackID == TrackId && s.Date == date);
             return schedule;
         }
+
+        public void AddSchedule(Schedule schedule)
+        {
+            
+            db.Schedule.Add(schedule);
+            db.SaveChanges();
+        }
     }
 }

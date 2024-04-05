@@ -24,5 +24,7 @@ namespace Attendance_Tracking_System.Repositories
 
         List<object> GetForAttendanceReport(DateOnly date);
         List<Instructor> GetAll();
+
+        List<Schedule> getWeeklyTable(int id, DateOnly date);
         }
 }
