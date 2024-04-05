@@ -4,6 +4,7 @@ using Attendance_Tracking_System.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Attendance_Tracking_System
 {
@@ -39,6 +40,11 @@ namespace Attendance_Tracking_System
                 Formatting = Newtonsoft.Json.Formatting.Indented,
                 ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore,
             };
+        //    builder.Services.AddControllersWithViews()
+        //.AddJsonOptions(options =>
+        //{
+        //    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        //});
 
             var app = builder.Build();
 

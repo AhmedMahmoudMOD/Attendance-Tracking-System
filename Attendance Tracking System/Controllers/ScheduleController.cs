@@ -1,4 +1,5 @@
-﻿using Attendance_Tracking_System.Models;
+﻿using Attendance_Tracking_System.Data;
+using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,9 @@ namespace Attendance_Tracking_System.Controllers
     {
         IScheduleRepo scheduleRepo;
         ITrackRepo trackRepo;
+      
+
+        
         public ScheduleController(IScheduleRepo _scheduleRepo,ITrackRepo _trackRepo) {
             scheduleRepo = _scheduleRepo;
             trackRepo = _trackRepo;
@@ -23,5 +27,9 @@ namespace Attendance_Tracking_System.Controllers
             Schedule schedule=scheduleRepo.GetScheduleById(ID);    
             return View(schedule);
         }
+
+       
+
+       
     }
 }
