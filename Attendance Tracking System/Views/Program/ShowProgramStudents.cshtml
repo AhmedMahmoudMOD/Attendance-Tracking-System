@@ -1,0 +1,46 @@
+﻿@model List<ITIProgram>
+@{
+    ViewData["Title"] = "ShowProgramStudents";
+    Layout = "~/Views/Shared/_ProgramLayout.cshtml";
+}
+
+<div class="container-fluid w-75 text-center">
+    <h1> Program Students</h1>
+    <table class="table table-bordered mt-4">
+        <thead class="table-dark">
+            <tr>
+                <th>Program</th>
+                <th>Student</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var program in Model)
+            {
+                @if (program.Students.Any())
+                {
+                    <tr>
+                        <td rowspan="@program.Students.Count">@program.Name</td>
+                        <td>@program.Students.First().Name</td>
+                    </tr>
+                    @foreach (var student in program.Students.Skip(1))
+                    {
+                        <tr>
+
+                            <td>@student.Name</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td>@program.Name</td>
+                        <td>No students available</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+
+

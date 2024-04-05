@@ -13,6 +13,7 @@ namespace Attendance_Tracking_System.Repositories
         void AddRange(List<Student> students);
         List<Student> GetAll();
          Student GetById(int id);
+        void Update(Student student);   
 
 
     }

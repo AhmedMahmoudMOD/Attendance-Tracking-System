@@ -1,0 +1,43 @@
+﻿@model List<ITIProgram>
+@{
+    ViewData["Title"] = "ShowProgramInstructors";
+    Layout = "~/Views/Shared/_ProgramLayout.cshtml";
+}
+
+<div class="container-fluid w-75 text-center">
+    <h1>Program Instructors</h1>
+    <table class="table table-bordered mt-4">
+        <thead class="table-dark">
+            <tr>
+                <th>Program</th>
+                <th>Instructors</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var program in Model)
+            {
+                @if (program.Instructors.Any())
+                {
+                    <tr>
+                        <td rowspan="@program.Instructors.Count">@program.Name</td>
+                        <td>@program.Instructors.First().Name</td>
+                    </tr>
+                    @foreach (var instructor in program.Instructors.Skip(1))
+                    {
+                        <tr>
+                            <td>@instructor.Name</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td>@program.Name</td>
+                        <td>No Instructors  available</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
