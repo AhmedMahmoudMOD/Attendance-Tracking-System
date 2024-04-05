@@ -42,7 +42,6 @@ namespace Attendance_Tracking_System.Controllers
 			List<Claim> claims = new List<Claim>();
 			foreach (var item in res.role)
 			{
-				
 				claims.Add(new Claim(ClaimTypes.Role, item.RoleType));
 			}
 			ClaimsIdentity claimsIdentity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);

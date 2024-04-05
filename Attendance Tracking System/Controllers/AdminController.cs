@@ -1,10 +1,15 @@
-﻿using Attendance_Tracking_System.Models;
+﻿using Attendance_Tracking_System.Enums;
+using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
+using CRUD.CustomFilters;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using System.Security.Claims;
 
 namespace Attendance_Tracking_System.Controllers
 {
+	[AuthFilter]
 	public class AdminController : Controller
 	{
 		IAdminRepo repo;
@@ -12,8 +17,6 @@ namespace Attendance_Tracking_System.Controllers
 		{
 			repo = _repo;
 		}
-
-
 		public IActionResult Index()
 		{
 			return View();
@@ -72,5 +75,258 @@ namespace Attendance_Tracking_System.Controllers
 			User user = repo.AdminData(id);
 			return user;
 		}
+		public IActionResult GetAllStudents()
+		{
+			var students = repo.GetStudents();
+
+			return View(students);
+		}
+		public IActionResult StudentDetails(int? Id)
+		{
+			if (Id == null)
+			{
+				return NotFound();
+			}
+			if (Id == -1)
+			{
+				return BadRequest();
+			}
+			var student = repo.GetStudentById(Id.Value);
+			return View(student);
+		}
+
+		public IActionResult DeleteStudent(int? Id)
+		{
+			if (Id == null)
+			{
+				return NotFound();
+			}
+			if (Id == -1)
+			{
+				return BadRequest();
+			}
+			var res = repo.DeleteStudent(Id.Value);
+			if (res == 1)
+			{
+				TempData["ErrorMessage"] = "Student Deleted Successfully.";
+				TempData["ShowAlert"] = true;
+				return RedirectToAction("GetAllStudents");
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Failed to delete student.";
+				TempData["ShowAlert"] = true;
+				return RedirectToAction("GetAllStudents");
+			}
+
+		}
+		[HttpPost]
+		public ActionResult UploadExcel(IFormFile file)
+		{
+			try
+			{
+				if (file != null && file.Length > 0)
+				{
+					string fileName = Path.GetFileName(file.FileName);
+					string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", fileName);
+
+					using (FileStream stream = new FileStream(filePath, FileMode.Create))
+					{
+						file.CopyTo(stream);
+					}
+
+					repo.ImportDataFromExcel(filePath);
+
+					ViewBag.Message = "Bulk insert from Excel to database successful!";
+				}
+				else
+				{
+					ViewBag.Message = "No file uploaded.";
+				}
+			}
+			catch (Exception ex)
+			{
+				ViewBag.Message = "Error: " + ex.Message;
+			}
+
+			return RedirectToAction("GetAllStudents");
+		}
+		public IActionResult UpdateStudent(int? Id)
+		{
+			ViewBag.Tracks = repo.GetAllTracks();
+			ViewBag.programs=repo.GetAllPrograms();
+			if (Id == null)
+			{
+				return NotFound();
+			}
+			if (Id == -1)
+			{
+				return BadRequest();
+			}
+			var res = repo.GetStudentById(Id);
+			return View(res);
+		}
+		[HttpPost]
+		public async Task<IActionResult>  UpdateStudent(Student student, IFormFile Img)
+		{
+			ViewBag.Tracks = repo.GetAllTracks();
+			if (!ModelState.IsValid)
+			{
+				return View(student);
+			}
+			if (ModelState.IsValid)
+			{
+				string fileName = $"{student.Id}.{Img.FileName}";
+				string filePath = Path.Combine("wwwroot/images/", fileName);
+				if (System.IO.File.Exists(filePath))
+				{
+					System.IO.File.Delete(filePath);
+				}
+				using (var fs = new FileStream("wwwroot/images/" + fileName,
+				FileMode.CreateNew))
+				{
+					await Img.CopyToAsync(fs);
+					student.UserImage = fileName;
+					repo.uploadImg(fileName, student.Id);
+				}
+				repo.UpdateStudentData(student);
+				return RedirectToAction("GetAllStudents");
+			}
+			return View(student);
+		}
+		public IActionResult GetEmployees()
+		{
+			var res=repo.GetAllEmployees();
+
+			return View(res);
+		}
+		public IActionResult EmployeeDetails(int? Id)
+		{
+			if (Id == null)
+			{
+				return NotFound();
+			}
+			if (Id == -1)
+			{
+				return BadRequest();
+			}
+			var student = repo.GetEmployeeById(Id.Value);
+			return View(student);
+		}
+
+		public IActionResult DeleteEmployee(int? Id)
+		{
+			if (Id == null)
+			{
+				return NotFound();
+			}
+			if (Id == -1)
+			{
+				return BadRequest();
+			}
+			var res = repo.DeleteEmployee(Id.Value);
+			if (res == 1)
+			{
+				TempData["ErrorMessage"] = "The Employee Deleted Successfully.";
+				TempData["ShowAlert"] = true;
+				return RedirectToAction("GetEmployees");
+			}
+			else
+			{
+				TempData["ErrorMessage"] = "Failed to delete Employee.";
+				TempData["ShowAlert"] = true;
+				return RedirectToAction("GetEmployees");
+			}
+
+		}
+		
+		public IActionResult UpdateEmployee(int? Id)
+		{
+			var roleid=repo.GetRoleId(RoleEnum.student.ToString());
+			ViewBag.StdRoleId=roleid;	
+			if (Id == null)
+			{
+				return NotFound();
+			}
+			if (Id == -1)
+			{
+				return BadRequest();
+			}
+			var res = repo.GetEmployeeById(Id);
+			return View(res);
+		}
+		[HttpPost]
+		public async Task<IActionResult> UpdateEmployee(Employee employee, IFormFile Img)
+		{
+		
+			if (!ModelState.IsValid)
+			{
+				return View(employee);
+			}
+
+			if (ModelState.IsValid)
+			{
+				string fileName = $"{employee.Id}.{Img.FileName}";
+				string filePath = Path.Combine("wwwroot/images/", fileName);
+				if (System.IO.File.Exists(filePath))
+				{
+					System.IO.File.Delete(filePath);
+				}
+				using (var fs = new FileStream("wwwroot/images/" + fileName,
+				FileMode.CreateNew))
+				{
+					await Img.CopyToAsync(fs);
+					employee.UserImage = fileName;
+					repo.uploadImg(fileName, employee.Id);
+				}
+
+				repo.UpdateEmployeeData(employee);
+				var roleId = repo.GetRoleId(employee.Type.ToString());
+				repo.UpdateUserRole(employee.Id, roleId);
+				return RedirectToAction("GetEmployees");
+			}
+			return View(employee);
+		}
+		public IActionResult AddEmployee()
+		{
+			return View();
+		}
+		[HttpPost]
+		public async Task<IActionResult> AddEmployee(Employee employee, IFormFile Img)
+		{
+
+			if (Img == null || Img.Length == 0)
+			{
+				ModelState.AddModelError("Img", "Please select a file.");
+				return View(employee);
+			}
+
+			if (ModelState.IsValid)
+			{
+				if (repo.CheckEmailUniqueness(employee))
+				{
+					string fileName = $"{employee.Id}.{Img.FileName}";
+					string filePath = Path.Combine("wwwroot/images/", fileName);
+					if (System.IO.File.Exists(filePath))
+					{
+						System.IO.File.Delete(filePath);
+					}
+					using (var fs = new FileStream(filePath, FileMode.Create))
+					{
+						await Img.CopyToAsync(fs);
+					}
+					repo.AddEmployee(employee, fileName);
+			        var roleId = repo.GetRoleId(employee.Type.ToString());
+					repo.AssignRoleToUser(employee.Id, roleId);
+					return RedirectToAction("GetEmployees");
+				}
+				else
+				{
+					ModelState.AddModelError(nameof(employee.Email), "Email already exists");
+				}
+			}
+			return View(employee);	
+		}
+
 	}
 }

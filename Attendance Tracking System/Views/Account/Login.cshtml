@@ -57,14 +57,12 @@
         }
     </style>
 </head>
-
 <body style="justify-content:center">
-
     <div class="container-fluid LoginCard justify-content-center">
         @if (ViewData.ModelState.ContainsKey("StudentNotFound"))
         {
-            <div class="alert alert-danger">
-                @Html.ValidationMessage("StudentNotFound")
+            <div class="alert alert-danger" style="text-align:center">
+                <h4> @Html.ValidationMessage("StudentNotFound")</h4>
             </div>
         }
         <h1 style="text-align:center;color:#5D0E41;"> Attendance Managment system</h1>
@@ -101,8 +99,9 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 </body>
 
 </html>

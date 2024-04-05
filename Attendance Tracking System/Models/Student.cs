@@ -17,7 +17,7 @@ namespace Attendance_Tracking_System.Models
         [Range(2018,2024)]
         public int GraduationYear { get; set; }
         [Required]
-        [StringLength(30, MinimumLength = 3)]
+        [StringLength(30, MinimumLength = 2)]
         public string? Specialization { get; set; }
 
         public int AttendanceDegrees { get; set; } = 250;

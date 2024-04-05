@@ -4,6 +4,7 @@ using Attendance_Tracking_System.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using OfficeOpenXml;
 
 namespace Attendance_Tracking_System
 {
@@ -48,14 +49,15 @@ namespace Attendance_Tracking_System
 
 
             app.UseStaticFiles();
+			ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-            app.UseRouting();
+			app.UseRouting();
 			app.UseAuthentication();
 			app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=StudentRegister}/{action=SignUp}/{id?}");
+                pattern: "{controller=Account}/{action=Login}/{id?}");
 
             app.Run();
 
