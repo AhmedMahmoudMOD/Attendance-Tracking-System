@@ -14,7 +14,7 @@ namespace Attendance_Tracking_System.Models
 
         public TimeOnly? LeaveTime { get; set; }
         
-        public AttendanceStatus AttendanceStatus { get; set; }
+        public AttendanceStatus? AttendanceStatus { get; set; }
 
         public string AttendanceType { get; set; }
 

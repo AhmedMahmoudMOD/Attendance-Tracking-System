@@ -1,5 +1,6 @@
 ﻿using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
+using Attendance_Tracking_System.View_Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 
@@ -51,13 +52,24 @@ namespace Attendance_Tracking_System.Controllers
         public IActionResult EditStd(int id)
         {
             var student = studentRepo.getStudentById(id);
-            return View(student);
+            EditStudentViewModel editStudentViewModel = new EditStudentViewModel
+            {
+                Id = student.Id,
+                Name = student.Name,
+                Email = student.Email,
+                Image = student.Image,
+                Password = student.Password,
+                ExistingImage = student.UserImage
+
+            };
+            return View(editStudentViewModel);
         }
         [HttpPost]
-        public IActionResult EditStd(Student student)
+        public IActionResult EditStd(EditStudentViewModel student)
         {
             if (!ModelState.IsValid)
             {
+               
                 return View(student);
             }
             else

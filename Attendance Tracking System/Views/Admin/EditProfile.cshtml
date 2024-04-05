@@ -1,0 +1,95 @@
+﻿@model Admin
+@{
+	ViewData["Title"] = "EditProfile";
+}
+
+<html>
+<head>
+	<style>
+		.field-validation-error {
+			color: red;
+		}
+
+		.d1 {
+			margin-bottom: 50px auto;
+			margin-left: 50px;
+			width: 400px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			background-color: #f9f9f9;
+			padding: 30px;
+		}
+
+		#back {
+			width: 60px;
+			height: 35px;
+			border-radius: 10px;
+			background-color: darkred;
+			color: white !important;
+			display: flex; /* Align items and justify content center */
+			align-items: center;
+			justify-content: center;
+			margin: 15px;
+		}
+
+			#back:hover {
+				background-color: lightgray;
+				cursor: pointer;
+			}
+	</style>
+</head>
+<body>
+	<div style="display:flex;flex-direction:row;">
+
+		<div id="back">
+
+			<a asp-action="Profile" style="color:white">
+
+				<i class="fas fa-arrow-left back-icon"></i>
+			</a>
+
+		</div>
+		<div style="margin-left:40%">
+			<h3>Edit Profile</h3>
+		</div>
+	</div>
+	<div style="align-items:center" class="d1">
+		<form method="post" asp-action="EditProfile" enctype="multipart/form-data">
+			<input asp-for="Id" hidden />
+			<div class="col-md-12">
+				<label asp-for="Name">Name</label>
+				<input asp-for="Name" class="form-control">
+				<span asp-validation-for="Name"></span>
+			</div>
+			<div class="col-md-12">
+				<label asp-for="Email" class="form-label"></label>
+				<input asp-for="Email" class="form-control">
+				<span asp-validation-for="Email"></span>
+			</div>
+			<div class="col-md-12">
+				<label asp-for="Password" class="form-label"></label>
+				<input asp-for="Password" class="form-control">
+				<span asp-validation-for="Password"></span>
+			</div>
+			<div class="col-md-12">
+				<label asp-for="Age" class="form-label">age</label>
+				<input asp-for="Age" class="form-control">
+				<span asp-validation-for="Age"></span>
+			</div>
+			<div class="col-md-12">
+				<label asp-for="PhoneNumber" class="form-label"></label>
+				<input asp-for="PhoneNumber" class="form-control">
+				<span asp-validation-for="PhoneNumber"></span>
+			</div>
+			<br />
+			<div class="col-md-12">
+				<input type="file" name="Img" class="form-control-file" asp-for="UserImage" />
+			</div><br />
+			<button type="submit" class="btn btn-danger">Save Changes</button>
+		</form>
+	</div>
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>

@@ -10,9 +10,11 @@ namespace Attendance_Tracking_System.Controllers
     {
         // ITISysContext db = new ITISysContext();
         IInstructorRepo instructorRepo;
-        public InstructorController(IInstructorRepo _instructorRepo)
+        ITrackRepo trackRepo;
+        public InstructorController(IInstructorRepo _instructorRepo, ITrackRepo _trackRepo)
         {
             instructorRepo = _instructorRepo;
+            trackRepo = _trackRepo;
         }
 
 
@@ -20,6 +22,7 @@ namespace Attendance_Tracking_System.Controllers
         {
            // var Users=db.Instructor.ToList();
            var Instructors=instructorRepo.GetAllInstructors();
+          
             
             return View(Instructors);
         }
@@ -33,10 +36,10 @@ namespace Attendance_Tracking_System.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Add(Instructor instructor, IFormFile stdimg)
+        public async Task<IActionResult> Add(Instructor instructor, IFormFile InsImg)
         {
             instructorRepo.AddNewInstructor(instructor);
-            string fileName = $"{instructor.Id}.{stdimg.FileName.Split(".").Last()}";
+               string fileName = $"{instructor.Id}.{InsImg.FileName.Split(".").Last()}";
             string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
             if (!Directory.Exists(directoryPath))
             {
@@ -45,12 +48,13 @@ namespace Attendance_Tracking_System.Controllers
             string filePath = Path.Combine(directoryPath, fileName);
             using (var fs = new FileStream(filePath, FileMode.CreateNew))
             {
-                await stdimg.CopyToAsync(fs);
+                await InsImg.CopyToAsync(fs);
                 instructor.UserImage = fileName;
                 instructorRepo.UpdateInstructorImage(fileName, instructor.Id);
             }
             return RedirectToAction("index");
         }
+
 
         [HttpGet]
         public IActionResult Edit(int id)
@@ -66,10 +70,31 @@ namespace Attendance_Tracking_System.Controllers
             instructorRepo.EditInstructor(instructor);
             return RedirectToAction("index");
         }
+        
         public IActionResult Details(int ID)
         {
+            bool found = false;
+            var AllTracks=trackRepo.getAllTracks();
+            ViewBag.AllTracks = AllTracks;
+            foreach(var track in AllTracks)
+            {
+                if (track.SuperID == ID)
+                {
+                    found = true;
+                    Track _track = trackRepo.getTrackById(track.Id);
+                    ViewBag.TrackSupervised=_track;
+                    break;
+                }
+            }
+            ViewBag.IsSuperVisor = found;
             var Instructor = instructorRepo.GetInstructorById(ID);
+            var tracks=Instructor.Tracks.ToList();  
             return View(Instructor);
+        }
+        public IActionResult TrackSchedule(int id)
+        {
+            HashSet<Schedule> sc = instructorRepo.getSheduleForTrack(id);
+            return View(sc);
         }
 
     }

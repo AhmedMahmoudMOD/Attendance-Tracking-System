@@ -19,7 +19,7 @@ namespace Attendance_Tracking_System.Repositories
             if (file != null && file.Length > 0)
             {
                 fileName = Path.GetFileName(file.FileName);
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+                var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "images", fileName);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);

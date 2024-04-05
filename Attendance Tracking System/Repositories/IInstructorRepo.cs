@@ -6,7 +6,7 @@ namespace Attendance_Tracking_System.Repositories
 {
     public interface IInstructorRepo
     {
-        ICollection<Instructor> GetAllInstructors();
+        List<Instructor> GetAllInstructors();
 
         void AddNewInstructor(Instructor instructor);
         void EditInstructor(Instructor Ins);
@@ -16,5 +16,13 @@ namespace Attendance_Tracking_System.Repositories
         Instructor GetInstructorById(int id);
 
         void UpdateInstructorImage(string stdImageName, int stdId);
-    }
+
+        HashSet<Schedule> getSheduleForTrack(int id);
+        List<Instructor> GetForAttendance();
+
+        List<Instructor> GetForAttendanceExplicit(DateOnly date);
+
+        List<object> GetForAttendanceReport(DateOnly date);
+        List<Instructor> GetAll();
+        }
 }

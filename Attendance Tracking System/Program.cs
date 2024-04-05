@@ -1,6 +1,7 @@
 using Attendance_Tracking_System.Data;
 using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -14,6 +15,9 @@ namespace Attendance_Tracking_System
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mgo+DSMBMAY9C3t2UFhhQlJBfV5AQmBIYVp/TGpJfl96cVxMZVVBJAtUQF1hTX5XdkRhW31YdXBRQ2Vd");
+
             builder.Services.AddDbContext<ITISysContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Azure")));
             builder.Services.AddScoped<IStudentRepo, StudentRepo>();
             builder.Services.AddScoped<IInstructorRepo, InstructorRepo>();
@@ -25,9 +29,12 @@ namespace Attendance_Tracking_System
             builder.Services.AddScoped<IStudentAttendanceRepo, StudentAttendanceRepo>();
             builder.Services.AddScoped<IScheduleRepo, ScheduleRepo>();
             builder.Services.AddScoped<IPermissionRepo, PermissionRepo>();
+            builder.Services.AddScoped<IAdminRepo, AdminRepo>();
             builder.Services.AddScoped<IUploadFile, UploadFileRepo>();
 
-            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+
+
+			JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
                 Formatting = Newtonsoft.Json.Formatting.Indented,
                 ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
@@ -45,8 +52,8 @@ namespace Attendance_Tracking_System
             app.UseStaticFiles();
 
             app.UseRouting();
-
-            app.UseAuthorization();
+			app.UseAuthentication();
+			app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",

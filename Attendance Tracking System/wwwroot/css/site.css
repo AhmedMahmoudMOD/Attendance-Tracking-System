@@ -16,7 +16,14 @@ html {
   position: relative;
   min-height: 100%;
 }
-
+.field-validation-error {
+    color: red;
+}
 body {
   margin-bottom: 60px;
+}
+
+.supervisedTrack{
+    border-radius:10px;
+    color: white;
 }
