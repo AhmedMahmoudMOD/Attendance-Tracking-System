@@ -4,6 +4,7 @@ using Attendance_Tracking_System.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using OfficeOpenXml;
 using System.Text.Json.Serialization;
 
 namespace Attendance_Tracking_System
@@ -56,8 +57,9 @@ namespace Attendance_Tracking_System
 
 
             app.UseStaticFiles();
+			ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-            app.UseRouting();
+			app.UseRouting();
 			app.UseAuthentication();
 			app.UseAuthorization();
 

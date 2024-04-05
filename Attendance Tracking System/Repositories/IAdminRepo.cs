@@ -8,5 +8,20 @@ namespace Attendance_Tracking_System.Repositories
 		public  Task EditAdminData(Admin admin);
 		public void uploadImg(string ImgName, int id);
 		public User AdminData(int? id);
+		public List<Student> GetStudents();
+		public Student GetStudentById(int? id);
+		public int DeleteStudent(int? Id);
+		public void ImportDataFromExcel(string filePath);
+		public void AssignRoleToUser(int userId, int roleId);
+		public void UpdateStudentData(Student student);
+		public List<Track> GetAllTracks();
+		public List<ITIProgram> GetAllPrograms();
+		public List<Employee> GetAllEmployees();
+		public Employee GetEmployeeById(int? id);
+		public int DeleteEmployee(int? Id);
+		public void UpdateEmployeeData(Employee employee);
+		public int GetRoleId(String RoleType);
+		public void AddEmployee(Employee emp, string userImageFileName);
+		public void UpdateUserRole(int userId, int roleId);
 	}
 }

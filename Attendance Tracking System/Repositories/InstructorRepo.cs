@@ -89,12 +89,10 @@ namespace Attendance_Tracking_System.Repositories
              db.Instructor.Add(instructor);
              db.SaveChanges();
         }
-
         public void DeleteInstructor(int InsID)
         {
             throw new NotImplementedException();
         }
-
         public void EditInstructor(Instructor Ins)
         {
             var OldInstructor= db.Instructor.SingleOrDefault(a=>a.Id==Ins.Id);

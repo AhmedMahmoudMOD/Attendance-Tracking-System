@@ -1,5 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 
+using Attendance_Tracking_System.Enums;
+
 namespace Attendance_Tracking_System.Models
 {
 	public class Role
