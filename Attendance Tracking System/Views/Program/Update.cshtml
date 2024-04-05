@@ -1,6 +1,7 @@
 ﻿@model ITIProgram
 @{
     ViewData["Title"] = "Update";
+    Layout = "~/Views/Shared/_ProgramLayout.cshtml";
     List<Track> tracks = ViewBag.Tracks;
     SelectList alltracks = new SelectList(tracks, "Id", "Name");
     List<Intake> intakes = ViewBag.Intakes;

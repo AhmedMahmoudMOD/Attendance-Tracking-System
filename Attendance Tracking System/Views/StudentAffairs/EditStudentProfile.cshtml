@@ -9,9 +9,9 @@
 <div class="container">
 <div class="row justify-content-around">
     <div class="col-md-6">
-        <form asp-action="EditProfile" enctype="multipart/form-data">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <input type="hidden" asp-for="UserImage" />
+        <form method="post" enctype="multipart/form-data">
+           @*  <div asp-validation-summary="All" class="text-danger"></div> *@
+            <input type="hidden" asp-for="UserImage"/>
             <input type="hidden" asp-for="Id"/>
             <div class="form-group mt-3">
                 <label asp-for="Name" class="control-label"></label>
@@ -39,17 +39,17 @@
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
 
-            <div class="form-group mt-3">
+        @*     <div class="form-group mt-3">
                 <label asp-for="RegisterationStatus" class="control-label"></label>
                 <select asp-for="RegisterationStatus" class="form-control">
-                    <option>Select Register Status</option>
+                    <option>--Select Register Status--</option>
                         @foreach (var status in Enum.GetValues(typeof(RegisterationStatus)))
                         {
                             <option value="@status">@Enum.GetName(typeof(RegisterationStatus), status)</option>
                         }
                     </select>
-                    <span asp-validation-for="IsDeleted" class="text-danger"></span>
-            </div>
+                    <span asp-validation-for="RegisterationStatus" class="text-danger"></span>
+            </div> *@
                 <div class="form-group mt-3">
                     <label asp-for="IsDeleted" class="control-label"></label>
                     <select asp-for="IsDeleted" class="form-control">
@@ -58,6 +58,27 @@
                     </select>
                     <span asp-validation-for="IsDeleted" class="text-danger"></span>
                 </div>
+                <div class="form-group mt-3">
+                    <label asp-for="University" class="control-label"></label>
+                    <input asp-for="University" class="form-control" />
+                    <span asp-validation-for="University" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <label asp-for="Faculty" class="control-label"></label>
+                    <input asp-for="Faculty" class="form-control" />
+                    <span asp-validation-for="Faculty" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <label asp-for="GraduationYear" class="control-label"></label>
+                    <input asp-for="GraduationYear" class="form-control" />
+                    <span asp-validation-for="GraduationYear" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <label asp-for="Specialization" class="control-label"></label>
+                    <input asp-for="Specialization" class="form-control" />
+                    <span asp-validation-for="Specialization" class="text-danger"></span>
+                </div>
+
             <div class="form-group mt-3">
                 <label asp-for="AttendanceDegrees" class="control-label"></label>
                 <input asp-for="AttendanceDegrees" class="form-control" />
@@ -66,7 +87,7 @@
             <div class="form-group mt-3">
                 <label name="trackId" class="control-label"></label>
                 <select name="trackId" class="form-control">
-                    <option value="">select Track</option>
+                    <option value="">--select Track--</option>
                     @foreach(var track in tracks)
                     {
                         <option value="@track.Id">@track.Name</option>
@@ -85,12 +106,9 @@
 </div>
 </div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
-
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
 
 

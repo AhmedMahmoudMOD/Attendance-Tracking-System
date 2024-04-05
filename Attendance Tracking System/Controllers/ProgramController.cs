@@ -2,6 +2,7 @@
 using Attendance_Tracking_System.Data;
 using Attendance_Tracking_System.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Attendance_Tracking_System.Controllers
 {
@@ -23,24 +24,43 @@ namespace Attendance_Tracking_System.Controllers
             this.studentRepo = studentRepo;
             this.trackRepo = trackRepo;
         }
+        public IActionResult Show()
+        {
+            return View();
+        }
         public IActionResult Index()
         {
             var programms = programRepo.GetAll();  
             return View(programms);
         }
 
+     
         public IActionResult Create()
         {
-            List<Track> tracks = trackRepo.GetAll();
-            ViewBag.Tracks = tracks;
-            List<Intake> intakes = intakeRepo.GetAll();
-            ViewBag.Intakes = intakes;
-            List<Instructor> instructors = instructorRepo.GetAll();
-            ViewBag.Instructors = instructors;
-            List<Student> students = studentRepo.GetAll();
-            ViewBag.Students = students;
-            return View();  
+            try
+            {
+                List<Track> tracks = trackRepo.GetAll() ?? new List<Track>();
+                ViewBag.Tracks = tracks;
+
+                List<Intake> intakes = intakeRepo.GetAll() ?? new List<Intake>();
+                ViewBag.Intakes = intakes;
+
+                List<Instructor> instructors = instructorRepo.GetAll() ?? new List<Instructor>();
+                ViewBag.Instructors = instructors;
+
+                //List<Student> students = studentRepo.GetAll() ?? new List<Student>();
+                //ViewBag.Students = students;
+
+                return View();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                Console.WriteLine($"Error occurred while retrieving ViewBag data: {ex.Message}");
+                return RedirectToAction("Error", "Home");
+            }
         }
+
         [HttpPost]
         public IActionResult Create(ITIProgram program)
         {
@@ -105,6 +125,44 @@ namespace Attendance_Tracking_System.Controllers
             ViewBag.Intakes = intakes;
             return View(program);
         }
+
+        public IActionResult ShowProgramTracks()
+        {
+            var programs = programRepo.GetAll();
+            return View(programs);
+        }
+
+        public IActionResult ShowProgramIntakes()
+        {
+            var programs = programRepo.GetAll();
+            return View(programs);
+        }
+
+        public IActionResult ShowProgramInstructors() {
+            var programs = programRepo.GetAll();
+            return View(programs);
+        }
+
+        public IActionResult ShowProgramStudents()
+        {
+            var programs = programRepo.GetAll();
+            return View(programs);
+        }
+        public IActionResult Details(int ?id)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            var program = programRepo.GetByID(id.Value);
+            if (program == null)
+            {
+                return NotFound();
+            }
+            return View(program);
+        }
+
+
 
 
     }
