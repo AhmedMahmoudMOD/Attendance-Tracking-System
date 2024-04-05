@@ -11,7 +11,7 @@
 }
 
 <div id="container" class="container-fluid mt-3">
-    <div class="row justify-content-around">
+    <div class="row justify-content-evenly">
         <form asp-action="GetRangeStdAttBarChart" asp-controller="Chart" class="row col-12">
             <input type="hidden" value="@cIntake.No" name="Ino" id="intake" />
             <div class="col-2 ">
@@ -20,17 +20,17 @@
             <div class="col-2 ">
                 <input type="date" class="form-control" id="enddate" name="EndDate" value="@formattedDate" />
             </div>
-            <div class="col-3 ">
+            <div class="col-2">
                 <select asp-items=ProgramsList id="pros" class="form-control" name="Pid" onchange="GetTracks(this.value)"></select>
             </div>
-            <div class="col-3">
+            <div class="col-2">
                 <select asp-items=TracksList id="tracks" class="form-control" name="Tid"></select>
             </div>
-            <div class="col-2">
+            <div class="col-3 offset-1">
 
                 <input type="button" value="Show Students" name="Submit" class="btn btn-success" onclick="GetAttendanceList(pros.value,tracks.value,intake.value,date.value,enddate.value)" />
                 <button type="button" value="Get Report" name="Submit" class="btn" onclick="GetAttendanceReport(pros.value,tracks.value,intake.value,date.value,enddate.value)"><i class="fa-solid fa-print fa-lg" style="color: #121212;"></i></button>
-                <button type="submit" value="Get Chart" name="Submit" class="btn"><i class="fa-solid fa-chart-pie fa-lg" style="color: #0c0d0d;"></i></button>
+                <button type="submit" value="Get Chart" name="Submit" class="btn"><i class="fa-solid fa-chart-bar fa-lg" style="color: #0c0d0d;"></i></button>
 
             </div>
         </form>
