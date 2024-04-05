@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Attendance_Tracking_System.Models
 {
@@ -6,7 +7,7 @@ namespace Attendance_Tracking_System.Models
     {
         [ForeignKey("Schedule")]
         public int? ScheduleID { get; set; }
-
+        [JsonIgnore]
         public virtual Schedule? Schedule { get; set; }
     }
 }

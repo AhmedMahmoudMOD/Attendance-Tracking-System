@@ -1,4 +1,5 @@
 ﻿using Attendance_Tracking_System.Data;
+using Attendance_Tracking_System.Enums;
 using Attendance_Tracking_System.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,7 +39,7 @@ namespace Attendance_Tracking_System.Repositories
         }
         public void AddStudentInUserRole(int stdId)
         {
-            var studentRole = context.roles.FirstOrDefault(a => a.RoleType == "student");
+            var studentRole = context.roles.FirstOrDefault(a => a.RoleType == RoleEnum.student.ToString());
             Console.WriteLine(studentRole.Id);
         }
         public void AssignRoleToUser(int userId, int roleId)

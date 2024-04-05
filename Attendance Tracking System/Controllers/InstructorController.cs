@@ -3,16 +3,24 @@ using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+
 
 namespace Attendance_Tracking_System.Controllers
 {
     public class InstructorController : Controller
     {
         // ITISysContext db = new ITISysContext();
+
+       // ITISysContext db = new ITISysContext();
         IInstructorRepo instructorRepo;
-        public InstructorController(IInstructorRepo _instructorRepo)
+        ITrackRepo trackRepo;
+        IScheduleRepo scheduleRepo;
+        public InstructorController(IInstructorRepo _instructorRepo, ITrackRepo _trackRepo,IScheduleRepo _scheduleRepo)
         {
             instructorRepo = _instructorRepo;
+            trackRepo = _trackRepo;
+            scheduleRepo = _scheduleRepo;   
         }
 
 
@@ -20,6 +28,7 @@ namespace Attendance_Tracking_System.Controllers
         {
            // var Users=db.Instructor.ToList();
            var Instructors=instructorRepo.GetAllInstructors();
+          
             
             return View(Instructors);
         }
@@ -36,7 +45,7 @@ namespace Attendance_Tracking_System.Controllers
         public async Task<IActionResult> Add(Instructor instructor, IFormFile InsImg)
         {
             instructorRepo.AddNewInstructor(instructor);
-            string fileName = $"{instructor.Id}.{InsImg.FileName.Split(".").Last()}";
+               string fileName = $"{instructor.Id}.{InsImg.FileName.Split(".").Last()}";
             string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
             if (!Directory.Exists(directoryPath))
             {
@@ -52,6 +61,7 @@ namespace Attendance_Tracking_System.Controllers
             return RedirectToAction("index");
         }
 
+
         [HttpGet]
         public IActionResult Edit(int id)
         {
@@ -66,11 +76,72 @@ namespace Attendance_Tracking_System.Controllers
             instructorRepo.EditInstructor(instructor);
             return RedirectToAction("index");
         }
+        
         public IActionResult Details(int ID)
         {
+            bool found = false;
+            var AllTracks=trackRepo.getAllTracks();
+            ViewBag.AllTracks = AllTracks;
+            foreach(var track in AllTracks)
+            {
+                if (track.SuperID == ID)
+                {
+                    found = true;
+                    Track _track = trackRepo.getTrackById(track.Id);
+                    ViewBag.TrackSupervised=_track;
+                    break;
+                }
+            }
+            ViewBag.IsSuperVisor = found;
             var Instructor = instructorRepo.GetInstructorById(ID);
+           
             return View(Instructor);
         }
+
+        [HttpGet]
+        public IActionResult TrackSchedule(int id)
+        {
+            HashSet<Schedule> sc = instructorRepo.getSheduleForTrack(id);
+            ViewBag.Instructor = id;
+            return View(sc);
+        }
+
+        public IActionResult AllTrackSchedules(int id)
+        {
+            HashSet<Schedule> sc = instructorRepo.getSheduleForTrack(id);
+            return Json(sc);
+        } 
+        
+
+        [HttpPost]
+        public IActionResult TrackSchedule(TimeOnly StartTime, DateOnly Date, int TrackID,int id)
+        {
+            Schedule schedule = new Schedule
+            {
+                TrackID = TrackID,
+                Date = Date,
+                StartTime = StartTime
+            };
+            HashSet<Schedule> sc = instructorRepo.getSheduleForTrack(id);
+            var existingSchedule = sc.FirstOrDefault(a => a.Date == Date);
+            if (existingSchedule == null)
+            {   
+                scheduleRepo.AddsSchedule(schedule);
+            }
+            ViewBag.Instructor = id;
+            return View(sc);
+        }
+
+
+        public IActionResult WeeklyTable(int id, DateOnly date) {
+
+            List<Schedule> WeeklySchedule = new List<Schedule>();
+            WeeklySchedule=instructorRepo.getWeeklyTable(id,date);
+            
+            return Json (WeeklySchedule);
+        }
+
+        
 
     }
 }

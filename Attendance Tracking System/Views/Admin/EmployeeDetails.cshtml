@@ -1,0 +1,92 @@
+﻿@model Employee
+@{
+	ViewData["Title"] = "EmployeeDetails";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        dl {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 10px;
+            padding: 10px;
+            background-color: white;
+            width:50%;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        dt {
+            font-weight: bold;
+            color: #00224D;
+        }
+
+        dd {
+            color: #333;
+        }
+
+        img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn:hover {
+                background-color: #555;
+            }
+    </style>
+</head>
+<body>
+    <header>
+        <div style="display:flex;flex-direction:row;padding:10px">
+        <h3>Employee Details</h3>
+        <a class="btn" style="margin-left:50px" asp-action="GetEmployees" asp-controller="Admin">Back</a>
+        </div>
+    </header>
+    <img src="@Url.Content("~/images/" + @Model.UserImage)" alt="Employee Image">
+    <dl>
+        <dt>Employee ID:</dt>
+        <dd>@Model.Id</dd>
+        <dt>Name:</dt>
+        <dd>@Model.Name</dd>
+        <dt>Email:</dt>
+        <dd>@Model.Email</dd>
+        <dt>Age:</dt>
+        <dd>@Model.Age</dd>
+        <dt>Phone Number:</dt>
+        <dd>@Model.PhoneNumber</dd>
+        <dt>Salary :</dt>
+        <dd>@Model.Salary</dd>
+        <dt>Type :</dt>
+        <dd style="font-weight:bold;color:darkred">@Model.Type</dd>
+    </dl>
+</body>
+</html>
+

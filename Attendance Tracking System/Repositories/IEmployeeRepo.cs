@@ -8,11 +8,19 @@ namespace Attendance_Tracking_System.Repositories
 
         bool Update(Employee employee);
 
+        bool Add(Employee employee);
+
+        bool Delete(int id);
+
         List<Employee> GetForAttendance();
 
         List<Employee> GetForAttendanceExplicit(DateOnly date);
 
+        List<Employee> GetForRangeAttendanceExplicit(DateOnly date, DateOnly endDate);
+
         List<object> GetForAttendanceReport(DateOnly date);
+
+        List<object> GetForRangeAttendanceReport(DateOnly date, DateOnly EndDate);
 
         List<Employee> GetAllStudentAffairs();
     }

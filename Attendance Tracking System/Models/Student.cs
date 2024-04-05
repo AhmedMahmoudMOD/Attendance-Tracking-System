@@ -1,6 +1,7 @@
 ﻿using Attendance_Tracking_System.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Attendance_Tracking_System.Models
 {
@@ -17,7 +18,7 @@ namespace Attendance_Tracking_System.Models
         [Range(2018,2024)]
         public int GraduationYear { get; set; }
         [Required]
-        [StringLength(30, MinimumLength = 3)]
+        [StringLength(30, MinimumLength = 2)]
         public string? Specialization { get; set; }
 
         public int AttendanceDegrees { get; set; } = 250;
@@ -31,13 +32,13 @@ namespace Attendance_Tracking_System.Models
         public int? TrackID { get; set; }
         [ForeignKey("Intake")]
         public int? IntakeNo { get; set; }
-
+        [JsonIgnore]
         public virtual ITIProgram? Program { get; set; }
-
+        [JsonIgnore]
         public virtual Track? Track { get; set; }
-
+        [JsonIgnore]
         public virtual Intake? Intake { get; set; }
-
+        [JsonIgnore]
         public virtual ICollection<Permission> Permissions { get; set; }
         public Student()
         {

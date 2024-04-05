@@ -109,6 +109,42 @@ namespace Attendance_Tracking_System.Controllers
                 return View(Emp);
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> Add(Employee Emp, IFormFile? EmpImage)
+        {
+            if (ModelState.IsValid)
+            {
+                if (EmpImage != null)
+                {
+                    string filename = $"Emp {Emp.Id.ToString()}.{EmpImage.FileName.Split('.').Last()}";
+                    // Saving the file to the wwwroot/images folder
+                    string path = $"wwwroot/Images/{filename}";
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await EmpImage.CopyToAsync(stream);
+                    }
+
+                    Emp.UserImage = filename;
+                    employeeRepo.Add(Emp);
+                    return RedirectToAction("Index"); // Placeholder for now will be implemented later by admin
+                }
+                else
+                {
+                    employeeRepo.Add(Emp);
+                    return RedirectToAction("Index"); // Placeholder for now will be implemented later by admin
+                }
+            }
+            else
+            {
+                return View(Emp);
+            }
+        }
+
+        public  IActionResult Delete(int id)
+        {
+            employeeRepo.Delete(id);
+            return RedirectToAction("Index"); // placeholder for now will be implemented later by admin 
+        }
 
         [HttpGet]
         public IActionResult StaffAttendance()

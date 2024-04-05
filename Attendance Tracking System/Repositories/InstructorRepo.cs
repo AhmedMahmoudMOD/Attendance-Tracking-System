@@ -1,7 +1,10 @@
 ﻿using Attendance_Tracking_System.Controllers;
 using Attendance_Tracking_System.Data;
 using Attendance_Tracking_System.Models;
+using Microsoft.AspNetCore.Http.Metadata;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Attendance_Tracking_System.Repositories
 {
@@ -35,6 +38,17 @@ namespace Attendance_Tracking_System.Repositories
 
             return list;
         }
+        
+        public List<Instructor> GetForRangeAttendanceExplicit(DateOnly date,DateOnly endDate)
+        {
+
+
+            var list = db.Instructor.Include(i => i.Attendances)
+                .Where(i => i.Attendances.Any(a => a.Date >= date && a.Date <=endDate))
+                .ToList();
+
+            return list;
+        }
         public List<object> GetForAttendanceReport(DateOnly date)
         {
             var list = db.Instructor
@@ -52,17 +66,33 @@ namespace Attendance_Tracking_System.Repositories
             return list.Cast<object>().ToList();
         }
 
+        public List<object> GetForRangeAttendanceReport(DateOnly date,DateOnly EndDate)
+        {
+            var list = db.Instructor
+                .SelectMany(i => i.Attendances.Where(a => a.Date >= date && a.Date <=EndDate)
+                                               .Select(a => new
+                                               {
+                                                   InstructorId = i.Id,
+                                                   InstructorName = i.Name,
+                                                   Date = a.Date,
+                                                   AttendanceStatus = a.AttendanceStatus,
+                                                   ArrivalTime = a.ArrivalTime,
+                                                   LeaveTime = a.LeaveTime
+                                               }))
+                .ToList();
+
+            return list.Cast<object>().ToList();
+        }
+
         public void AddNewInstructor(Instructor instructor)
         {
              db.Instructor.Add(instructor);
              db.SaveChanges();
         }
-
         public void DeleteInstructor(int InsID)
         {
             throw new NotImplementedException();
         }
-
         public void EditInstructor(Instructor Ins)
         {
             var OldInstructor= db.Instructor.SingleOrDefault(a=>a.Id==Ins.Id);
@@ -70,28 +100,55 @@ namespace Attendance_Tracking_System.Repositories
             OldInstructor.Age = Ins.Age;
             OldInstructor.Email = Ins.Email;
             OldInstructor.Salary=Ins.Salary;
+            OldInstructor.PhoneNumber=Ins.PhoneNumber;
             db.SaveChanges();
         }
 
-        public ICollection<Instructor> GetAllInstructors()
+        public List<Instructor> GetAllInstructors()
         {
             return db.Instructor.ToList();
         }
 
         public Instructor GetInstructorById(int id)
         {
-            return db.Instructor.SingleOrDefault(a => a.Id == id);
+            return db.Instructor.Include(a=>a.Tracks).SingleOrDefault(a => a.Id == id);
         }
 
         public void UpdateInstructorImage(string InsImgName, int Id)
         {
-            var std = db.Instructor.FirstOrDefault(s => s.Id == Id);
-            std.UserImage = InsImgName;
+            var instructor = db.Instructor.FirstOrDefault(s => s.Id == Id);
+            instructor.UserImage = InsImgName;
             db.SaveChanges();
         }
-        public List<Instructor> GetAll()
+
+        HashSet<Schedule> IInstructorRepo.getSheduleForTrack(int id)
+        {
+            var Track = db.Track.Include(a => a.Schedules).SingleOrDefault(a => a.SuperID == id);
+            return Track.Schedules.ToHashSet();
+        }
+      public List<Instructor> GetAll()
         {
             return db.Instructor.ToList();
         }
+
+        public List<Schedule>getWeeklyTable(int id, DateOnly date)
+        {
+            int TrackId = db.Track.SingleOrDefault(a => a.SuperID == id).Id;
+            Schedule schedule = db.Schedule.SingleOrDefault(sh => sh.TrackID == TrackId && sh.Date == date);
+            int StartDay = schedule.Date.Day;
+            int StartMonth = schedule.Date.Month;
+            int StartYear = schedule.Date.Year;
+            int scheduleId = schedule.Id;
+            List<Schedule> WeeklySchedule = new List<Schedule>();
+            for (int i = StartDay; i < StartDay + 6; i++)
+            {
+                Schedule sc = db.Schedule.FirstOrDefault(
+                      a => a.Date.Day == i && a.Date.Month == StartMonth && a.Date.Year == StartYear);
+                WeeklySchedule.Add(sc);
+            }
+            return WeeklySchedule;
+        }
+
+        
     }
 }

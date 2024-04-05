@@ -1,0 +1,173 @@
+﻿@model HashSet<Schedule>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>TrackSchedule</title>
+    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/ss.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.dataTables.css">
+
+    <style>
+     
+        .container {
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+
+        .container table {
+            width: 100%;
+        }
+
+        #week td {
+            text-align: center;
+        }
+       
+    </style>
+    
+</head>
+
+<body>
+    <div class="container my-4">
+        <div class="p-3">
+            <label for="getAllTracksButton">Click here to get all tracks:</label>
+            <input id="getAllTracksButton" type="button" value="All Schedules" class="btn btn-info" onclick="GetAllSchedules('@ViewBag.Instructor');" />
+        </div>
+        <table id="AllSchedules" class="table">
+            <thead>
+                <tr>
+                    <td>Schedule ID</td>
+                    <td>Schedule Date</td>
+                    <td>StartTime</td>
+                </tr>
+            </thead>
+            <tbody id="Allbody">
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container">
+        <div class="p-3">
+            <label for="getAllTracksButton">Click here to get Weekly Schedule:</label>
+            <input type="date" id="dt" onchange="handler('@ViewBag.Instructor');" />
+        </div>
+        <table class="table" id="week">
+            <thead>
+                <tr>
+                    <td>Schedule ID</td>
+                    <td>Schedule Date</td>
+                    <td>StartTime</td>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container">
+        <form method="post">
+            <input type="time" name="StartTime" />
+            <input type="date" name="Date" />
+            <input type="hidden" name="TrackID" value="@Model.FirstOrDefault().TrackID" />
+            <input type="submit" value="Add" />
+        </form>
+    </div>
+
+    <a asp-action="details" asp-controller="instructor" asp-route-id="@ViewBag.Instructor" class="btn btn-info">
+        Back
+    </a>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.1/js/dataTables.buttons.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.dataTables.js"></script>
+    <scriptsrc ="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></scriptsrc>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.print.min.js"></script>
+
+    <script type="text/javascript">
+
+        function handler(instructorId) {
+            let date = document.getElementById("dt").value;
+            $.ajax({
+                url: "/instructor/WeeklyTable",
+                data: { "id": instructorId, "date": date },
+                success: function (result) {
+                    console.log(result);
+                    $('#tableBody').empty();
+                    result.forEach(function (schedule) {
+                        $('#tableBody').append(
+                            `<tr>
+                                <td>${schedule.id}</td>
+                                <td>${schedule.date}</td>
+                                <td>${schedule.startTime}</td>
+                            </tr>`
+                        );
+                    });
+
+                    $('#week').DataTable({
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'copy', 'csv', 'excel', 'pdf', 'print'
+                        ]
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+        
+           
+        
+
+        function GetAllSchedules(instructorId) {
+            $.ajax({
+                url: "/instructor/AllTrackSchedules",
+                data: { "id": instructorId },
+                success: function (result) {
+                    console.log(result);
+                    $('#Allbody').empty();
+                    if (Array.isArray(result)) {
+                        result.forEach(function (schedule) {
+                            $('#Allbody').append(
+                                `<tr>
+                                            <td>${schedule.id}</td>
+                                            <td>${schedule.date}</td>
+                                            <td>${schedule.startTime}</td>
+                                        </tr>`
+                            );
+                        });
+                        $('#AllSchedules').DataTable();
+                    } else {
+                        console.error("Received data is not an array:", result);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $('#AllSchedules').DataTable({
+                dom: 'Bfrtip',
+                buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+            });
+        });
+    </script>
+</body>
+</html>

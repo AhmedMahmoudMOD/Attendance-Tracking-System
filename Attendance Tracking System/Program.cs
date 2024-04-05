@@ -4,6 +4,8 @@ using Attendance_Tracking_System.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using OfficeOpenXml;
+using System.Text.Json.Serialization;
 
 namespace Attendance_Tracking_System
 {
@@ -17,8 +19,7 @@ namespace Attendance_Tracking_System
             builder.Services.AddControllersWithViews();
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mgo+DSMBMAY9C3t2UFhhQlJBfV5AQmBIYVp/TGpJfl96cVxMZVVBJAtUQF1hTX5XdkRhW31YdXBRQ2Vd");
 
-
-            builder.Services.AddDbContext<ITISysContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Azure")));
+            builder.Services.AddDbContext<ITISysContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("Azure")));
             builder.Services.AddScoped<IStudentRepo, StudentRepo>();
             builder.Services.AddScoped<IInstructorRepo, InstructorRepo>();
             builder.Services.AddScoped<IEmployeeRepo, EmployeeRepo>();
@@ -34,11 +35,16 @@ namespace Attendance_Tracking_System
 			//register auth type "cookie"
 			builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
-			JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
                 Formatting = Newtonsoft.Json.Formatting.Indented,
-                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore,
             };
+        //    builder.Services.AddControllersWithViews()
+        //.AddJsonOptions(options =>
+        //{
+        //    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        //});
 
             var app = builder.Build();
 
@@ -50,14 +56,15 @@ namespace Attendance_Tracking_System
 
 
             app.UseStaticFiles();
+			ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-            app.UseRouting();
+			app.UseRouting();
 			app.UseAuthentication();
 			app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=StudentAffairs}/{action=GetStudents}/{id?}");
+                pattern: "{controller=Program}/{action=Index}/{id?}");
 
             app.Run();
 
