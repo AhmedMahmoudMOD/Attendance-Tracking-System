@@ -22,7 +22,11 @@ namespace Attendance_Tracking_System.Repositories
 
         List<Instructor> GetForAttendanceExplicit(DateOnly date);
 
+        List<Instructor> GetForRangeAttendanceExplicit(DateOnly date, DateOnly endDate);
+
         List<object> GetForAttendanceReport(DateOnly date);
+
+        List<object> GetForRangeAttendanceReport(DateOnly date, DateOnly EndDate);
         List<Instructor> GetAll();
 
         List<Schedule> getWeeklyTable(int id, DateOnly date);
