@@ -1,7 +1,12 @@
 ﻿using Attendance_Tracking_System.Data;
 using Attendance_Tracking_System.Models;
+using MailKit.Net.Smtp;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
 using OfficeOpenXml;
+using System.Net;
+using System.Net.Mail;
+using SmtpClient = System.Net.Mail.SmtpClient;
 
 namespace Attendance_Tracking_System.Repositories
 {
@@ -73,18 +78,18 @@ namespace Attendance_Tracking_System.Repositories
 				for (int row = 2; row <= rowCount; row++)
 				{
 					Student entity = new Student();
-					entity.Name = worksheet.Cells[row, 1].Value.ToString();
-					entity.Email = worksheet.Cells[row, 2].Value.ToString();
-					entity.Password = worksheet.Cells[row, 3].Value.ToString();
-					entity.Age = int.Parse(worksheet.Cells[row, 4].Value.ToString());
-					entity.PhoneNumber = worksheet.Cells[row, 5].Value.ToString();
-					entity.University = worksheet.Cells[row, 6].Value.ToString();
-					entity.Faculty = worksheet.Cells[row, 7].Value.ToString();
-					entity.GraduationYear = int.Parse(worksheet.Cells[row, 8].Value.ToString());
-					entity.Specialization = worksheet.Cells[row, 9].Value.ToString();
-					entity.ProgramID = int.Parse(worksheet.Cells[row, 10].Value.ToString());
-					entity.TrackID = int.Parse(worksheet.Cells[row, 11].Value.ToString());
-					entity.IntakeNo = int.Parse(worksheet.Cells[row, 12].Value.ToString());
+					entity.Name = worksheet.Cells[row, 1].Value.ToString() ?? "";
+					entity.Email = worksheet.Cells[row, 2].Value.ToString() ?? "";
+					entity.Password = worksheet.Cells[row, 3].Value.ToString() ?? "";
+					entity.Age = int.Parse(worksheet.Cells[row, 4].Value.ToString() ?? "");
+					entity.PhoneNumber = worksheet.Cells[row, 5].Value.ToString() ?? "";
+					entity.University = worksheet.Cells[row, 6].Value.ToString() ?? "";
+					entity.Faculty = worksheet.Cells[row, 7].Value.ToString() ?? "";
+					entity.GraduationYear = int.Parse(worksheet.Cells[row, 8].Value.ToString() ?? "");
+					entity.Specialization = worksheet.Cells[row, 9].Value.ToString() ?? "";
+					entity.ProgramID = int.Parse(worksheet.Cells[row, 10].Value.ToString() ?? "");
+					entity.TrackID = int.Parse(worksheet.Cells[row, 11].Value.ToString() ?? "");
+					entity.IntakeNo = int.Parse(worksheet.Cells[row, 12].Value.ToString() ?? "");
 					context.Student.Add(entity);
 					AssignRoleToUser(entity.Id, 1);
 				}
@@ -142,10 +147,10 @@ namespace Attendance_Tracking_System.Repositories
 		}
 		public List<Employee> GetAllEmployees()
 		{
-            return context.Employee.Where(a => a.IsDeleted == false).ToList();
+			return context.Employee.Where(a => a.IsDeleted == false).ToList();
 
-        }
-        public Employee GetEmployeeById(int? id)
+		}
+		public Employee GetEmployeeById(int? id)
 		{
 			return context.Employee.FirstOrDefault(emp => emp.Id == id);
 		}
@@ -171,7 +176,7 @@ namespace Attendance_Tracking_System.Repositories
 				res.Password = employee.Password;
 				res.PhoneNumber = employee.PhoneNumber;
 				res.UserImage = employee.UserImage;
-				res.Salary= employee.Salary;
+				res.Salary = employee.Salary;
 				res.Type = employee.Type;
 				context.SaveChanges();
 			}
@@ -181,8 +186,8 @@ namespace Attendance_Tracking_System.Repositories
 		{
 			if (RoleType != null)
 			{
-	     	var res= context.roles.FirstOrDefault(a=>a.RoleType==RoleType);
-			return res.Id;
+				var res = context.roles.FirstOrDefault(a => a.RoleType == RoleType);
+				return res.Id;
 			}
 			return 0;
 		}
@@ -212,6 +217,50 @@ namespace Attendance_Tracking_System.Repositories
 				context.SaveChanges();
 			}
 		}
-
+		public List<Intake> GetIntakes()
+		{
+			return context.Intake.Where(a => a.IsDeleted == false).ToList();
+		}
+		public int DeleteIntake(int? id)
+		{
+			var intake = context.Intake.FirstOrDefault(a => a.No == id);
+			if (id != null)
+			{
+				intake.IsDeleted = true;
+				context.SaveChanges();
+				return 1;
+			}
+			return 0;
+		}
+		public Intake GetIntakeById(int? id)
+		{
+			var intake = context.Intake.FirstOrDefault(i => i.No == id);
+			return intake;
+		}
+		public int updateIntake(Intake intake)
+		{
+			var i = context.Intake.FirstOrDefault(i => i.No == intake.No);
+			if (i != null)
+			{
+				i.Name = intake.Name;
+				i.StartDate = intake.StartDate;
+				i.EndDate = intake.EndDate;
+				context.SaveChanges();
+				return 1;
+			}
+			return -1;
+		}
+		public void AddIntake(Intake intake)
+		{
+			if (intake != null)
+			{
+				context.Intake.Add(intake);
+				context.SaveChanges();
+			}
+		}
+		public List<ITIProgram> GetITIPrograms() { 
+			return context.Program.ToList(); 
+		}
+		
 	}
 }
