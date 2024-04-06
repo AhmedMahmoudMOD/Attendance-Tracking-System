@@ -14,11 +14,12 @@ namespace Attendance_Tracking_System.Repositories
 			this.context = _context;
 		}
 
-		public bool checkEmailUniqueness(User user)
-        {
-            return context.Student.Any(a => a.Email != user.Email && a.Id != user.Id);
-        }
-        public void uploadImg(string ImgName, int id)
+		public bool CheckEmailUniqueness(User user)
+		{
+			return context.User.Any(a => a.Email != user.Email);
+		}
+
+		public void uploadImg(string ImgName, int id)
         {
             var res = context.Student.FirstOrDefault(a => a.Id == id);
             res.UserImage = ImgName;
@@ -30,7 +31,11 @@ namespace Attendance_Tracking_System.Repositories
             {
                 student.UserImage = userImageFileName;
                 context.Student.Add(student);
-                context.SaveChanges();
+				var tId = student.TrackID;
+				var track = context.Track.FirstOrDefault(a => a.Id == tId);
+				var progId = track?.ProgramID;
+                student.ProgramID = progId;
+				context.SaveChanges();
             }
         }
         public List<Track> GetAllTracks()
@@ -44,7 +49,6 @@ namespace Attendance_Tracking_System.Repositories
         }
         public void AssignRoleToUser(int userId, int roleId)
         {
-
             var user = context.User.FirstOrDefault(u => u.Id == userId);
             var role = context.roles.FirstOrDefault(r => r.Id == roleId);
 
@@ -53,6 +57,15 @@ namespace Attendance_Tracking_System.Repositories
                 user.role.Add(role);
                 context.SaveChanges();
             }
+        }
+		
+		public List<ITIProgram> GetAllPrograms()
+        {
+            return context.Program.ToList();
+        }
+		public List<Track> GetTrackById(int id)
+        {
+            return context.Track.Where(a=>a.ProgramID==id).ToList();
         }
 
     }

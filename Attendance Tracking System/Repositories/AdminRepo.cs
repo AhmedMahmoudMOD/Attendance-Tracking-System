@@ -74,11 +74,10 @@ namespace Attendance_Tracking_System.Repositories
 
 				int rowCount = worksheet.Dimension.End.Row;
 				int columnCount = worksheet.Dimension.Columns;
-
 				for (int row = 2; row <= rowCount; row++)
 				{
 					Student entity = new Student();
-					entity.Name = worksheet.Cells[row, 1].Value.ToString() ?? "";
+					entity.Name = worksheet.Cells[row, 1].Value.ToString()??"";
 					entity.Email = worksheet.Cells[row, 2].Value.ToString() ?? "";
 					entity.Password = worksheet.Cells[row, 3].Value.ToString() ?? "";
 					entity.Age = int.Parse(worksheet.Cells[row, 4].Value.ToString() ?? "");
@@ -93,18 +92,13 @@ namespace Attendance_Tracking_System.Repositories
 					context.Student.Add(entity);
 					AssignRoleToUser(entity.Id, 1);
 				}
-
 				context.SaveChanges();
-
 			}
-
 		}
 		public void AssignRoleToUser(int userId, int roleId)
 		{
-
 			var user = context.User.FirstOrDefault(u => u.Id == userId);
 			var role = context.roles.FirstOrDefault(r => r.Id == roleId);
-
 			if (user != null && role != null)
 			{
 				user.role.Add(role);
