@@ -1,0 +1,40 @@
+﻿
+.navbar {
+    background-color:#001F3D; /* #7d2020 Semi-dark shade of red */
+    color:white;
+}
+.nav-link dropdown-toggle {
+    color: #fff;
+}
+
+#layoutSidenav_nav {
+    background-color: #5ccbe2; /* Lighter shade of red */
+}
+.navbar-brand{
+    color: #fff;
+}
+
+.navbar-nav .nav-link {
+    color: #fff;
+}
+.sb-sidenav-menu {
+    background-color: #d8e5e8;
+}
+.sb-sidenav-menu .nav-link{
+    color: #001F3D;
+}
+.navbar-nav .nav-link:hover, .nav-link:hover {
+    background-color: #fff;
+    color: #001F3D;
+}
+
+.sb-sidenav-menu .nav-link:hover {
+    background-color: #15859c;
+}
+
+.sb-sidenav .sb-sidenav-footer, .sb-sidenav-footer .small {
+    background-color: #001F3D;
+}
+
+
+

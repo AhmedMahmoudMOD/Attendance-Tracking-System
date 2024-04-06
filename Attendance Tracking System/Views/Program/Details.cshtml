@@ -1,0 +1,14 @@
+﻿@model ITIProgram
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_ProgramLayout.cshtml";
+}
+
+<h1 class="ms-5"> Program Details</h1>
+
+<h2 class="alert alert-info ms-5 mt-4 w-75 m-auto" role="alert" >
+   @Model.Name :: @Model.Duration ::@Model.IsDeleted
+</h2>
+
+
+

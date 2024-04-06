@@ -43,6 +43,9 @@ namespace Attendance_Tracking_System.Models
         public Student()
         {
             Permissions = new List<Permission>();
+            Program = new ITIProgram();// to avoid null exception of program when regstatus is pending and program is Null
+            Intake = new Intake();  
+
         }
     }
 }
