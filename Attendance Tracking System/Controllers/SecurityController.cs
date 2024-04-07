@@ -61,7 +61,7 @@ namespace Attendance_Tracking_System.Controllers
         }
 
         public IActionResult ViewProfile() {
-            int EmpId = 4;
+            int EmpId = 16;
             var model = employeeRepo.GetByID(EmpId);
             return View(model);
         
