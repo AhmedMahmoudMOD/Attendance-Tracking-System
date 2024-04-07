@@ -15,7 +15,7 @@ namespace Attendance_Tracking_System.Repositories
             this.db = _db;
             this.UploadFileRepo = uploadFile;
         }
-        public Student getStudentById(int id)
+        public Student GetStudentById(int? id)
         {
             return db.Student
                 .Include(T => T.Track)
@@ -23,56 +23,48 @@ namespace Attendance_Tracking_System.Repositories
                 .Include(I => I.Intake)
                 .FirstOrDefault(s => s.Id == id);
         }
-        public async Task<Student> AddStudent(Student student)
-        {
-            if (student.Image != null && student.Image.Length > 0)
-            {
-                var fileName = Path.GetFileName(student.Image.FileName);
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+        //public async Task<Student> AddStudent(Student student)
+        //{
+        //    if (student.Image != null && student.Image.Length > 0)
+        //    {
+        //        var fileName = Path.GetFileName(student.Image.FileName);
+        //        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
 
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await student.Image.CopyToAsync(stream);
-                }
+        //        using (var stream = new FileStream(filePath, FileMode.Create))
+        //        {
+        //            await student.Image.CopyToAsync(stream);
+        //        }
 
-                student.UserImage = fileName;
-                db.Student.Add(student);
-                await db.SaveChangesAsync();
-            }
-            return student;
-        }
+        //        student.UserImage = fileName;
+        //        db.Student.Add(student);
+        //        await db.SaveChangesAsync();
+        //    }
+        //    return student;
+        //}
 
 
         public async Task EditStudent(EditStudentViewModel student)
         {
-            var existingStudent = db.Student.FirstOrDefault(s => s.Id == student.Id);
+            var  existingStudent = await db.Student.FirstOrDefaultAsync(s => s.Id == student.Id);
             existingStudent.Id = student.Id;
             existingStudent.Name = student.Name;
             existingStudent.Email = student.Email;
             existingStudent.Password = student.Password;
+           
         if (student.Image != null && student.Image.Length > 0)
         {
-            // delete the existing image.
-            if (existingStudent.UserImage != null)
+                if (existingStudent.UserImage != null)
                 {
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", existingStudent.UserImage);
-                if (File.Exists(filePath))
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", existingStudent.UserImage);
+                    if (File.Exists(filePath))
                     {
-                    File.Delete(filePath);
+                        File.Delete(filePath);
+                    }
                 }
+                existingStudent.UserImage = await UploadFileRepo.UploadFile(student.Image);
             }
-            // upload the new image
-
-            existingStudent.UserImage = await UploadFileRepo.UploadFile(student.Image); 
+            await  db.SaveChangesAsync();
         }
-           db.SaveChanges();
-        }
-
-       
-
-
-
-
 
         public List<Student> GetForAttendance(int Pid, int Tid, int Ino)
         {
@@ -85,7 +77,6 @@ namespace Attendance_Tracking_System.Repositories
 
             return list;
         }
-
         public List<Student> GetForAttendanceExplicit(int Pid, int Tid, int Ino, DateOnly date)
         {
             var list = db.Student

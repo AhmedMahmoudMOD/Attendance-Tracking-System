@@ -1,5 +1,7 @@
 ﻿using Attendance_Tracking_System.Data;
+using Attendance_Tracking_System.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Attendance_Tracking_System.Repositories
 {
@@ -18,13 +20,12 @@ namespace Attendance_Tracking_System.Repositories
             string fileName = null;
             if (file != null && file.Length > 0)
             {
-                fileName = Path.GetFileName(file.FileName);
+                fileName =  Path.GetFileName(file.FileName);
                 var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "images", fileName);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
                 }
-                db.SaveChanges();
             }
 
             return fileName;

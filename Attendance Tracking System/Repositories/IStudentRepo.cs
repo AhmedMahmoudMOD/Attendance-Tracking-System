@@ -5,8 +5,8 @@ namespace Attendance_Tracking_System.Repositories
 {
     public interface IStudentRepo
     {
-        Student getStudentById(int id);
-        public Task<Student> AddStudent(Student student);
+        public Student GetStudentById(int? id);
+        //public Task<Student> AddStudent(Student student);
         public Task EditStudent(EditStudentViewModel student);
         List<Student> GetForAttendance(int Pid, int Tid, int Ino);
 

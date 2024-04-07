@@ -15,7 +15,7 @@ namespace Attendance_Tracking_System.Models
 
         public bool? IsDeleted { get; set; }
 
-        public DateTime DateTime { get; set; }
+        public DateTime Date { get; set; }
 
         public PermissionType Type { get; set; }
 

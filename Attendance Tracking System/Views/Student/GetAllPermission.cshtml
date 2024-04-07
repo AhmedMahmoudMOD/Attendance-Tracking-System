@@ -47,6 +47,7 @@
     </style>
 </head>
 <body>
+    <button onclick="goBack()" class="btn btn-primary">Back</button>
     <table>
         <thead>
             <tr>
@@ -63,9 +64,24 @@
             {
                 <tr>
                     <td>@item.PermissionID</td>
-                    <td>@item.DateTime</td>
+                    <td>@item.Date</td>
                     <td>@item.Reason</td>
                     <td>@item.Type</td>
+                    <td>
+                        @if(item.IsAccepted==true)
+						{
+							<span class="accepted">Accepted</span>
+						}
+						else if(item.IsAccepted == false)
+						{
+							<span class="not-accepted">Not Accepted</span>
+						}
+						else
+						{
+							<span class="waiting">Waiting</span>
+						}
+                        
+                    </td>
                     <td>
                         <button onclick="removePermission(@item.PermissionID, @item.StudentID)" class="btn btn-danger">Remove</button>
                     </td>
@@ -88,6 +104,9 @@
                     }
                 });
             }
+        }
+        function goBack() {
+            window.history.back();
         }
     </script>
 </body>

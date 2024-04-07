@@ -72,7 +72,7 @@
             </div>
             <div>
                 <label asp-for="Name">Name</label>
-                <input asp-for="Name" readonly />
+                <input asp-for="Name"  />
                 </div>
                 <div>
 					<label asp-for="Email">Email</label>
@@ -84,13 +84,20 @@
                             </div>
 
                 <div>
-                    <label asp-for="Image">Current</label>
-                    <img src="@Url.Content(Model.ExistingImage)" width="100" height="100" />
-                    </div>
+                    <label asp-for="@Model.ImagePath">Current</label>
+                    @if (Model != null && !string.IsNullOrEmpty(Model.ImagePath))
+                    {
+                        <img src="~/images/@Model.ImagePath" alt="Profile Picture" height="50" width="50" />
+                    }
+                    else
+                    {
+                        <p>No Profile Picture Available</p>
+                    }
+                </div>
               <div class="form-group">
                     <label asp-for="Image">Profile Picture:</label>
                     <input type="file" name="Image" class="form-control-file" asp-for="Image" />
-                    <input type="hidden" asp-for="ExistingImage" />
+                    <input type="hidden" asp-for="Image" />
                 </div>
 
             <button type="submit">Save</button>
