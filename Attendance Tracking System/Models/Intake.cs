@@ -22,13 +22,10 @@ namespace Attendance_Tracking_System.Models
         [JsonIgnore]
         public virtual ITIProgram? Program { get; set; }
         [JsonIgnore]
-
         public virtual ICollection<Track>? Tracks { get; set; } = new HashSet<Track>();
         [JsonIgnore]
-
         public virtual ICollection<Instructor>? Instructors { get; set; } = new HashSet<Instructor>();
         [JsonIgnore]
-
         public virtual ICollection<Student>? Students { get; set; } = new HashSet<Student>();
     }
 }

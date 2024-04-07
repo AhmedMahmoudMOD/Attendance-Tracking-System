@@ -1,0 +1,43 @@
+﻿@model List<ITIProgram>
+@{
+    ViewData["Title"] = "ShowProgramTracks";
+    Layout = "~/Views/Shared/_ProgramLayout.cshtml";
+}
+
+<div class="container-fluid w-75 text-center">
+<h1>Show Program Tracks</h1>
+<table class="table table-bordered mt-4">
+        <thead style="background-color:#5ccbe2">
+        <tr>
+            <th>Program</th>
+            <th>Tracks</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var program in Model)
+        {
+            @if (program.Tracks.Any())
+            {
+                <tr>
+                    <td rowspan="@program.Tracks.Count">@program.Name</td>
+                    <td>@program.Tracks.First().Name</td>
+                </tr>
+                @foreach (var track in program.Tracks.Skip(1))
+                {
+                    <tr>
+                       
+                        <td>@track.Name</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td>@program.Name</td>
+                    <td>No tracks available</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+</div>

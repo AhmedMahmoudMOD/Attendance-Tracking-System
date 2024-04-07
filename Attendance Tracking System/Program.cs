@@ -4,6 +4,8 @@ using Attendance_Tracking_System.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using OfficeOpenXml;
+using System.Text.Json.Serialization;
 
 namespace Attendance_Tracking_System
 {
@@ -16,7 +18,6 @@ namespace Attendance_Tracking_System
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mgo+DSMBMAY9C3t2UFhhQlJBfV5AQmBIYVp/TGpJfl96cVxMZVVBJAtUQF1hTX5XdkRhW31YdXBRQ2Vd");
-
 
             builder.Services.AddDbContext<ITISysContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("Azure")));
             builder.Services.AddScoped<IStudentRepo, StudentRepo>();
@@ -39,6 +40,11 @@ namespace Attendance_Tracking_System
                 Formatting = Newtonsoft.Json.Formatting.Indented,
                 ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore,
             };
+        //    builder.Services.AddControllersWithViews()
+        //.AddJsonOptions(options =>
+        //{
+        //    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        //});
 
             var app = builder.Build();
 
@@ -50,8 +56,9 @@ namespace Attendance_Tracking_System
 
 
             app.UseStaticFiles();
+			ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-            app.UseRouting();
+			app.UseRouting();
 			app.UseAuthentication();
 			app.UseAuthorization();
 

@@ -20,7 +20,6 @@ namespace Attendance_Tracking_System.Controllers
         public IActionResult Index()
         {
             var studentAffaira = employeeRepo.GetAllStudentAffairs();
-            Console.WriteLine(studentAffaira.Count);
             return View(studentAffaira);
         }
 
@@ -75,7 +74,7 @@ namespace Attendance_Tracking_System.Controllers
             }
         }
 
-
+        // i dont know in track or what
         public IActionResult GetStudents()
         {
             var students = studentRepo.GetAll();  
@@ -83,16 +82,31 @@ namespace Attendance_Tracking_System.Controllers
         }
 
        
-        public IActionResult EditStudentProfile(int ? id)
-        {
-            if(id == null||id == 0)
-                return View();
-            var student = studentRepo.GetById(id.Value);
-            if (student == null)
-                return NotFound();  
-            ViewBag.Tracks = trackRepo.GetAll();
-            return View(student);
-        }
+        //public IActionResult EditStudentProfile(int ? id)
+        //{
+        //    if(id == null||id == 0)
+        //        return View();
+        //    var student = studentRepo.GetById(id.Value);
+        //    if (student == null)
+        //        return NotFound();  
+        //    ViewBag.Tracks = trackRepo.GetAll();
+        //    return View(student);
+        //}
+        //// again
+        //[HttpPost]
+        //public IActionResult EditStudentProfile(Student student)
+        //{
+        //    if(ModelState.IsValid)
+        //    {
+        //        studentRepo.Update(student);
+        //        return RedirectToAction("GetStudents");
+        //    }
+        //    ViewBag.Tracks = trackRepo.GetAll();
+        //    return View(student);
+        //}
+
+      
+
 
 
 

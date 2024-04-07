@@ -1,0 +1,45 @@
+﻿@model List<ITIProgram>
+@{
+    ViewData["Title"] = "ShowProgramIntakes";
+    Layout = "~/Views/Shared/_ProgramLayout.cshtml";
+}
+
+
+
+<div class="container-fluid w-75 text-center">
+    <h1>Programs Intakes</h1>
+    <table class="table table-bordered mt-4">
+        <thead class="table-dark">
+            <tr>
+                <th>Program</th>
+                <th>Intakes</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var program in Model)
+            {
+                @if (program.Intakes.Any())
+                {
+                    <tr>
+                        <td rowspan="@program.Intakes.Count">@program.Name</td>
+                        <td>@program.Intakes.First().Name</td>
+                    </tr>
+                    @foreach (var intake in program.Intakes.Skip(1))
+                    {
+                        <tr>
+                            <td>@intake.Name</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td>@program.Name</td>
+                        <td>No Intakes available</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+

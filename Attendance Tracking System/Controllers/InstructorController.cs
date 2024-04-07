@@ -3,18 +3,24 @@ using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+
 
 namespace Attendance_Tracking_System.Controllers
 {
     public class InstructorController : Controller
     {
         // ITISysContext db = new ITISysContext();
+
+       // ITISysContext db = new ITISysContext();
         IInstructorRepo instructorRepo;
         ITrackRepo trackRepo;
-        public InstructorController(IInstructorRepo _instructorRepo, ITrackRepo _trackRepo)
+        IScheduleRepo scheduleRepo;
+        public InstructorController(IInstructorRepo _instructorRepo, ITrackRepo _trackRepo,IScheduleRepo _scheduleRepo)
         {
             instructorRepo = _instructorRepo;
             trackRepo = _trackRepo;
+            scheduleRepo = _scheduleRepo;   
         }
 
 
@@ -88,14 +94,54 @@ namespace Attendance_Tracking_System.Controllers
             }
             ViewBag.IsSuperVisor = found;
             var Instructor = instructorRepo.GetInstructorById(ID);
-            var tracks=Instructor.Tracks.ToList();  
+           
             return View(Instructor);
         }
+
+        [HttpGet]
         public IActionResult TrackSchedule(int id)
         {
             HashSet<Schedule> sc = instructorRepo.getSheduleForTrack(id);
+            ViewBag.Instructor = id;
             return View(sc);
         }
+
+        public IActionResult AllTrackSchedules(int id)
+        {
+            HashSet<Schedule> sc = instructorRepo.getSheduleForTrack(id);
+            return Json(sc);
+        } 
+        
+
+        [HttpPost]
+        public IActionResult TrackSchedule(TimeOnly StartTime, DateOnly Date, int TrackID,int id)
+        {
+            Schedule schedule = new Schedule
+            {
+                TrackID = TrackID,
+                Date = Date,
+                StartTime = StartTime
+            };
+            HashSet<Schedule> sc = instructorRepo.getSheduleForTrack(id);
+            var existingSchedule = sc.FirstOrDefault(a => a.Date == Date);
+            if (existingSchedule == null)
+            {   
+                scheduleRepo.AddsSchedule(schedule);
+            }
+            ViewBag.Instructor = id;
+            return View(sc);
+        }
+
+
+        public IActionResult WeeklyTable(int id, DateOnly date) {
+
+            List<Schedule> WeeklySchedule = new List<Schedule>();
+            WeeklySchedule=instructorRepo.getWeeklyTable(id,date);
+            
+            return Json (WeeklySchedule);
+        }
+
+        
 
     }
 }

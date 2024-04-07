@@ -18,7 +18,6 @@ namespace Attendance_Tracking_System.Controllers
         {
 			ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
 			string userId = identity.FindFirst(ClaimTypes.Role)?.Value;
-            
 			Console.WriteLine(userId);
 			ViewBag.id = userId;
 			return View();
@@ -28,7 +27,6 @@ namespace Attendance_Tracking_System.Controllers
         {
             return View();
         }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

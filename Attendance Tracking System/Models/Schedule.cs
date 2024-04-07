@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Attendance_Tracking_System.Models
 {
@@ -11,7 +12,7 @@ namespace Attendance_Tracking_System.Models
         public TimeOnly StartTime { get; set; }
         [ForeignKey("Track")]
         public int TrackID { get; set; }
-
+        [JsonIgnore]
         public virtual Track? Track { get; set; }
     }
 }

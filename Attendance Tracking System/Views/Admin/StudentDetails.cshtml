@@ -1,0 +1,111 @@
+﻿@model Student
+@{
+	ViewData["Title"] = "StudentDetails";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>@ViewData["Title"]</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f4f4f4;
+			margin: 0;
+			padding: 20px;
+		}
+
+		h1 {
+			color: #333;
+		}
+
+		dl {
+			display: grid;
+			grid-template-columns:repeat(4, minmax(200px, 1fr));
+			gap: 10px;
+			padding: 10px;
+		}
+
+		dt {
+			font-weight: bold;
+			color: #00224D;
+		}
+
+		dd {
+			color: #333;
+			margin-left: 0;
+		}
+
+		img {
+			width: 100px;
+			border-radius: 50%;
+			margin-bottom: 10px;
+		}
+
+		.not-available {
+			color: #999;
+			font-style: italic;
+		}
+	</style>
+</head>
+<body>
+	<div style="display:flex;flex-direction:row">
+		<h1>Student Details</h1>
+		<a class="btn btn-dark" style="height:40px;margin-left:10px" asp-action="GetAllStudents">Back </a>
+	</div>
+	<img src="@Url.Content("~/images/" + @Model.UserImage)" alt="Student Image">
+	<div style="background-color:white">
+		<dl>
+			<dt>Student ID:</dt>
+			<dd>@Model.Id</dd>
+			<dt>Name:</dt>
+			<dd>@Model.Name</dd>
+			<dt>Email:</dt>
+			<dd>@Model.Email</dd>
+			<dt>Age:</dt>
+			<dd>@Model.Age</dd>
+			<dt>Phone Number:</dt>
+			<dd>@Model.PhoneNumber</dd>
+			<dt>University:</dt>
+			<dd>@Model.University</dd>
+			<dt>Faculty:</dt>
+			<dd>@Model.Faculty</dd>
+			<dt>Graduation Year:</dt>
+			<dd>@Model.GraduationYear</dd>
+			<dt>Specialization:</dt>
+			<dd>@Model.Specialization</dd>
+			<dt>Attendance Degrees:</dt>
+			<dd>@Model.AttendanceDegrees</dd>
+			<dt>Registration Status:</dt>
+			<dd style="color:green;font-weight:bold">@Model.RegisterationStatus</dd>
+			<dt>Program:</dt>
+			@if (Model.Program != null && Model.Program.Name != null)
+			{
+				<dd>@Model.Program.Name</dd>
+			}
+			else
+			{
+				<dd class="no-program">No program available</dd>
+			}
+			<dt>Track:</dt>
+			@if (Model.Track != null && Model.Track.Name != null)
+			{
+				<dd>@Model.Track.Name</dd>
+			}
+			else
+			{
+				<dd class="no-program">No Track available</dd>
+			}
+			<dt>Intake:</dt>
+			@if (Model.Intake != null && Model.Intake.Name != null)
+			{
+				<dd>@Model.Intake.Name</dd>
+			}
+			else
+			{
+				<dd class="no-program">No Intake available</dd>
+			}
+		</dl>
+	</div>
+</body>
+</html>
