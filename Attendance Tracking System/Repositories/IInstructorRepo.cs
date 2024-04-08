@@ -30,5 +30,9 @@ namespace Attendance_Tracking_System.Repositories
         List<Instructor> GetAll();
 
         List<Schedule> getWeeklyTable(int id, DateOnly date);
+
+        public List<Permission> getPermissionsByDateAndTrack(DateOnly date, List<Permission> permissions);
+         
+        public List<Permission> GetPermissionsByTrack ( int id);  
         }
 }

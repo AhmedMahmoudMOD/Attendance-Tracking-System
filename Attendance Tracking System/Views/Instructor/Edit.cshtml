@@ -12,9 +12,10 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 </head>
 <body>
-    <form asp-action="Edit" asp-controller="Instructor" method="post">
+    <form asp-action="Edit" asp-controller="Instructor" method="post" enctype="application/x-www-form-urlencoded">
         <partial name="CreateEdit"></partial>
-        <input type="submit" value="SacesChanges"/>
+        <input type="file" name="InsImg" />
+        <input type="submit" value="Save"/>
     </form>
 </body>
 </html>

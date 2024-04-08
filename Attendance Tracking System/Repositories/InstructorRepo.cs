@@ -149,6 +149,23 @@ namespace Attendance_Tracking_System.Repositories
             return WeeklySchedule;
         }
 
-        
+        public List<Permission> getPermissionsByDateAndTrack(DateOnly date,List<Permission> permissions)
+        {
+            //int trackId = db.Track.FirstOrDefault(a => a.SuperID == id).Id;
+            //return db.Permission.Include(a=>a.Student.TrackID).
+            //                     Where(a => a.Date == date&&a.Student.TrackID==trackId).ToList();
+
+            return permissions.Where(a => a.Date == date).ToList();
+        }
+
+        public List<Permission> GetPermissionsByTrack(int id)
+        {
+            int trackId = db.Track.FirstOrDefault(a => a.SuperID == id).Id;
+            List<Permission> pers = db.Permission.Include(a => a.Student).ToList();
+            //List<Permission> pers = db.Permission.Include(a => a.Student.TrackID).ToList();
+                      
+              List<Permission>filter=  pers.Where(a =>a.Student.TrackID==trackId).ToList();
+            return filter;
+        }
     }
 }

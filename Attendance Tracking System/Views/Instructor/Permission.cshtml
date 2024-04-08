@@ -1,0 +1,90 @@
+﻿@model Instructor
+@{
+    Layout = "_sharedIns";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Permission</title>
+</head>
+<body>
+    <div class="container permission">
+         <table>
+        @foreach (var item in ViewBag.permission)
+        {
+            <tr>
+                <td>@item.Reason</td>
+                <td>@item.Type</td>
+                <td>@item.PermissionID</td>
+                <td>@item.Student.Name</td>
+                <td>@item.Date</td
+            </tr>
+        }
+    </table>
+    <input type="date" id="dt" onchange="handler('@ViewBag.InstructorID');" />
+    <table class="table" id="week">
+        <thead>
+            <tr>
+                <td>Schedule ID</td>
+                <td>Schedule Date</td>
+                <td>StartTime</td>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+        </tbody>
+    </table>
+    </div>
+   
+    <script src=" ~ /lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script>
+        function handler(instructorId) {
+            let date = document.getElementById("dt").value;
+            let id = instructorId;
+            $.ajax({
+                type: "Post",
+                url: "/instructor/PermissionBydate/" + id,
+                data: { "date": date },
+                success: function (result) {
+                    console.log(result);
+                    $('#tableBody').empty();
+                    result.forEach(function (permission) {
+                        let row = `<tr>
+                                        <td>${permission.permissionID}</td>
+                                        <td>${permission.date}</td>
+                                        <td>${permission.reason}</td>
+                                        <td>${permission.type}</td>
+                                        <td>
+                                           <input type="radio" name="acceptance_${permission.permissionID}" value="true"  onchange="sendRadioValue(${permission.permissionID}, this.value)">true
+                                           <input type="radio" name="acceptance_${permission.permissionID}" value="false" onchange="sendRadioValue(${permission.permissionID}, this.value)">false
+                                        </td>
+                                    </tr>`;
+                        $('#tableBody').append(row);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+       
+        function sendRadioValue(permissionId, acceptanceValue) {
+            $.ajax({
+                type: "Post",
+                url: "/instructor/InstructorResponse",
+                data: { "permissionId": permissionId, "acceptanceValue": acceptanceValue },
+                success: function (response) {
+                    console.log("Radio button value sent successfully.");
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+        </script>
+</body>
+</html>

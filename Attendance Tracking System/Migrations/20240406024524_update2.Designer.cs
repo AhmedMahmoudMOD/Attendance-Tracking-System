@@ -4,6 +4,7 @@ using Attendance_Tracking_System.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Attendance_Tracking_System.Migrations
 {
     [DbContext(typeof(ITISysContext))]
-    partial class ITISysContextModelSnapshot : ModelSnapshot
+    [Migration("20240406024524_update2")]
+    partial class update2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -124,10 +127,7 @@ namespace Attendance_Tracking_System.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("PermissionID")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PermissionID"));
 
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");

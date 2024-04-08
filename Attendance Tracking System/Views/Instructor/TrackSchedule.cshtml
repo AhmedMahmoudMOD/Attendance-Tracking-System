@@ -1,9 +1,9 @@
-﻿@model HashSet<Schedule>
+﻿@model Instructor
 @{
-    Layout = null;
+    Layout = "_sharedIns";
 }
 
-<!DOCTYPE html>
+@* <!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -34,8 +34,10 @@
     
 </head>
 
-<body>
-    <div class="container my-4">
+<body> *@
+<script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+<div class="trackShedule">
+    <div class="container my-4 scheduleBorder">
         <div class="p-3">
             <label for="getAllTracksButton">Click here to get all tracks:</label>
             <input id="getAllTracksButton" type="button" value="All Schedules" class="btn btn-info" onclick="GetAllSchedules('@ViewBag.Instructor');" />
@@ -49,11 +51,19 @@
                 </tr>
             </thead>
             <tbody id="Allbody">
+                @foreach (var item in ViewBag.TrackSchedule)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.Date</td>
+                        <td>@item.StartTime</td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
 
-    <div class="container">
+    <div class="container scheduleBorder">
         <div class="p-3">
             <label for="getAllTracksButton">Click here to get Weekly Schedule:</label>
             <input type="date" id="dt" onchange="handler('@ViewBag.Instructor');" />
@@ -71,18 +81,19 @@
         </table>
     </div>
 
-    <div class="container">
+    <div class="container scheduleBorder">
         <form method="post">
             <input type="time" name="StartTime" />
             <input type="date" name="Date" />
-            <input type="hidden" name="TrackID" value="@Model.FirstOrDefault().TrackID" />
+            @* <input type="hidden" name="TrackID" value="@ViewBag.trackid" /> *@
             <input type="submit" value="Add" />
         </form>
     </div>
-
-    <a asp-action="details" asp-controller="instructor" asp-route-id="@ViewBag.Instructor" class="btn btn-info">
+</div>
+    
+    @* <a asp-action="details" asp-controller="instructor" asp-route-id="@ViewBag.Instructor" class="btn btn-info">
         Back
-    </a>
+    </a> *@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
@@ -98,7 +109,6 @@
     <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.print.min.js"></script>
 
     <script type="text/javascript">
-
         function handler(instructorId) {
             let date = document.getElementById("dt").value;
             $.ajax({
@@ -116,7 +126,6 @@
                             </tr>`
                         );
                     });
-
                     $('#week').DataTable({
                         dom: 'Bfrtip',
                         buttons: [
@@ -129,10 +138,6 @@
                 }
             });
         }
-
-        
-           
-        
 
         function GetAllSchedules(instructorId) {
             $.ajax({
@@ -162,12 +167,17 @@
             });
         }
 
-        $(document).ready(function () {
-            $('#AllSchedules').DataTable({
-                dom: 'Bfrtip',
-                buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
-            });
-        });
+  
+    $(document).ready(function () {
+        $('#AllSchedules').DataTable();
+    });
+   
+        // $(document).ready(function () {
+        //     $('#AllSchedules').DataTable({
+        //         dom: 'Bfrtip',
+        //         buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+        //     });
+        // });
     </script>
-</body>
-</html>
+@* </body>
+</html> *@

@@ -10,9 +10,9 @@ namespace Attendance_Tracking_System.Controllers
 {
     public class InstructorController : Controller
     {
-        // ITISysContext db = new ITISysContext();
+         ITISysContext db = new ITISysContext();
 
-       // ITISysContext db = new ITISysContext();
+        //ITISysContext db = new ITISysContext();
         IInstructorRepo instructorRepo;
         ITrackRepo trackRepo;
         IScheduleRepo scheduleRepo;
@@ -26,10 +26,10 @@ namespace Attendance_Tracking_System.Controllers
 
         public IActionResult Index()
         {
-           // var Users=db.Instructor.ToList();
+          // var Users=db.Instructor.ToList();
            var Instructors=instructorRepo.GetAllInstructors();
-          
-            
+           //var per=db.Permission.ToList();
+           // ViewBag.permission = per;
             return View(Instructors);
         }
 
@@ -71,12 +71,46 @@ namespace Attendance_Tracking_System.Controllers
 
 
         [HttpPost]
-        public IActionResult Edit(Instructor instructor)
+        public async Task<IActionResult> Edit(Instructor instructor, IFormFile InsImg)
         {
             instructorRepo.EditInstructor(instructor);
+
+            string DirectoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+            string[] filePaths = Directory.GetFiles(DirectoryPath);
+            string FoundFileName = string.Empty;
+            string FoundFilpath = string.Empty;
+
+            foreach (string filePath in filePaths)
+            {
+                string filename = filePath.Replace(DirectoryPath + "\\", "");
+                if (filename.StartsWith($"{instructor.Id}"))
+                {
+                    using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+                    {
+                        fs.Close();
+                        FoundFileName = filename;
+                        FoundFilpath = filePath;
+                        System.IO.File.Delete(filePath);
+                    }
+                }
+                else
+                {
+                    FoundFileName = $"{instructor.Id}.{InsImg.FileName.Split(".").Last()}";
+                    FoundFilpath = Path.Combine(DirectoryPath, FoundFileName);
+                }
+                using (FileStream fs = new FileStream(FoundFilpath, FileMode.Create))
+                {
+                    await InsImg.CopyToAsync(fs);
+                    instructor.UserImage = FoundFileName;
+                    instructorRepo.UpdateInstructorImage(FoundFileName,instructor.Id );
+                }
+            }
             return RedirectToAction("index");
         }
         
+
+
+
         public IActionResult Details(int ID)
         {
             bool found = false;
@@ -98,13 +132,22 @@ namespace Attendance_Tracking_System.Controllers
             return View(Instructor);
         }
 
+
+
+
         [HttpGet]
         public IActionResult TrackSchedule(int id)
         {
             HashSet<Schedule> sc = instructorRepo.getSheduleForTrack(id);
             ViewBag.Instructor = id;
-            return View(sc);
+            ViewBag.TrackSchedule = sc;
+            var instructor=instructorRepo.GetInstructorById(id);
+            int trackid = db.Track.SingleOrDefault(a => a.SuperID == id).Id;
+            //ViewBag.trackid = trackid;
+            return View(instructor);
         }
+
+
 
         public IActionResult AllTrackSchedules(int id)
         {
@@ -113,12 +156,17 @@ namespace Attendance_Tracking_System.Controllers
         } 
         
 
+
+
         [HttpPost]
-        public IActionResult TrackSchedule(TimeOnly StartTime, DateOnly Date, int TrackID,int id)
+        public IActionResult TrackSchedule(TimeOnly StartTime, DateOnly Date,int id)
         {
+            int trackid = db.Track.SingleOrDefault(a => a.SuperID == id).Id;
+            // ViewBag.trackid = trackid;
+            var instructor = instructorRepo.GetInstructorById(id);
             Schedule schedule = new Schedule
             {
-                TrackID = TrackID,
+                TrackID = trackid,
                 Date = Date,
                 StartTime = StartTime
             };
@@ -129,7 +177,7 @@ namespace Attendance_Tracking_System.Controllers
                 scheduleRepo.AddsSchedule(schedule);
             }
             ViewBag.Instructor = id;
-            return View(sc);
+            return View(instructor);
         }
 
 
@@ -141,7 +189,54 @@ namespace Attendance_Tracking_System.Controllers
             return Json (WeeklySchedule);
         }
 
-        
+        public IActionResult Permission(int id)
+        {
+            var Permissions = instructorRepo.GetPermissionsByTrack( id);
+            ViewBag.InstructorID = id;
+            ViewBag.permission = Permissions;
+            var instructor = instructorRepo.GetInstructorById(id);
+
+            return View(instructor);
+        }
+
+        public IActionResult PermissionBydate(DateOnly date,int id)
+        {
+            List<Permission> permissions = instructorRepo.GetPermissionsByTrack(id);
+            var FliteredPer = instructorRepo.getPermissionsByDateAndTrack(date, permissions);
+            return Json(FliteredPer);
+        }
+
+
+        [HttpPost]
+        public ActionResult InstructorResponse(int permissionId, bool acceptanceValue)
+        {
+            var per = db.Permission.SingleOrDefault(a => a.PermissionID == permissionId);
+            per.IsAccepted = acceptanceValue;
+            db.SaveChanges();
+            return Json(" Permission ID: " + permissionId + "Acceptance Value: " + acceptanceValue);
+        }
+
+
+        [HttpGet]
+        public IActionResult AddWeeklyShedule(int id)
+        {
+            var instructor=instructorRepo.GetInstructorById(id);
+            var trackid = db.Track.FirstOrDefault(a => a.SuperID == id).Id;
+            ViewBag.trackid =trackid;
+            return View(instructor);
+        }
+
+
+
+        [HttpPost]
+        public IActionResult AddWeeklyShedule(List<Schedule> schedules,int id)
+        {
+            db.Schedule.AddRange(schedules);
+            db.SaveChanges();
+            return RedirectToAction("AddWeeklyShedule");
+        }
+
+
 
     }
 }

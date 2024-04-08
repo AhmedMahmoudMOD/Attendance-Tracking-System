@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/ss.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.dataTables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <nav class="sb-topnav navbar navbar-expand">
+        <!-- Navbar Brand-->
+        <a class="navbar-brand ps-3" href="index.html">Instructor DashBoard</a>
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars" style="color:white"></i></button>
+        <!-- Navbar-->
+        <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"></div>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        @*  <div class="sb-sidenav-menu-heading">Core</div> *@
+                        <a class="nav-link m-1" asp-action="Details" asp-asp-controller="instructor" asp-route-Id="@Model.Id">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Profile
+                        </a>
+                       
+                        <a class="nav-link collapsed m-1" asp-action="TrackSchedule" asp-controller="instructor" asp-route-Id="@Model.Id">
+                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                            Track Shedulue
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <a class="nav-link collapsed m-1" asp-action="Permission" asp-controller="instructor" asp-route-Id="@Model.Id">
+                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                            Permission
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <a class="nav-link collapsed m-1" asp-action="AddWeeklyShedule" asp-controller="instructor" asp-route-Id="@Model.Id">
+                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                            Add Schedule
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                    </div>
+                </div>
+                <div class="sb-sidenav-footer">
+                    <div class="small">Logged in as:</div>
+                   
+                </div>
+            </nav>
+        </div>
+        <div class="content col-md-10">
+            @RenderBody()
+        </div>
+    </div>
+    <footer class="footer-style">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-5 ">
+                    <p class="no-padding">
+                        Over 30 years, ITI has kept updating its training portfolio thru continuous
+                        monitoring for the future global tech trends, as well as the country’s national
+                        and mega projects,hence; sustaining its graduates’ employment percentage
+                        to 85 prior their graduation.
+                    </p>
+                </div>
+                <div class="col-3">
+                    <h4>Contact Us</h4>
+                    <p>28 Km by Cairo / Alexandria Desert Road, 6<br> October, B148, Egypt</p>
+                    <div class="tele">
+                        <i class="fa-solid fa-phone"></i>
+                        <span>(+202) 353-55656</span>
+                    </div>
+                    <div class="email">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>ITIinfo@iti.gov.eg</span>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <h4>Follow Us</h4>
+                    <a href="https://www.facebook.com/ITIchannel/">
+                        <i class="fa-brands fa-facebook-f" style="font-size: 20px;"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/school/information-technology-institute-iti-/?originalSubdomain=eg">
+                        <i class="fa-brands fa-linkedin" style="font-size: 20px;"></i>
+                    </a>
+                    <a href="https://twitter.com/itichannel2">
+                        <i class="fa-brands fa-twitter" style="font-size: 20px;"></i>
+                    </a>
+
+                    <a href="https://www.youtube.com/user/itichannel">
+                        <i class="fa-brands fa-youtube" style="font-size: 20px;"></i>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="/js/scripts.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.1/js/dataTables.buttons.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.dataTables.js"></script>
+    <scriptsrc ="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></scriptsrc>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.print.min.js"></script>
+
+
+
+</body>
+</html>
