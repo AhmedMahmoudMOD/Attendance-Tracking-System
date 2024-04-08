@@ -77,7 +77,7 @@ namespace Attendance_Tracking_System.Controllers
             if(model == null) { 
                return NotFound();   
             }
-            return View(model); 
+            return View("EditProfile2",model); 
         }
         [HttpPost]
         public async Task<IActionResult> EditProfile(Employee Emp , IFormFile? EmpImage)
