@@ -31,7 +31,6 @@
 					<h2 class="text-center mb-4" style="color:#5D0E41;">Create Account</h2>
 					<form id="signupForm" method="post" asp-action="SignUp" enctype="multipart/form-data">
 						<div class="form-row">
-							<input asp-for="IntakeNo" value="2" hidden />
 							<input type="hidden" name="RoleId" value="1" />
 							<div class="form-group col-md-6">
 								<label asp-for="Name">Name</label>
@@ -44,45 +43,57 @@
 								<span asp-validation-for="Age"></span>
 							</div>
 						</div>
-						<div class="form-group">
-							<label asp-for="Email">Email</label>
-							<input asp-for="Email" class="form-control" id="inputEmail" placeholder="Email">
-							<span asp-validation-for="Email"></span>
-						</div>
 						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label asp-for="Email">Email</label>
+								<input asp-for="Email" class="form-control" placeholder="Email" id="Email">
+								<span id="emailError" style="color:red"></span>
+								<span asp-validation-for="Email"></span>
+
+							</div>
 							<div class="form-group col-md-6">
 								<label asp-for="Password">Password</label>
 								<input asp-for="Password" class="form-control" id="inputPassword" placeholder="Password">
 								<span asp-validation-for="Password"></span>
 							</div>
+						</div>
+
+						<div class="form-row">
+
 							<div class="form-group col-md-6">
 								<label asp-for="PhoneNumber">Phone</label>
 								<input asp-for="PhoneNumber" type="tel" class="form-control" id="inputPhone" placeholder="Phone">
 								<span asp-validation-for="PhoneNumber"></span>
 							</div>
-						</div>
-						<div class="form-row">
 							<div class="form-group col-md-6">
 								<label asp-for="Faculty">Faculty</label>
 								<input asp-for="Faculty" class="form-control" id="inputFaculty" placeholder="Faculty">
 								<span asp-validation-for="Faculty"></span>
 							</div>
+						</div>
+						<div class="form-row">
+							
 							<div class="form-group col-md-6">
 								<label asp-for="Specialization">Specialization</label>
 								<input asp-for="Specialization" class="form-control" id="inputSpecialization" placeholder="Specialization">
 								<span asp-validation-for="Specialization"></span>
 							</div>
-						</div>
-						<div class="form-row">
 							<div class="form-group col-md-6">
 								<label asp-for="GraduationYear">Graduation Year</label>
 								<input asp-for="GraduationYear" class="form-control" id="inputGradYear" placeholder="Graduation Year">
 								<span asp-validation-for="GraduationYear"></span>
 							</div>
+						</div>
+						<div class="form-row">
 							<div class="form-group col-md-6">
 								<label asp-for="University">University</label>
 								<input asp-for="University" class="form-control" id="inputUniversity" placeholder="University">
 								<span asp-validation-for="University"></span>
+							</div>
+							<div class="form-group col-md-6">
+								<label asp-for="UserImage">Image</label>
+								<input type="file" name="Img" class="form-control" asp-for="UserImage" />
+								<span id="imageError" class="text-danger"></span>
 							</div>
 						</div>
 						<div class="row form-group">
@@ -101,26 +112,18 @@
 									<span id="progError" class="text-danger"></span>
 								</div>
 							</div>
-
 							<div class="col-md-6">
-									<div class="form-group">
+								<div class="form-group">
 									<label asp-for="TrackID">Track</label>
 									<select asp-for="TrackID" class="form-control" id="TrackList">
-
 									</select>
 									<span id="trackError" class="text-danger"></span>
 								</div>
 
 							</div>
-
-							<div class="col-md-6">
-								<label asp-for="UserImage">Image</label>
-								<input type="file" name="Img" class="form-control-file" asp-for="UserImage" />
-								<span id="imageError" class="text-danger"></span>
-							</div>
 						</div>
 						<button type="submit" class="btn btn-danger btn-block">Register</button>
-						<p class="mt-3 text-center">Already have an account? <a href="#">Login</a></p>
+						<p class="mt-3 text-center">Already have an account? <a asp-action="login" asp-controller="account">Login</a></p>
 					</form>
 				</div>
 			</div>
@@ -148,7 +151,7 @@
 				$.ajax({
 					url: '/StudentRegister/GetTracksBasedOnPrograms',
 					type: 'GET',
-					data: { programId: selectedValue }, 
+					data: { programId: selectedValue },
 					dataType: 'json',
 					success: function (data) {
 						$('#TrackList').empty();
@@ -164,9 +167,32 @@
 					}
 				});
 			});
+			$('#Email').on('blur', function () {
+				var email = $(this).val();
+				if (email) {
+					$.ajax({
+						url: '/StudentRegister/CheckEmailUniqueness',
+						type: 'GET',
+						data: { email: email },
+						success: function (response) {
+							if (response.isUnique) {
+								// Email is unique
+								$('#emailError').text('');
+							} else {
+								// Email already exists
+								$('#emailError').text('Email already existss');
+								event.preventDefault();
+							}
+						},
+						error: function (xhr, status, error) {
+							console.error(xhr.responseText);
+						}
+					});
+				}
+			});
 		});
-
 	</script>
+
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

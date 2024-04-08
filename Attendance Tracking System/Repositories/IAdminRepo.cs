@@ -4,8 +4,9 @@ namespace Attendance_Tracking_System.Repositories
 {
 	public interface IAdminRepo
 	{
-		public bool CheckEmailUniqueness(User admin);
-		public  Task EditAdminData(Admin admin);
+		public bool CheckEmailUniqueness(string email, int id);
+		public bool CheckEmailUniquenessForNewUsers(string email);
+		public Task EditAdminData(Admin admin);
 		public void uploadImg(string ImgName, int id);
 		public User AdminData(int? id);
 		public List<Student> GetStudents();

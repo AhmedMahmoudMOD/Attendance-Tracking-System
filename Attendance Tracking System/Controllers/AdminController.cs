@@ -44,7 +44,6 @@ namespace Attendance_Tracking_System.Controllers
 				ModelState.AddModelError("Img", "Please select a file.");
 				return View(admin);
 			}
-
 			if (ModelState.IsValid)
 			{
 				string fileName = $"{admin.Id}.{Img.FileName}";
@@ -61,7 +60,7 @@ namespace Attendance_Tracking_System.Controllers
 					admin.UserImage = fileName;
 					repo.uploadImg(fileName, admin.Id);
 				}
-				if (repo.CheckEmailUniqueness(admin))
+				if (repo.CheckEmailUniqueness(admin.Email,admin.Id))
 				{
 					await repo.EditAdminData(admin);
 					return RedirectToAction("Profile");
@@ -261,7 +260,6 @@ namespace Attendance_Tracking_System.Controllers
 		[HttpPost]
 		public async Task<IActionResult> UpdateEmployee(Employee employee, IFormFile Img)
 		{
-
 			if (!ModelState.IsValid)
 			{
 				return View(employee);
@@ -306,7 +304,7 @@ namespace Attendance_Tracking_System.Controllers
 
 			if (ModelState.IsValid)
 			{
-				if (repo.CheckEmailUniqueness(employee))
+				if (repo.CheckEmailUniquenessForNewUsers(employee.Email))
 				{
 					string fileName = $"{employee.Id}.{Img.FileName}";
 					string filePath = Path.Combine("wwwroot/images/", fileName);
@@ -409,6 +407,26 @@ namespace Attendance_Tracking_System.Controllers
 			}
 			var intake=repo.GetIntakeById(id.Value);
 			return View(intake);
+		}
+		[HttpGet]
+		public IActionResult CheckEmailUniqueness(string email,int id)
+		{
+			if (!repo.CheckEmailUniqueness(email,id))
+			{
+				return Json(new { isUnique = false });
+			}
+
+			return Json(new { isUnique = true });
+		}
+		[HttpGet]
+		public IActionResult CheckEmailUniquenessForNewUsers(string email)
+		{
+			if (!repo.CheckEmailUniquenessForNewUsers(email))
+			{
+				return Json(new { isUnique = false });
+			}
+
+			return Json(new { isUnique = true });
 		}
 	}
 }

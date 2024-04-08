@@ -43,9 +43,13 @@ namespace Attendance_Tracking_System.Repositories
 			res.UserImage = ImgName;
 			context.SaveChanges();
 		}
-		public bool CheckEmailUniqueness(User admin)
+		public bool CheckEmailUniqueness(string email,int id)
 		{
-			return !context.User.Any(a => a.Email == admin.Email && a.Id != admin.Id);
+			return !context.User.Any(a => a.Email == email && a.Id != id);
+		}
+		public bool CheckEmailUniquenessForNewUsers(string email)
+		{
+			return !context.User.Any(a => a.Email == email);
 		}
 		public List<Student> GetStudents()
 		{

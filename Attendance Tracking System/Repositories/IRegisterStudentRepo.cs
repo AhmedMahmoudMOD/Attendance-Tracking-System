@@ -4,7 +4,7 @@ namespace Attendance_Tracking_System.Repositories
 {
 	public interface IRegisterStudentRepo
 	{
-		public bool CheckEmailUniqueness(User admin);
+		public bool CheckEmailUniqueness(string email);
 		public void uploadImg(string ImgName, int id);
 		public void RegisterStudent(Student student, string userImageFileName);
 		public List<Track> GetAllTracks();

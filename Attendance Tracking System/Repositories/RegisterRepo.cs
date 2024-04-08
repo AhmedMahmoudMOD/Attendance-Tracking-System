@@ -2,6 +2,7 @@
 using Attendance_Tracking_System.Enums;
 using Attendance_Tracking_System.Models;
 using Microsoft.EntityFrameworkCore;
+using Syncfusion.Pdf.Lists;
 
 namespace Attendance_Tracking_System.Repositories
 {
@@ -14,10 +15,16 @@ namespace Attendance_Tracking_System.Repositories
 			this.context = _context;
 		}
 
-		public bool CheckEmailUniqueness(User user)
+		public bool CheckEmailUniqueness(string email)
 		{
-			return context.User.Any(a => a.Email != user.Email);
+			return !context.User.Any(a =>  a.Email ==email);
 		}
+
+		public string GetAdminEmailById(int id)
+        {
+            var res=context.User.FirstOrDefault(a => a.Id == id);
+            return res.Email;
+        }
 
 		public void uploadImg(string ImgName, int id)
         {
@@ -34,7 +41,10 @@ namespace Attendance_Tracking_System.Repositories
 				var tId = student.TrackID;
 				var track = context.Track.FirstOrDefault(a => a.Id == tId);
 				var progId = track?.ProgramID;
+                var intake=context.Intake.FirstOrDefault(i=>i.ProgramID== progId);
+                student.IntakeNo = intake.No;
                 student.ProgramID = progId;
+
 				context.SaveChanges();
             }
         }

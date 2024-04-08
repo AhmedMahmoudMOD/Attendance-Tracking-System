@@ -1,6 +1,7 @@
 ﻿using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol.Core.Types;
 
 namespace Attendance_Tracking_System.Controllers
 {
@@ -14,16 +15,16 @@ namespace Attendance_Tracking_System.Controllers
 		public IActionResult SignUp()
 		{
 			var AllTracks = repo.GetAllTracks();
-			var AllPrograms= repo.GetAllPrograms();	
+			var AllPrograms = repo.GetAllPrograms();
 			if (AllTracks != null)
 			{
 				ViewBag.Tracks = AllTracks;
 			}
-			if(AllPrograms != null)
+			if (AllPrograms != null)
 			{
-	          ViewBag.Programs = AllPrograms;	
+				ViewBag.Programs = AllPrograms;
 			}
-			
+
 			return View();
 		}
 		[HttpPost]
@@ -36,7 +37,7 @@ namespace Attendance_Tracking_System.Controllers
 				ModelState.AddModelError("Img", "Please select a file.");
 				return View(student);
 			}
-			
+
 			if (ModelState.IsValid)
 			{
 				string fileName = $"{student.Id}.{Img.FileName}";
@@ -49,26 +50,44 @@ namespace Attendance_Tracking_System.Controllers
 				{
 					await Img.CopyToAsync(fs);
 				}
-				repo.RegisterStudent(student, fileName);
-				repo.AssignRoleToUser(student.Id, 1);
-				return RedirectToAction("Pending");
+				if (repo.CheckEmailUniqueness(student.Email))
+				{
+					repo.RegisterStudent(student, fileName);
+					repo.AssignRoleToUser(student.Id, 1);
+					return RedirectToAction("Pending");
+				}
+				else
+				{
+					ModelState.AddModelError(nameof(student.Email), "Email already exists");
+				}
 			}
 			return View(student);
+		}
+
+		public IActionResult Pending(Student student)
+		{
+			return View();
+		}
+		[HttpGet]
+		public IActionResult GetTracksBasedOnPrograms(int programId)
+		{
+
+			var tracks = repo.GetTrackById(programId);
+
+			var trackData = tracks.Select(t => new { value = t.Id, text = t.Name });
+
+			return Json(trackData);
+
+		}
+		[HttpGet]
+		public IActionResult CheckEmailUniqueness(string email)
+		{
+			if (!repo.CheckEmailUniqueness(email))
+			{
+				return Json(new { isUnique = false });
+			}
+
+			return Json(new { isUnique = true });
+		}
 	}
-	public IActionResult Pending(Student student)
-	{
-		return View();
-	}
-	[HttpGet]
-	public IActionResult GetTracksBasedOnPrograms(int programId)
-	{
-
-		var tracks = repo.GetTrackById(programId);
-
-		var trackData = tracks.Select(t => new { value = t.Id, text = t.Name });
-
-		return Json(trackData);
-
-	}
-}
 }
