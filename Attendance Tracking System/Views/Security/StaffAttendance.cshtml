@@ -15,6 +15,11 @@
             background-color: #15859c !important;
             color: white;
         }
+
+        .btn-inv {
+            background-color: #d8e5e8 !important;
+            color: black
+        }
     </style>
 </head>
 <div id="container" class="container-fluid mt-4">
@@ -28,7 +33,7 @@
         </div>
         <div class="col-xxl-3 mt-4 offset-xxl-1">
             <button type="submit" name="Submit" class="btn btn-theme" onclick="GetStaffAttendanceList(stafftype.value)">Show Staff <i class="fas fa-user-tie"></i></button>
-            <button class="btn btn-dark MarkBtn" type="submit" onclick="MarkAbsence(stafftype.value)">Mark Absence <i class="fas fa-times fa-lg"></i></button>
+            <button class="btn btn-inv MarkBtn" type="submit" onclick="MarkAbsence(stafftype.value)">Mark Absence <i class="fas fa-times fa-lg"></i></button>
         </div>
     </div>
 </div>

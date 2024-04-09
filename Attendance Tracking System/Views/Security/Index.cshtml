@@ -22,6 +22,15 @@
             background-color: #15859c !important;
             color: white;
         }
+
+        .btn-inv {
+            background-color: #d8e5e8 !important;
+            color: black
+        }
+
+        .dropdown-menu {
+            background-color: #D8E5E8;
+        }
     </style>
 </head>
 <div id="container" class="container-fluid mt-3">
@@ -37,7 +46,7 @@
         </div>
         <div class="col-xxl-auto col-xl-auto mt-4 offset-xxl-1">
             <button type="submit" name="Submit" class="btn btn-theme w-40" onclick="GetAttendanceList(pros.value,tracks.value,intake.value)"> Show Students <i class="fas fa-graduation-cap"></i></button>
-            <button class="btn btn-dark MarkBtn w-40" type="submit" onclick="MarkAbsence(pros.value,tracks.value,intake.value)">Mark Absence <i class="fas fa-times fa-lg"></i></button>    
+            <button class="btn btn-inv MarkBtn w-40" type="submit" onclick="MarkAbsence(pros.value,tracks.value,intake.value)">Mark Absence <i class="fas fa-times fa-lg"></i></button>    
         </div>
     </div>
 </div>
