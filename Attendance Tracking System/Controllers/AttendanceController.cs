@@ -338,9 +338,8 @@ namespace Attendance_Tracking_System.Controllers
         //    }
         //}
 
-        public IActionResult CalculateStudentsAttendaceTest()
+        public IActionResult CalculateStudentsAttendace(int Pid,int Tid,int Ino,DateOnly Date , DateOnly EndDate)
         {
-            int Pid = 1; int Tid = 4; int Ino = 2; DateOnly Date = new DateOnly(2024, 04, 09); DateOnly EndDate = new DateOnly(2024, 04, 09);
             var list = studentRepo.GetForUpdateAttendanceDegExplicit(Pid, Tid, Ino, Date, EndDate);
 
             foreach (var student in list)

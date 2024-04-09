@@ -30,10 +30,11 @@
                 <label class="fst-italic text-muted">Track</label>
                 <select asp-items=TracksList id="tracks" class="form-control" name="Tid"></select>
             </div>
-            <div class="col-3 offset-1 mt-4">
+            <div class="col-4 mt-4">
                 <input type="button" value="Show Students" name="Submit" class="btn btn-success" onclick="GetAttendanceList(pros.value,tracks.value,intake.value,date.value,enddate.value)" />
                 <button type="button" value="Get Report" name="Submit" class="btn" onclick="GetAttendanceReport(pros.value,tracks.value,intake.value,date.value,enddate.value)"><i class="fa-solid fa-print fa-lg" style="color: #121212;"></i></button>
                 <button type="submit" value="Get Chart" name="Submit" class="btn"><i class="fa-solid fa-chart-bar fa-lg" style="color: #0c0d0d;"></i></button>
+                <input type="button" value="Update Degrees" name="Submit" class="btn btn-primary" onclick="UpdateDegrees(pros.value,tracks.value,intake.value,date.value,enddate.value)" />
 
             </div>
         </form>
@@ -63,6 +64,26 @@
                 data: { Pid: pid, Tid: tid, Ino: ino, Date: date, EndDate: endDate },
                 success: function (result) {
                     $("#AttList").html(result)
+                }
+            });
+        }
+        function UpdateDegrees(pid, tid, ino, date, endDate) {
+            $.ajax({
+                url: "/Attendance/CalculateStudentsAttendace",
+                data: { Pid: pid, Tid: tid, Ino: ino, Date: date, EndDate: endDate },
+                success: function () {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Attendance Degrees Has Been Updated Successfully'
+                    });
+                },
+                error: function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Some Erroe Occured'
+                    });
                 }
             });
         }
@@ -99,4 +120,6 @@
         }
         );
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 }
