@@ -11,7 +11,12 @@ namespace Attendance_Tracking_System.Controllers
 {
 	public class AccountController : Controller
 	{
-		ITISysContext context = new ITISysContext();
+		private readonly ITISysContext context;
+
+		public AccountController(ITISysContext _context)
+		{
+			context = _context;
+		}
 		public IActionResult Login()
 		{
 			return View();
