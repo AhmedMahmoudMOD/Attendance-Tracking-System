@@ -1,7 +1,7 @@
 ﻿@using Attendance_Tracking_System.View_Models
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Students Attendance";
     Layout = "~/Views/Shared/_SLayout.cshtml";
 
     var Programs = ViewBag.Programs;
@@ -14,14 +14,16 @@
     <div class="row justify-content-evenly">
         <input type="hidden" value="@cIntake.No" id="intake" />
         <div class="col-4">
+            <label class="fst-italic text-muted">Program</label>
             <select asp-items=ProgramsList id="pros" class="form-control" onchange="GetTracks(this.value)"></select>
         </div>
         <div class="col-4">
+            <label class="fst-italic text-muted">Track</label>
             <select asp-items=TracksList id="tracks" class="form-control"></select>
         </div>
-        <div class="col-3">
+        <div class="col-3 mt-4 offset-1">
           <input type="submit" value="Show Students" name="Submit" class="btn btn-success" onclick="GetAttendanceList(pros.value,tracks.value,intake.value)" />
-            <button class="btn btn-dark MarkBtn" type="submit" onclick="MarkAbsence(pros.value,tracks.value,intake.value)"><i class="fas fa-times fa-lg"></i></button>
+          <button class="btn btn-dark MarkBtn" type="submit" onclick="MarkAbsence(pros.value,tracks.value,intake.value)">Mark Absence <i class="fas fa-times fa-lg"></i></button>
         </div>
     </div>
 </div>
