@@ -1,6 +1,7 @@
 ﻿using Attendance_Tracking_System.Data;
 using Attendance_Tracking_System.Enums;
 using Attendance_Tracking_System.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Tracking_System.Repositories
 {
@@ -77,5 +78,24 @@ namespace Attendance_Tracking_System.Repositories
                 return false;
             }
         }
+
+        public bool CalculateNoOfDeductions(Student student)
+        {
+            try
+            {
+                var studentAttendance = db.StudentAttendance.SingleOrDefault(s => s.UserID == student.Id);
+                if ((studentAttendance.AttendanceStatus == AttendanceStatus.Absent || studentAttendance.AttendanceStatus==AttendanceStatus.Late)&& studentAttendance.IsMarked==true)
+                {
+                    student.NoOfDeductions++;
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+    
+
     }
 }
