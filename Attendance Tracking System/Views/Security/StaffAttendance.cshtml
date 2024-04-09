@@ -1,19 +1,20 @@
 ﻿
 @{
-    ViewData["Title"] = "StaffAttendance";
+    ViewData["Title"] = "Staff Attendance";
     Layout = "~/Views/Shared/_SLayout.cshtml";
 }
-<div id="container" class="container-fluid mt-3">
-    <div class="row justify-content-center">
+<div id="container" class="container-fluid mt-4">
+    <div class="row justify-content-evenly">
         <div class="col-6">
+            <label class="fst-italic text-muted ms-1">Staff</label>
             <select id="stafftype" class="form-control" onchange="GetStaffAttendanceList(this.value)">
                 <option selected value="1">Instructors</option>
                 <option value="2">Employees</option>
             </select>
         </div>
-        <div class="col-4">
-            <input type="submit" value="Show" name="Submit" class="btn btn-success" onclick="GetStaffAttendanceList(stafftype.value)" />
-            <button class="btn btn-dark MarkBtn" type="submit" onclick="MarkAbsence(stafftype.value)"><i class="fas fa-times fa-lg"></i></button>
+        <div class="col-3 mt-4 offset-1">
+            <input type="submit" value="Show Staff" name="Submit" class="btn btn-success" onclick="GetStaffAttendanceList(stafftype.value)" />
+            <button class="btn btn-dark MarkBtn" type="submit" onclick="MarkAbsence(stafftype.value)">Mark Absence <i class="fas fa-times fa-lg"></i></button>
         </div>
     </div>
 </div>

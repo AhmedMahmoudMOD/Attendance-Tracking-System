@@ -33,6 +33,7 @@ namespace Attendance_Tracking_System.Data
 
 		public DbSet<Permission> Permission { get; set; }
 
+		
 		public async Task BulkInsertStudentsAsync(List<Student> students)
 		{
 			await Student.AddRangeAsync(students);
