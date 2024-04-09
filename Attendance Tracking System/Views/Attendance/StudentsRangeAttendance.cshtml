@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "StudentsAttendance";
+    ViewData["Title"] = "Students Attendance";
     Layout = "~/Views/Shared/SharedLayout.cshtml";
     var Programs = ViewBag.Programs;
     SelectList ProgramsList = new SelectList(Programs, "Id", "Name");
@@ -31,27 +31,27 @@
     <div class="row justify-content-evenly">
         <form asp-action="GetRangeStdAttBarChart" asp-controller="Chart" class="row col-12 justify-content-around">
             <input type="hidden" value="@cIntake.No" name="Ino" id="intake" />
-            <div class="col-2">
+            <div class="col-xl-2 col-lg-3">
                 <label class="fst-italic text-muted">Start Date</label>
                 <input type="date" class="form-control" id="date" name="Date" value="@formattedDate" />
             </div>
-            <div class="col-2">
+            <div class="col-xl-2 col-lg-3">
                 <label class="fst-italic text-muted">End Date</label>
                 <input type="date" class="form-control" id="enddate" name="EndDate" value="@formattedDate" />
             </div>
-            <div class="col-2">
+            <div class="col-xl-2 col-lg-2">
                 <label class="fst-italic text-muted">Program</label>
                 <select asp-items=ProgramsList id="pros" class="form-control" name="Pid" onchange="GetTracks(this.value)"></select>
             </div>
-            <div class="col-2">
+            <div class="col-xl-2 col-lg-2">
                 <label class="fst-italic text-muted">Track</label>
                 <select asp-items=TracksList id="tracks" class="form-control" name="Tid"></select>
             </div>
             <div class="row mt-5 justify-content-center">
-                <button type="button" value="Show Students" name="Submit" class="btn btn-theme col-2 me-3" onclick="GetAttendanceList(pros.value,tracks.value,intake.value,date.value,enddate.value)"><i class="fas fa-graduation-cap"></i> Show Students </button>
-                <button type="button" value="Get Report" name="Submit" class="btn btn-inv col-2 me-3" onclick="GetAttendanceReport(pros.value,tracks.value,intake.value,date.value,enddate.value)"><i class="fa-solid fa-file-pdf fa-lg"></i> PDF</button>
-                <button type="submit" value="Get Chart" name="Submit" class="btn btn-theme col-2 me-3"> <i class="fa-solid fa-chart-bar fa-lg"></i> Attendance Chart</button>
-                <button type="button" name="Submit" class="btn btn-inv col-2" onclick="UpdateDegrees(pros.value,tracks.value,intake.value,date.value,enddate.value)"><i class="fa-solid fa-pen"></i> Update Degrees</button>
+                <button type="button" value="Show Students" name="Submit" class="btn btn-theme col-xxl-2 col-lg-3 me-3 mb-lg-0 mb-2" onclick="GetAttendanceList(pros.value,tracks.value,intake.value,date.value,enddate.value)"><i class="fas fa-graduation-cap"></i> Show Students </button>
+                <button type="button" value="Get Report" name="Submit" class="btn btn-inv col-xxl-2 col-lg-1 me-3 mb-lg-0 mb-2" onclick="GetAttendanceReport(pros.value,tracks.value,intake.value,date.value,enddate.value)"><i class="fa-solid fa-file-pdf fa-lg"></i> PDF</button>
+                <button type="submit" value="Get Chart" name="Submit" class="btn btn-theme col-xxl-2 col-lg-3 me-3 mb-lg-0 mb-2"> <i class="fa-solid fa-chart-bar fa-lg"></i> Attendance Chart</button>
+                <button type="button" name="Submit" class="btn btn-inv col-xxl-2 col-lg-3 me-3 mb-lg-0 mb-2" onclick="UpdateDegrees(pros.value,tracks.value,intake.value,date.value,enddate.value)"><i class="fa-solid fa-pen-to-square"></i> Update Degrees</button>
             </div>
         </form>
     </div>
