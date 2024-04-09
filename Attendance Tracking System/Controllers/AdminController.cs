@@ -26,6 +26,9 @@ namespace Attendance_Tracking_System.Controllers
 		}
 		public IActionResult Profile()
 		{
+			ClaimsIdentity? identity = HttpContext.User.Identity as ClaimsIdentity;
+			var role = identity?.FindFirst(ClaimTypes.Role)?.Value;
+			ViewBag.role=role;
 			ViewBag.currentUser = GetCurrentUser();
 			return View();
 		}
@@ -244,8 +247,6 @@ namespace Attendance_Tracking_System.Controllers
 
 		public IActionResult UpdateEmployee(int? Id)
 		{
-			var roleid = repo.GetRoleId(RoleEnum.student.ToString());
-			ViewBag.StdRoleId = roleid;
 			if (Id == null)
 			{
 				return NotFound();

@@ -31,14 +31,14 @@
 }
 
 #example th {
-    background-color: #f2f2f2;
+  
     font-weight: bold;
     text-align: left;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current,
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    background-color: #007bff;
+    
     border-color: #007bff;
     color: #fff;
 }

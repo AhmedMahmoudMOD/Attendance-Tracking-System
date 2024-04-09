@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Instructor>
 @{
-    Layout = null;
+   
 }
 
 <!DOCTYPE html>
@@ -9,18 +9,28 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.6/css/jquery.dataTables.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="~/css/dataTable.css" rel="stylesheet" />
 </head>
 <body>
-    <table class="table">
-        <thead>
-            <tr>
+    <div style="display:flex;flex-direction:row;align-content:space-between">
+        <h2 style="color:#5D0E41;margin-left:10px;margin-right:60%">Instructors Data</h2>
+        <a class="btn btn-dark" asp-action="Add" asp-controller="Instructor" style="height:40px">Add Instructor</a>
+    </div>
+    <table id="example" class="table table-hover table-bordered display"
+           style="text-align:center;width:100%;border-radius:15px;">
+        <thead >
+            <tr style="background-color:#001F3D;color:white;text-align:center">
                 <th>ID</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Paasword</th>
+                <th>Password</th>
                 <th>Age</th>
                 <th>Salary</th>
+                <th>Edit</th>
+                <th>Details</th>
             </tr>
         </thead>
         @foreach(var item in Model)
@@ -33,14 +43,21 @@
                 <td>@item.Age</td>
                 <td>@item.Salary</td>
                 <td>
-                    <a asp-action="Edit" asp-controller="Instructor" asp-route-Id="@item.Id">Edit</a>
+                    <a asp-action="Edit" asp-controller="Instructor" asp-route-Id="@item.Id"><i class="fa-regular fa-pen-to-square" style="color: #00224D; font-size: 24px;"></i></a>
                 </td>
                 <td>
-                    <a asp-action="Details" asp-controller="Instructor" asp-route-Id="@item.Id">Details</a>
+                    <a asp-action="Details" asp-controller="Instructor" asp-route-Id="@item.Id"><i class="fa-solid fa-eye" style="color: #5D0E41; font-size: 24px;"></i></a>
                 </td>
             </tr>
         }
     </table>
-    <a asp-action="Add" asp-controller="Instructor">Create</a>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.6/js/jquery.dataTables.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+     </script>
 </body>
 </html>

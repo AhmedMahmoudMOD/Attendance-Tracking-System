@@ -29,7 +29,7 @@ namespace Attendance_Tracking_System.Controllers
            // var Users=db.Instructor.ToList();
            var Instructors=instructorRepo.GetAllInstructors();
           
-            
+     
             return View(Instructors);
         }
 

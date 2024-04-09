@@ -178,7 +178,6 @@ namespace Attendance_Tracking_System.Repositories
 				res.Type = employee.Type;
 				context.SaveChanges();
 			}
-
 		}
 		public int GetRoleId(String RoleType)
 		{

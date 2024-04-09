@@ -1,7 +1,7 @@
 ﻿@model Employee
 @{
 	ViewData["Title"] = "UpdateEmployee";
-	var RoleId = ViewBag.StdRoleId;
+	
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -19,14 +19,14 @@
 <body>
 	<div class="container">
 		<div style="display:flex;flex-direction:row">
-			<h2 class="text-center " style="color:#5D0E41;">Update Student</h2>
+			<h2 class="text-center " style="color:#5D0E41;">Update Employee</h2>
 			<a class="btn btn-dark" style="height:40px;margin-left:10px" asp-action="GetEmployees">Back </a>
 		</div>
 		<br />
 		<div class="col-lg-6">
 			<form id="signupForm" method="post" asp-action="UpdateEmployee" class="border border-dark p-4" enctype="multipart/form-data">
 				<div class="form-row">
-					<input type="hidden" name="RoleId" value="@RoleId" />
+					@* <input type="hidden" name="RoleId" value="@RoleId" /> *@
 					<div class="form-group col-md-6">
 						<label asp-for="Name">Name</label>
 						<input asp-for="Name" class="form-control" id="inputEmail4" placeholder="Name">
