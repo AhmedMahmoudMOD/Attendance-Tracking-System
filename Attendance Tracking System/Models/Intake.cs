@@ -8,11 +8,14 @@ namespace Attendance_Tracking_System.Models
     {
         [Key]
         public int No { get; set; }
-
+        [Required]
+        [StringLength(10,MinimumLength =2,ErrorMessage ="Intake name must be at least 2 characters")]
         public string Name { get; set; }
-
+        [Required]
+        [DataType(DataType.Date)]
         public DateOnly? StartDate { get; set; }
-
+        [Required]
+        [DataType(DataType.Date)]
         public DateOnly? EndDate { get; set; }
 
         public bool IsDeleted { get; set; } = false;

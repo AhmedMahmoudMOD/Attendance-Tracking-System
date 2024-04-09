@@ -31,6 +31,7 @@ namespace Attendance_Tracking_System.Controllers
             var Instructors = instructorRepo.GetAllInstructors();
             //var per=db.Permission.ToList();
             // ViewBag.permission = per;
+
             return View(Instructors);
         }
 

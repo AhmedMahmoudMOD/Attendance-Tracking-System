@@ -41,13 +41,7 @@ namespace Attendance_Tracking_System.Models
         [JsonIgnore]
         public virtual Intake? Intake { get; set; }
         [JsonIgnore]
-        public virtual ICollection<Permission> Permissions { get; set; }
-        public Student()
-        {
-            Permissions = new List<Permission>();
-            Program = new ITIProgram();// to avoid null exception of program when regstatus is pending and program is Null
-            Intake = new Intake();  
-
-        }
+        public virtual ICollection<Permission>? Permissions { get; set; }
+        
     }
 }
