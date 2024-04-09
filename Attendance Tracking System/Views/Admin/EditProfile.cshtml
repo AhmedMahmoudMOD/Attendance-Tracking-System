@@ -24,7 +24,7 @@
 			width: 60px;
 			height: 35px;
 			border-radius: 10px;
-			background-color: darkred;
+			background-color: #67647d;
 			color: white !important;
 			display: flex; /* Align items and justify content center */
 			align-items: center;
@@ -37,6 +37,8 @@
 				cursor: pointer;
 			}
 	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 	<div style="display:flex;flex-direction:row;">
@@ -63,8 +65,11 @@
 			</div>
 			<div class="col-md-12">
 				<label asp-for="Email" class="form-label"></label>
-				<input asp-for="Email" class="form-control">
+				<input asp-for="Email" class="form-control" id="Email">
 				<span asp-validation-for="Email"></span>
+				<span id="emailError" style="color:red">
+
+				</span>
 			</div>
 			<div class="col-md-12">
 				<label asp-for="Password" class="form-label"></label>
@@ -85,9 +90,36 @@
 			<div class="col-md-12">
 				<input type="file" name="Img" class="form-control-file" asp-for="UserImage" />
 			</div><br />
-			<button type="submit" class="btn btn-danger">Save Changes</button>
+			<button type="submit" class="btn" style="background-color:#ff5454;color:white">Save Changes</button>
 		</form>
 	</div>
+	<script>
+		$('#Email').on('blur', function () {
+			var email = $(this).val();
+			var id = @Model.Id;
+			if (email) {
+				$.ajax({
+					url: '/Admin/CheckEmailUniqueness',
+					type: 'GET',
+					data: { email: email,id:id },
+					success: function (response) {
+						if (response.isUnique) {
+							// Email is unique
+							$('#emailError').text('');
+						} else {
+							// Email already exists
+							$('#emailError').text('Email already existss');
+							event.preventDefault();
+						}
+					},
+					error: function (xhr, status, error) {
+						console.error(xhr.responseText);
+					}
+				});
+			}
+		});
+			
+	</script>
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

@@ -12,9 +12,9 @@ namespace Attendance_Tracking_System.Models
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public ProgramDuration Duration { get; set; } // Number of Months
+        public ProgramDuration Duration { get; set; } 
 
-        public bool IsDeleted { get; set; } = false; // Soft delete prop
+        public bool IsDeleted { get; set; } = false; 
         [JsonIgnore]
         public virtual ICollection<Track>? Tracks { get; set; } = new HashSet<Track>();
         [JsonIgnore]
