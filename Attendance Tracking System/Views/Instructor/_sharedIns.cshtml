@@ -32,21 +32,25 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Profile
                         </a>
+
+                        <a class="nav-link collapsed m-1" asp-action="Edit" asp-controller="instructor" asp-route-Id="@Model.Id">
+                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                            Edit Profile
+                        </a>
                        
                         <a class="nav-link collapsed m-1" asp-action="TrackSchedule" asp-controller="instructor" asp-route-Id="@Model.Id">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                             Track Shedulue
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
+
                         <a class="nav-link collapsed m-1" asp-action="Permission" asp-controller="instructor" asp-route-Id="@Model.Id">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                             Permission
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
+
                         <a class="nav-link collapsed m-1" asp-action="AddWeeklyShedule" asp-controller="instructor" asp-route-Id="@Model.Id">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                             Add Schedule
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
                     </div>
                 </div>

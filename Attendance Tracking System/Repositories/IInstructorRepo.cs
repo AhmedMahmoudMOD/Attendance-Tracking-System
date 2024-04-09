@@ -33,6 +33,8 @@ namespace Attendance_Tracking_System.Repositories
 
         public List<Permission> getPermissionsByDateAndTrack(DateOnly date, List<Permission> permissions);
          
-        public List<Permission> GetPermissionsByTrack ( int id);  
+        public List<Permission> GetPermissionsByTrack ( int id);
+
+        List<Track> getInstructorTracks(int id);
         }
 }

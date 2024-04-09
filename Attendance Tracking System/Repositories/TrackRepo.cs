@@ -1,5 +1,6 @@
 ﻿using Attendance_Tracking_System.Data;
 using Attendance_Tracking_System.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Tracking_System.Repositories
 {
@@ -19,6 +20,12 @@ namespace Attendance_Tracking_System.Repositories
         public List<Track> getAllTracks()
         {
             return db.Track.ToList();
+        }
+
+        public List<Track> getInstructorTracks(int Id)
+        {
+            return db.Track.Include(a=>a.Instructors).ToList();
+            throw new NotImplementedException();
         }
 
         public Track getTrackById(int id)

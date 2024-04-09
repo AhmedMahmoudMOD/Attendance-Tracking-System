@@ -3,6 +3,7 @@ using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging;
 using System.Linq;
 
 
@@ -10,26 +11,26 @@ namespace Attendance_Tracking_System.Controllers
 {
     public class InstructorController : Controller
     {
-         ITISysContext db = new ITISysContext();
+        ITISysContext db = new ITISysContext();
 
         //ITISysContext db = new ITISysContext();
         IInstructorRepo instructorRepo;
         ITrackRepo trackRepo;
         IScheduleRepo scheduleRepo;
-        public InstructorController(IInstructorRepo _instructorRepo, ITrackRepo _trackRepo,IScheduleRepo _scheduleRepo)
+        public InstructorController(IInstructorRepo _instructorRepo, ITrackRepo _trackRepo, IScheduleRepo _scheduleRepo)
         {
             instructorRepo = _instructorRepo;
             trackRepo = _trackRepo;
-            scheduleRepo = _scheduleRepo;   
+            scheduleRepo = _scheduleRepo;
         }
 
 
         public IActionResult Index()
         {
-          // var Users=db.Instructor.ToList();
-           var Instructors=instructorRepo.GetAllInstructors();
-           //var per=db.Permission.ToList();
-           // ViewBag.permission = per;
+            // var Users=db.Instructor.ToList();
+            var Instructors = instructorRepo.GetAllInstructors();
+            //var per=db.Permission.ToList();
+            // ViewBag.permission = per;
             return View(Instructors);
         }
 
@@ -45,8 +46,10 @@ namespace Attendance_Tracking_System.Controllers
         public async Task<IActionResult> Add(Instructor instructor, IFormFile InsImg)
         {
             instructorRepo.AddNewInstructor(instructor);
-               string fileName = $"{instructor.Id}.{InsImg.FileName.Split(".").Last()}";
-            string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+            var Tracks = trackRepo.getAllTracks();
+            ViewBag.AllTracks = Tracks;
+            string fileName = $"{instructor.Id}.{InsImg.FileName.Split(".").Last()}";
+            string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "instructor");
             if (!Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);
@@ -66,6 +69,12 @@ namespace Attendance_Tracking_System.Controllers
         public IActionResult Edit(int id)
         {
             var Instructor = instructorRepo.GetInstructorById(id);
+            var InstructorTracks = instructorRepo.getInstructorTracks(id);
+            ViewBag.InstructorTracks = InstructorTracks;
+            var Alltracks = trackRepo.getAllTracks();
+            var ExceptTracks = Alltracks.Except(InstructorTracks).ToList();
+            ViewBag.ExceptTracks = ExceptTracks;
+
             return View(Instructor);
         }
 
@@ -74,8 +83,15 @@ namespace Attendance_Tracking_System.Controllers
         public async Task<IActionResult> Edit(Instructor instructor, IFormFile InsImg)
         {
             instructorRepo.EditInstructor(instructor);
+            //HashSet<Track> InstructorTrack = (HashSet<Track>)instructor.Tracks;
+            //InstructorTrack.AddRange(AddedTracks);
+            //foreach (var track in Removedtraks)
+            //{
+            //    InstructorTrack.Remove(track);
+            //}
+                
 
-            string DirectoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+            string DirectoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "instructor");
             string[] filePaths = Directory.GetFiles(DirectoryPath);
             string FoundFileName = string.Empty;
             string FoundFilpath = string.Empty;
@@ -92,20 +108,26 @@ namespace Attendance_Tracking_System.Controllers
                         FoundFilpath = filePath;
                         System.IO.File.Delete(filePath);
                     }
+                    using (FileStream fs = new FileStream(FoundFilpath, FileMode.Create))
+                    {
+                        await InsImg.CopyToAsync(fs);
+                        instructor.UserImage = FoundFileName;
+                        instructorRepo.UpdateInstructorImage(FoundFileName, instructor.Id);
+                    }
+                    return View(instructor);
                 }
-                else
-                {
-                    FoundFileName = $"{instructor.Id}.{InsImg.FileName.Split(".").Last()}";
-                    FoundFilpath = Path.Combine(DirectoryPath, FoundFileName);
-                }
-                using (FileStream fs = new FileStream(FoundFilpath, FileMode.Create))
-                {
-                    await InsImg.CopyToAsync(fs);
-                    instructor.UserImage = FoundFileName;
-                    instructorRepo.UpdateInstructorImage(FoundFileName,instructor.Id );
-                }
+                
             }
-            return RedirectToAction("index");
+                FoundFileName = $"{instructor.Id}.{InsImg.FileName.Split(".").Last()}";
+                FoundFilpath = Path.Combine(DirectoryPath, FoundFileName);
+      
+            using (FileStream fs = new FileStream(FoundFilpath, FileMode.Create))
+            {
+                await InsImg.CopyToAsync(fs);
+                instructor.UserImage = FoundFileName;
+                instructorRepo.UpdateInstructorImage(FoundFileName, instructor.Id);
+            }
+            return View(instructor);
         }
         
 
@@ -195,7 +217,9 @@ namespace Attendance_Tracking_System.Controllers
             ViewBag.InstructorID = id;
             ViewBag.permission = Permissions;
             var instructor = instructorRepo.GetInstructorById(id);
-
+            var students=db.Student.ToList();
+         
+            ViewBag.students = students;
             return View(instructor);
         }
 
@@ -236,7 +260,7 @@ namespace Attendance_Tracking_System.Controllers
             return RedirectToAction("AddWeeklyShedule");
         }
 
-
+        
 
     }
 }
