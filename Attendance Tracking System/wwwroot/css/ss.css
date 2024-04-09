@@ -3,7 +3,7 @@ body {
 }
 
 .navbar {
-    background-color: #7d2020; /* Semi-dark shade of red */
+    background-color: #001F3D; /* Semi-dark shade of red */
 }
 
 .navbar-brand,
@@ -19,27 +19,28 @@ body {
 
     .navbar-nav .nav-link:hover,
     .nav-link:hover {
-        background-color: #7d2020;
+        background-color: #D8E5E8;
     }
 
 #layoutSidenav_nav {
-    background-color: #7f6565b5; /* Lighter shade of red */
+    background-color: #D8E5E8; /* Lighter shade of red */
 }
 .sb-sidenav-menu-heading {
     color:#7d2020;
 }
 
 .sb-sidenav-menu .nav-link {
-    color: #7d2020;
+    color: #001F3D;
 }
 
     .sb-sidenav-menu .nav-link:hover {
         color: #fff;
+        background-color: #15859c;
     }
 
 .sb-sidenav-footer,
 .sb-sidenav-footer .small {
-    background-color: #7d2020;
+    background-color: #D8E5E8;
     color: #fff;
 }
 
