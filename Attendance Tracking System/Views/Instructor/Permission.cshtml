@@ -1,0 +1,134 @@
+﻿@model Instructor
+@{
+    Layout = "_sharedIns";
+   
+     var students = ViewBag.students;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Permission</title>
+</head>
+<body>
+    <div class="container permission">
+         <table id="permission">
+             <thead>
+                 <tr class="text-center">
+                     <td class="text-center">PermissionID</td>
+                     <td class="text-center">Reason</td>
+                     <td class="text-center">Type</td>
+                     <td class="text-center">StudentName</td>
+                     <td class="text-center">Date</td>
+                 </tr>
+             </thead>
+        @foreach (var item in ViewBag.permission)
+        {
+
+            <tr class="text-center">
+                <td class="text-center">@item.PermissionID</td>
+                <td class="text-center">@item.Reason</td>
+                <td class="text-center">@item.Type</td>
+                <td class="text-center">@item.Student.Name</td>
+                <td class="text-center">@item.Date</td
+            </tr>
+        }
+    </table>
+
+    <input type="date" id="dt" onchange="handler('@ViewBag.InstructorID');" />
+
+    <table class="table" id="week">
+        <thead>
+            <tr>
+                <td>ID</td>
+                <td> Date</td>
+                <td>Reason</td>
+                <td>Type</td>
+                <td>StudentName</td>   
+                <td>Response</td>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+        </tbody>
+    </table>
+    </div>
+   
+    <script src=" ~ /lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+      <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.1/js/dataTables.buttons.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.dataTables.js"></script>
+    <scriptsrc ="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></scriptsrc>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.print.min.js"></script>
+    <script>
+        function handler(instructorId) {
+            let date = document.getElementById("dt").value;
+            let id = instructorId;
+            let students = @Html.Raw(Json.Serialize(students));
+            console.log(students)
+            $.ajax({
+                type: "Post",
+                url: "/instructor/PermissionBydate/" + id,
+                data: { "date": date },
+                success: function (result) {
+                    console.log(result);
+                    $('#tableBody').empty();
+                    result.forEach(function (permission) {
+                    let student = students.find(stud => stud.id == permission.studentID);
+                    let studentName = student ? student.name : "";
+                    console.log(studentName)
+                    let Type =""
+                    if(permission.type==1) Type = "Late"
+                    else if(permission.type==2) Type = "Absent"
+
+                        let row = `<tr>
+                                        <td>${permission.permissionID}</td>
+                                        <td>${permission.date}</td>
+                                        <td>${permission.reason}</td>
+                                        <td>${Type}</td>
+                                        <td>${studentName}</td>
+                                        <td>
+                                           <input type="radio" name="acceptance_${permission.permissionID}" value="true"  onchange="sendRadioValue(${permission.permissionID}, this.value)">true
+                                           <input type="radio" name="acceptance_${permission.permissionID}" value="false" onchange="sendRadioValue(${permission.permissionID}, this.value)">false
+                                        </td>
+                                    </tr>`;
+                        $('#tableBody').append(row);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+       
+        function sendRadioValue(permissionId, acceptanceValue) {
+            $.ajax({
+                type: "Post",
+                url: "/instructor/InstructorResponse",
+                data: { "permissionId": permissionId, "acceptanceValue": acceptanceValue },
+                success: function (response) {
+                    console.log("Radio button value sent successfully.");
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+
+        $(document).ready(function () {
+        $('#permission').DataTable();
+    });
+        </script>
+</body>
+</html>

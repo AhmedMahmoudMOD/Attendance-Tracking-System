@@ -4,6 +4,7 @@ using Attendance_Tracking_System.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Attendance_Tracking_System.Migrations
 {
     [DbContext(typeof(ITISysContext))]
-    partial class ITISysContextModelSnapshot : ModelSnapshot
+    [Migration("20240406031359_removePermissionID")]
+    partial class removePermissionID
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,15 +123,6 @@ namespace Attendance_Tracking_System.Migrations
 
             modelBuilder.Entity("Attendance_Tracking_System.Models.Permission", b =>
                 {
-                    b.Property<int>("StudentID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PermissionID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PermissionID"));
-
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
 
@@ -142,11 +136,16 @@ namespace Attendance_Tracking_System.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("StudentID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("StudentID", "PermissionID");
+                    b.HasKey("Date");
+
+                    b.HasIndex("StudentID");
 
                     b.ToTable("Permission");
                 });
@@ -347,9 +346,6 @@ namespace Attendance_Tracking_System.Migrations
             modelBuilder.Entity("Attendance_Tracking_System.Models.StudentAttendance", b =>
                 {
                     b.HasBaseType("Attendance_Tracking_System.Models.Attendance");
-
-                    b.Property<bool?>("IsMarked")
-                        .HasColumnType("bit");
 
                     b.Property<int?>("ScheduleID")
                         .HasColumnType("int");

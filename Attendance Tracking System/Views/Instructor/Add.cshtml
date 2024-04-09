@@ -1,6 +1,9 @@
 ﻿@model Instructor
 @{
-  
+
+   
+    SelectList Alltracks = new SelectList(ViewBag.AllTracks, "Id", "Name");
+
 }
 
 <!DOCTYPE html>
@@ -12,10 +15,13 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 </head>
 <body>
-    <form asp-action="Add" asp-controller="Instructor" method="post" enctype="multipart/form-data">
-       <partial name="CreateEdit"></partial>
-       <input type="file" name="InsImg"/>
-       <input type="submit" />
-    </form>
+    <div class="CreateEdit">
+        <form asp-action="Add" asp-controller="Instructor" method="post" enctype="multipart/form-data">
+            <partial name="CreateEdit"></partial>
+            <input type="file" name="InsImg" />
+            <input type="submit" />
+        </form>
+    </div>
+   
 </body>
 </html>

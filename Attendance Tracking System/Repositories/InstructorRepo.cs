@@ -96,11 +96,17 @@ namespace Attendance_Tracking_System.Repositories
         public void EditInstructor(Instructor Ins)
         {
             var OldInstructor= db.Instructor.SingleOrDefault(a=>a.Id==Ins.Id);
-            OldInstructor.Name=Ins.Name;
+            OldInstructor.Name = Ins.Name;
             OldInstructor.Age = Ins.Age;
             OldInstructor.Email = Ins.Email;
-            OldInstructor.Salary=Ins.Salary;
-            OldInstructor.PhoneNumber=Ins.PhoneNumber;
+            OldInstructor.Salary = Ins.Salary;
+            OldInstructor.PhoneNumber = Ins.PhoneNumber;
+            //var existingInstructor = db.Instructor.Find(Ins.Id);
+            //if (existingInstructor != null)
+            //{
+            //db.Entry(existingInstructor).State = EntityState.Detached;
+            //}
+            //db.Instructor.Update(Ins);
             db.SaveChanges();
         }
 
@@ -149,6 +155,24 @@ namespace Attendance_Tracking_System.Repositories
             return WeeklySchedule;
         }
 
-        
+        public List<Permission> getPermissionsByDateAndTrack(DateOnly date,List<Permission> permissions)
+        {
+            return permissions.Where(a => a.Date == date).ToList();
+        }
+
+        public List<Permission> GetPermissionsByTrack(int id)
+        {
+            int trackId = db.Track.FirstOrDefault(a => a.SuperID == id).Id;
+            List<Permission> pers = db.Permission.Include(a => a.Student).ToList();              
+              List<Permission>filter=  pers.Where(a =>a.Student.TrackID==trackId).ToList();
+            return filter;
+        }
+
+
+        public List<Track> getInstructorTracks(int id)
+        {
+            var instructor = db.Instructor.Include(a=>a.Tracks).FirstOrDefault(a => a.Id == id);
+            return instructor.Tracks.ToList();
+        }
     }
 }

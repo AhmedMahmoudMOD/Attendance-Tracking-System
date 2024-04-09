@@ -10,18 +10,21 @@
         <form asp-action="GetRangeStaffAttBarChart" asp-controller="Chart" class="row col-12">
 
             <div class="col-2">
+                <label class="fst-italic text-muted">Start Date</label>
                 <input type="date" class="form-control" id="date" name="Date" value="@formattedDate" />
             </div>
             <div class="col-2">
+                <label class="fst-italic text-muted">End Date</label>
                 <input type="date" class="form-control" id="Enddate" name="EndDate" value="@formattedDate" />
             </div>
-            <div class="col-3">
+            <div class="col-4">
+                <label class="fst-italic text-muted">Staff</label>
                 <select id="stafftype" class="form-control" name="TypeNo" onchange="GetStaffAttendanceList(this.value)">
                     <option selected value="1">Instructors</option>
                     <option value="2">Employees</option>
                 </select>
             </div>
-            <div class="col-3">
+            <div class="col-3 offset-1 mt-4">
                 <input type="button" value="Show Staff" name="Submit" class="btn btn-success" onclick="GetStaffAttendanceList(stafftype.value,date.value,Enddate.value)" />
                 <button type="button" value="Get Report" name="Submit" class="btn" onclick="GetAttendanceReport(stafftype.value,date.value,Enddate.value)"><i class="fa-solid fa-print fa-lg" style="color: #121212;"></i></button>
                 <button type="submit" value="Get Chart" name="Submit" class="btn"><i class="fa-solid fa-chart-bar fa-lg" style="color: #0c0d0d;"></i></button>

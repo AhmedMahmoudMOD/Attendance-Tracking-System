@@ -61,7 +61,7 @@ namespace Attendance_Tracking_System.Controllers
         }
 
         public IActionResult ViewProfile() {
-            int EmpId = 4;
+            int EmpId = 16;
             var model = employeeRepo.GetByID(EmpId);
             return View(model);
         
@@ -77,7 +77,7 @@ namespace Attendance_Tracking_System.Controllers
             if(model == null) { 
                return NotFound();   
             }
-            return View(model); 
+            return View("EditProfile2",model); 
         }
         [HttpPost]
         public async Task<IActionResult> EditProfile(Employee Emp , IFormFile? EmpImage)

@@ -1,0 +1,142 @@
+﻿@model Instructor
+@{
+    Layout = "_sharedIns";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AddWeeklyShedule</title>
+</head>
+<body>
+    <form method="post">
+        <div class="row mb-3">
+
+        </div>
+        <div class="form-check day">
+            <div class="badge bg-primary">First Day</div>
+            <div class="row">
+                <div class="col">
+                    <label>Time</label>
+                    <input class="form-control" type="time" name="schedules[0].StartTime" id="time1" onchange="GetSameTime();" />
+                </div>
+                <div class="col">
+                    <label>Date</label>
+                    <input class="form-control" type="date" name="schedules[0].Date" id="FirstDay" onchange="getNextDays();" />
+                </div>
+                <input type="hidden" name="schedules[0].TrackID" value="@ViewBag.trackid" />
+            </div>
+        </div>
+
+
+        <div class="form-check day">
+            <div class="badge bg-primary">Second Day</div>
+            <div class="row">
+                <div class="col">
+                    <label>Time</label>
+                    <input class="form-control" type="time" name="schedules[1].StartTime" id="time2" />
+                </div>
+                <div class="col">
+                    <label>Date</label>
+                    <input class="form-control" type="date" name="schedules[1].Date" id="Day2" />
+                </div>
+                <input type="hidden" name="schedules[1].TrackID" value="@ViewBag.trackid" />
+           </div>
+        </div>
+
+
+        <div class="form-check day">
+            <div class="badge bg-primary">Third Day</div>
+            <div class="row">
+                <div class="col">
+                    <label>Time</label>
+                    <input class="form-control" type="time" name="schedules[2].StartTime" id="time3" />
+                </div>
+                <div class="col">
+                    <label>Date</label>
+                    <input type="date" class="form-control" name="schedules[2].Date" id="Day3" />
+                </div>
+                <input type="hidden"  name="schedules[2].TrackID" value="@ViewBag.trackid" />
+             </div>
+         </div>
+
+
+        <div class="form-check day">
+            <div class="badge bg-primary">Fourth Day</div>
+            <div class="row">
+                <div class="col">
+                    <label> Time</label>
+                    <input type="time" class="form-control" name="schedules[3].StartTime" id="time4" />
+                </div>
+                <div class="col">
+                    <label>Date</label>
+                    <input type="date" class="form-control" name="schedules[3].Date" id="Day4" />
+                </div>
+                <input type="hidden" name="schedules[3].TrackID" value="@ViewBag.trackid" />
+            </div>
+        </div>
+
+        <div class="form-check day">
+            <div class="badge bg-primary">Fifth Day</div>
+            <div class="row">
+                <div class="col">
+                    <label> Time</label>
+                    <input type="time" class="form-control" name="schedules[4].StartTime" id="time5" />
+                </div>
+                <div class="col">
+                    <label>Date</label>
+                    <input type="date" class="form-control" name="schedules[4].Date" id="Day5" />
+                </div>
+                <input type="hidden" name="schedules[4].TrackID" value="@ViewBag.trackid" />
+            </div>
+        </div>
+
+
+        <div class="form-check day">
+            <div class="badge bg-primary">Sixth Day</div>
+            <div class="row">
+                <div class="col">
+                    <label> Time</label>
+                    <input type="time" class="form-control" name="schedules[5].StartTime" id="time6" />
+                </div>
+                <div class="col">
+                    <label>Date</label>
+                    <input type="date" class="form-control" name="schedules[5].Date" id="Day6" />
+                </div>
+                <input type="hidden"  name="schedules[5].TrackID" value="@ViewBag.trackid" />
+            </div>
+        </div>
+
+
+        <input type="submit" value="Add" class="btn btn-info addSchedule"/>
+
+
+    </form>
+    <script>
+        function getNextDays() {
+            let firstDayInput = document.getElementById("FirstDay");
+            let firstDay = new Date(firstDayInput.value);
+            for (let i = 1; i <= 5; i++) {
+                let nextDay = new Date(firstDay);
+                nextDay.setDate(nextDay.getDate() + i);
+                let year = nextDay.getFullYear();
+                let month = String(nextDay.getMonth() + 1).padStart(2, '0');
+                let day = String(nextDay.getDate()).padStart(2, '0');
+                let formattedDate = `${year}-${month}-${day}`;
+                let inputField = document.getElementById(`Day${i+1}`);
+                inputField.value = formattedDate;
+            }
+        }
+        function GetSameTime() {
+
+            let StartTime = document.getElementById("time1").value
+            for (var i = 1; i < 7; i++) {
+                document.getElementById(`time${i}`).value = StartTime
+            }
+        }
+    </script>
+
+</body>
+</html>

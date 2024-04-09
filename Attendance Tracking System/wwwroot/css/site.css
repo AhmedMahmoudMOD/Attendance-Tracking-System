@@ -27,3 +27,55 @@ body {
     border-radius:10px;
     color: white;
 }
+.no-padding {
+    margin: 0;
+    padding: 0;
+    word-wrap: break-word;
+    white-space: pre-line;
+}
+
+.footer-style {
+    background-color: #001F3D !important;
+    padding: 10px;
+    color: #D3D3D4;
+    width: 100%;
+}
+
+.permission {
+    min-height: 100vh !important;
+}
+.trackShedule {
+    min-height: 100vh !important;
+    min-height:1200px;
+}
+
+#week td, #AllSchedules td {
+    text-align: center;
+}
+.scheduleBorder {
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    padding: 10px;
+    margin :20px !important;
+    border-radius : 5px;
+}
+.day {
+    border: 1px #ccc solid;
+    border-radius: 5px;
+    margin: 5px;
+    padding : 5px ;
+}
+
+.badge {
+    font-size: 16px !important;
+    margin-bottom: 5px !important;
+    font-weight: bold !important;
+}
+
+.addSchedule{
+    margin : 10px;
+}
+
+.CreateEdit{
+    min-height : 100vh;
+}

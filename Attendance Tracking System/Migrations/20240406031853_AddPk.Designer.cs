@@ -4,6 +4,7 @@ using Attendance_Tracking_System.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Attendance_Tracking_System.Migrations
 {
     [DbContext(typeof(ITISysContext))]
-    partial class ITISysContextModelSnapshot : ModelSnapshot
+    [Migration("20240406031853_AddPk")]
+    partial class AddPk
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -347,9 +350,6 @@ namespace Attendance_Tracking_System.Migrations
             modelBuilder.Entity("Attendance_Tracking_System.Models.StudentAttendance", b =>
                 {
                     b.HasBaseType("Attendance_Tracking_System.Models.Attendance");
-
-                    b.Property<bool?>("IsMarked")
-                        .HasColumnType("bit");
 
                     b.Property<int?>("ScheduleID")
                         .HasColumnType("int");
