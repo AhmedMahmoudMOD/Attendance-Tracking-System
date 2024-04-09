@@ -10,20 +10,34 @@
     SelectList TracksList = new SelectList(Tracks, "Id", "Name");
     var cIntake = ViewBag.Intake;
 }
+
+<head>
+    <style>
+        .btn-theme {
+            background-color: #001F3D !important;
+            color: white;
+        }
+
+        .btn:hover{
+            background-color: #15859c !important;
+            color: white;
+        }
+    </style>
+</head>
 <div id="container" class="container-fluid mt-3">
-    <div class="row justify-content-evenly">
+    <div class="row justify-content-xl-around">
         <input type="hidden" value="@cIntake.No" id="intake" />
-        <div class="col-4">
+        <div class="col-xxl-4 col-xl-3">
             <label class="fst-italic text-muted">Program</label>
             <select asp-items=ProgramsList id="pros" class="form-control" onchange="GetTracks(this.value)"></select>
         </div>
-        <div class="col-4">
+        <div class="col-xxl-3 col-xl-3">
             <label class="fst-italic text-muted">Track</label>
             <select asp-items=TracksList id="tracks" class="form-control"></select>
         </div>
-        <div class="col-3 mt-4 offset-1">
-          <input type="submit" value="Show Students" name="Submit" class="btn btn-success" onclick="GetAttendanceList(pros.value,tracks.value,intake.value)" />
-          <button class="btn btn-dark MarkBtn" type="submit" onclick="MarkAbsence(pros.value,tracks.value,intake.value)">Mark Absence <i class="fas fa-times fa-lg"></i></button>
+        <div class="col-xxl-auto col-xl-auto mt-4 offset-xxl-1">
+            <button type="submit" name="Submit" class="btn btn-theme w-40" onclick="GetAttendanceList(pros.value,tracks.value,intake.value)"> Show Students <i class="fas fa-graduation-cap"></i></button>
+            <button class="btn btn-dark MarkBtn w-40" type="submit" onclick="MarkAbsence(pros.value,tracks.value,intake.value)">Mark Absence <i class="fas fa-times fa-lg"></i></button>    
         </div>
     </div>
 </div>
