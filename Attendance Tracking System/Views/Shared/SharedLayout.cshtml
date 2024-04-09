@@ -110,7 +110,33 @@
 						}
 						else if (User.IsInRole("Security"))
 						{
-							//actions of Security
+							<a class="nav-link m-1" asp-controller="Security" asp-action="ViewProfile">
+								<div class="sb-nav-link-icon">
+									<i class="fas fa-user"></i>
+								</div>
+								Profile
+							</a>
+
+							<a class="nav-link m-1" asp-controller="Security" asp-action="ViewProfile">
+								<div class="sb-nav-link-icon">
+									<i class="fas fa-user"></i>
+								</div>
+								My Attendance
+							</a>
+
+							<a class="nav-link m-1" asp-controller="Security" asp-action="Index">
+								<div class="sb-nav-link-icon">
+									<i class="fas fa-graduation-cap"></i>
+								</div>
+								Students Attedance
+							</a>
+
+							<a class="nav-link m-1" asp-controller="Security" asp-action="StaffAttendance">
+								<div class="sb-nav-link-icon">
+									<i class=" fas fa-user-tie"></i>
+								</div>
+								Staff Attedance
+							</a>
 						}
 						else
 						{

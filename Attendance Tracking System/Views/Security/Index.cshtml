@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Students Attendance";
-    Layout = "~/Views/Shared/_SLayout.cshtml";
+    Layout = "~/Views/Shared/SharedLayout.cshtml";
 
     var Programs = ViewBag.Programs;
     SelectList ProgramsList = new SelectList(Programs, "Id", "Name");
