@@ -2,6 +2,7 @@
 using Attendance_Tracking_System.Enums;
 using Attendance_Tracking_System.Models;
 using Microsoft.EntityFrameworkCore;
+using Syncfusion.Pdf.Lists;
 
 namespace Attendance_Tracking_System.Repositories
 {
@@ -14,11 +15,18 @@ namespace Attendance_Tracking_System.Repositories
 			this.context = _context;
 		}
 
-		public bool checkEmailUniqueness(User user)
+		public bool CheckEmailUniqueness(string email)
+		{
+			return !context.User.Any(a =>  a.Email ==email);
+		}
+
+		public string GetAdminEmailById(int id)
         {
-            return context.Student.Any(a => a.Email != user.Email && a.Id != user.Id);
+            var res=context.User.FirstOrDefault(a => a.Id == id);
+            return res.Email;
         }
-        public void uploadImg(string ImgName, int id)
+
+		public void uploadImg(string ImgName, int id)
         {
             var res = context.Student.FirstOrDefault(a => a.Id == id);
             res.UserImage = ImgName;
@@ -30,7 +38,14 @@ namespace Attendance_Tracking_System.Repositories
             {
                 student.UserImage = userImageFileName;
                 context.Student.Add(student);
-                context.SaveChanges();
+				var tId = student.TrackID;
+				var track = context.Track.FirstOrDefault(a => a.Id == tId);
+				var progId = track?.ProgramID;
+                var intake=context.Intake.FirstOrDefault(i=>i.ProgramID== progId);
+                student.IntakeNo = intake.No;
+                student.ProgramID = progId;
+
+				context.SaveChanges();
             }
         }
         public List<Track> GetAllTracks()
@@ -44,7 +59,6 @@ namespace Attendance_Tracking_System.Repositories
         }
         public void AssignRoleToUser(int userId, int roleId)
         {
-
             var user = context.User.FirstOrDefault(u => u.Id == userId);
             var role = context.roles.FirstOrDefault(r => r.Id == roleId);
 
@@ -53,6 +67,15 @@ namespace Attendance_Tracking_System.Repositories
                 user.role.Add(role);
                 context.SaveChanges();
             }
+        }
+		
+		public List<ITIProgram> GetAllPrograms()
+        {
+            return context.Program.ToList();
+        }
+		public List<Track> GetTrackById(int id)
+        {
+            return context.Track.Where(a=>a.ProgramID==id).ToList();
         }
 
     }

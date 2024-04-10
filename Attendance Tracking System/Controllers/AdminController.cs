@@ -3,8 +3,11 @@ using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
 using CRUD.CustomFilters;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
+using System.Net.Mail;
+using System.Net;
 using System.Security.Claims;
 
 namespace Attendance_Tracking_System.Controllers
@@ -23,6 +26,9 @@ namespace Attendance_Tracking_System.Controllers
 		}
 		public IActionResult Profile()
 		{
+			ClaimsIdentity? identity = HttpContext.User.Identity as ClaimsIdentity;
+			var role = identity?.FindFirst(ClaimTypes.Role)?.Value;
+			ViewBag.role=role;
 			ViewBag.currentUser = GetCurrentUser();
 			return View();
 		}
@@ -41,7 +47,6 @@ namespace Attendance_Tracking_System.Controllers
 				ModelState.AddModelError("Img", "Please select a file.");
 				return View(admin);
 			}
-
 			if (ModelState.IsValid)
 			{
 				string fileName = $"{admin.Id}.{Img.FileName}";
@@ -58,7 +63,7 @@ namespace Attendance_Tracking_System.Controllers
 					admin.UserImage = fileName;
 					repo.uploadImg(fileName, admin.Id);
 				}
-				if (repo.CheckEmailUniqueness(admin))
+				if (repo.CheckEmailUniqueness(admin.Email,admin.Id))
 				{
 					await repo.EditAdminData(admin);
 					return RedirectToAction("Profile");
@@ -69,8 +74,8 @@ namespace Attendance_Tracking_System.Controllers
 		}
 		public User GetCurrentUser()
 		{
-			ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
-			var userId = identity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			ClaimsIdentity? identity = HttpContext.User.Identity as ClaimsIdentity;
+			var userId = identity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 			int id = int.Parse(userId);
 			User user = repo.AdminData(id);
 			return user;
@@ -154,7 +159,7 @@ namespace Attendance_Tracking_System.Controllers
 		public IActionResult UpdateStudent(int? Id)
 		{
 			ViewBag.Tracks = repo.GetAllTracks();
-			ViewBag.programs=repo.GetAllPrograms();
+			ViewBag.programs = repo.GetAllPrograms();
 			if (Id == null)
 			{
 				return NotFound();
@@ -167,7 +172,7 @@ namespace Attendance_Tracking_System.Controllers
 			return View(res);
 		}
 		[HttpPost]
-		public async Task<IActionResult>  UpdateStudent(Student student, IFormFile Img)
+		public async Task<IActionResult> UpdateStudent(Student student, IFormFile Img)
 		{
 			ViewBag.Tracks = repo.GetAllTracks();
 			if (!ModelState.IsValid)
@@ -196,7 +201,7 @@ namespace Attendance_Tracking_System.Controllers
 		}
 		public IActionResult GetEmployees()
 		{
-			var res=repo.GetAllEmployees();
+			var res = repo.GetAllEmployees();
 
 			return View(res);
 		}
@@ -239,11 +244,9 @@ namespace Attendance_Tracking_System.Controllers
 			}
 
 		}
-		
+
 		public IActionResult UpdateEmployee(int? Id)
 		{
-			var roleid=repo.GetRoleId(RoleEnum.student.ToString());
-			ViewBag.StdRoleId=roleid;	
 			if (Id == null)
 			{
 				return NotFound();
@@ -258,7 +261,6 @@ namespace Attendance_Tracking_System.Controllers
 		[HttpPost]
 		public async Task<IActionResult> UpdateEmployee(Employee employee, IFormFile Img)
 		{
-		
 			if (!ModelState.IsValid)
 			{
 				return View(employee);
@@ -303,7 +305,7 @@ namespace Attendance_Tracking_System.Controllers
 
 			if (ModelState.IsValid)
 			{
-				if (repo.CheckEmailUniqueness(employee))
+				if (repo.CheckEmailUniquenessForNewUsers(employee.Email))
 				{
 					string fileName = $"{employee.Id}.{Img.FileName}";
 					string filePath = Path.Combine("wwwroot/images/", fileName);
@@ -316,7 +318,7 @@ namespace Attendance_Tracking_System.Controllers
 						await Img.CopyToAsync(fs);
 					}
 					repo.AddEmployee(employee, fileName);
-			        var roleId = repo.GetRoleId(employee.Type.ToString());
+					var roleId = repo.GetRoleId(employee.Type.ToString());
 					repo.AssignRoleToUser(employee.Id, roleId);
 					return RedirectToAction("GetEmployees");
 				}
@@ -325,8 +327,107 @@ namespace Attendance_Tracking_System.Controllers
 					ModelState.AddModelError(nameof(employee.Email), "Email already exists");
 				}
 			}
-			return View(employee);	
+			return View(employee);
 		}
+		public IActionResult GetAllIntakes()
+		{
+			var res = repo.GetIntakes();
+			return View(res);
+		}
+		public IActionResult DeleteIntake(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+			if (id == -1)
+			{
+				return BadRequest();
+			}
+			var deletionRes = repo.DeleteIntake(id);
+			if (deletionRes == 1)
+			{
+				TempData["errorMessage"] = "Intake Deleted Successfully";
+				TempData["showAlert"] = true;
+				return RedirectToAction("GetAllIntakes");
+			}
+			else
+			{
+				return RedirectToAction("GetAllIntakes");
+			}
+		}
+		public IActionResult EditIntake(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+			if (id == -1)
+			{
+				return BadRequest();
+			}
+			var intake = repo.GetIntakeById(id);
+			return View(intake);
+		}
+		[HttpPost]
+		public IActionResult EditIntake(Intake intake)
+		{
 
+			if (ModelState.IsValid)
+			{
+				repo.updateIntake(intake);
+				return RedirectToAction("GetAllIntakes");
+			}
+			return View(intake);
+		}
+		public IActionResult AddIntake()
+		{
+			ViewBag.progs= repo.GetITIPrograms();
+			return View();
+		}
+		[HttpPost]
+		public IActionResult AddIntake(Intake intake)
+		{
+			ViewBag.progs = repo.GetITIPrograms();
+			if (ModelState.IsValid)
+			{
+				repo.AddIntake(intake);
+				return RedirectToAction("GetAllIntakes");
+			}
+			return View();
+		}
+		public IActionResult GetDetails(int? id)
+		{
+			if(id==null)
+			{
+				return NotFound();
+			}
+			if (id == -1)
+			{
+				return BadRequest();
+			}
+			var intake=repo.GetIntakeById(id.Value);
+			return View(intake);
+		}
+		[HttpGet]
+		public IActionResult CheckEmailUniqueness(string email,int id)
+		{
+			if (!repo.CheckEmailUniqueness(email,id))
+			{
+				return Json(new { isUnique = false });
+			}
+
+			return Json(new { isUnique = true });
+		}
+		[HttpGet]
+		public IActionResult CheckEmailUniquenessForNewUsers(string email)
+		{
+			if (!repo.CheckEmailUniquenessForNewUsers(email))
+			{
+				return Json(new { isUnique = false });
+			}
+
+			return Json(new { isUnique = true });
+		}
 	}
 }

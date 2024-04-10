@@ -1,44 +1,30 @@
-﻿@model IEnumerable<Student>
+﻿@model IEnumerable<Intake>
+@{
+	ViewData["Title"] = "GetAllIntakes";
+}
+
 <html>
 <head>
-
 	<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
 	<link href="~/css/dataTable.css" rel="stylesheet" />
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.6/css/jquery.dataTables.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body>
 	<div style="display:flex;flex-direction:row;align-content:space-between">
-
-		<h2 style="color:#5D0E41;margin-left:10px;margin-right:60%">Students Data</h2>
-
-		@using (Html.BeginForm("UploadExcel", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
-		{
-			<div class="form-group">
-				<label for="file" style="display: none;">Choose Excel file:</label>
-				<label for="file" class="file-input-label">
-					<img src="~/images/microsoft-excel.svg" width="70px" /> Upload Excel File
-				</label>
-				<input type="file" name="file" id="file" class="form-control-file" accept=".xlsx,.xls" style="display: none;" />
-			</div>
-			<button type="submit" class="btn btn-dark">Upload</button>
-		}
-
-		@if (!string.IsNullOrEmpty(ViewBag.Message))
-		{
-			<div class="alert alert-info mt-3">@ViewBag.Message</div>
-		}
+	<h2 style="color:#5D0E41;margin-left:10px;margin-right:60%">Intakes Data</h2>
+	<a class="btn btn-dark" asp-action="AddIntake" asp-controller="Admin" style="height:40px">Add Intake</a>
 	</div>
-	<table id="example" class="table table-hover table-bordered display"
-		   style="text-align:center;width:100%;border-radius:15px;">
-		<thead>
+	<table id="example" class="table table-hover table-bordered display" 
+		style="text-align:center;width:100%;border-radius:15px;">
+		<thead >
 			<tr style="background-color:#001F3D;color:white;text-align:center">
 				<th scope="col">Id</th>
 				<th scope="col">Name</th>
-				<th scope="col">Image</th>
-				<th scope="col">Email</th>
-				<th scope="col">Password</th>
-				<th scope="col">Age</th>
+				<th scope="col">Start Date</th>
+				<th scope="col">End Date</th>
+				<th scope="col">Program</th>
 				<th scope="col">Delete</th>
 				<th scope="col">Edit</th>
 				<th scope="col">Details</th>
@@ -56,34 +42,22 @@
 				@foreach (var item in Model)
 				{
 					<tr>
-						<td>@item.Id</td>
+						<td>@item.No</td>
 						<td>@item.Name</td>
-						<td>
-							@if (!string.IsNullOrEmpty(item.UserImage))
-							{
-								<img class="img-style" src="@Url.Content("~/images/" + item.UserImage)" alt="User Image" />
-							}
-							else
-							{
-								<img src="@Url.Content("~/images/user.png")" class="img-style" />
-							}
-						</td>
-						<td>@item.Email</td>
-						<td>@item.Password</td>
-						<td>@item.Age</td>
-						
-						<td>
-							<a onclick="showConfirmation('@Url.Action("DeleteStudent", "Admin", new { id = item.Id })')">
+						<td>@item?.StartDate</td>
+						<td>@item?.EndDate</td>
+						<td>@item?.Program.Name<td>
+							<a onclick="showConfirmation('@Url.Action("DeleteIntake", "Admin", new { id = item.No })')">
 								<i class="fa-solid fa-trash-can" style="color: darkred; font-size: 24px;"></i>
 							</a>
 						</td>
 						<td>
-							<a asp-action="UpdateStudent" asp-controller="Admin" asp-route-id="@item.Id">
+							<a asp-action="EditIntake" asp-controller="Admin" asp-route-id="@item.No">
 								<i class="fa-regular fa-pen-to-square" style="color: #00224D; font-size: 24px;"></i>
 							</a>
 						</td>
 						<td>
-							<a asp-action="StudentDetails" asp-controller="Admin" asp-route-id="@item.Id">
+							<a asp-action="GetDetails" asp-controller="Admin" asp-route-id="@item.No">
 								<i class="fa-solid fa-eye" style="color: #5D0E41; font-size: 24px;"></i>
 							</a>
 						</td>
@@ -99,7 +73,6 @@
 	<script>
 		$(document).ready(function () {
 			$('#example').DataTable();
-			pagingType: 'simple_numbers';
 		});
 		function showConfirmation(url) {
 			Swal.fire({
@@ -110,7 +83,7 @@
 				cancelButtonColor: '#d33',
 				confirmButtonText: 'Yes, delete it!',
 				cancelButtonText: 'No, cancel!',
-			}).then((result) => {
+			   }).then((result) => {
 				if (result.isConfirmed) {
 					window.location.href = url;
 					Swal.fire(
@@ -125,6 +98,5 @@
 	</script>
 </body>
 </html>
-
 
 
