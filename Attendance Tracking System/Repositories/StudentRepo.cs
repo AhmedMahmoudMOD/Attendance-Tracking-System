@@ -2,6 +2,7 @@
 using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.View_Models;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Attendance_Tracking_System.Repositories
 {
@@ -61,7 +62,7 @@ namespace Attendance_Tracking_System.Repositories
                         File.Delete(filePath);
                     }
                 }
-                existingStudent.UserImage = await UploadFileRepo.UploadFile(student.Image);
+                existingStudent.UserImage = await UploadFileRepo.UploadFile(student.Image,existingStudent.Id,existingStudent.Name);
             }
             await  db.SaveChangesAsync();
         }
