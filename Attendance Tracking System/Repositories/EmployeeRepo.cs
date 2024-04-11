@@ -23,6 +23,7 @@ namespace Attendance_Tracking_System.Repositories
         public bool Update(Employee employee) {
             try
             {
+                
                 db.Employee.Update(employee);
                 db.SaveChanges();
                 return true;
@@ -31,9 +32,8 @@ namespace Attendance_Tracking_System.Repositories
             {
                 return false;
             }
-            
-           
         }
+       
 
         public bool Add(Employee employee)
         {

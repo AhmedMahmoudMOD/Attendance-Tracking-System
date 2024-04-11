@@ -43,7 +43,8 @@ namespace Attendance_Tracking_System.Controllers
             return NotFound();
         }
 
-        [HttpPost]
+        [
+            HttpPost]
         public async Task<IActionResult> EditProfile(Employee Emp, IFormFile? EmpImage)
         {
             if (ModelState.IsValid)
@@ -73,39 +74,71 @@ namespace Attendance_Tracking_System.Controllers
                 return View(Emp);
             }
         }
+        public IActionResult Delete(int ?id)
+        {
+            if(id == null)
+            {
+                return BadRequest();    
+            }
+            var studentAffair=employeeRepo.GetByID(id.Value);
+            if(studentAffair == null)
+            {
+                return NotFound();
+            }
+            employeeRepo.Delete(studentAffair.Id);
+            return View(studentAffair);
 
-        // i dont know in track or what
+        }
         public IActionResult GetStudents()
         {
-            var students = studentRepo.GetAll();  
+            
+            var students = studentRepo.GetStudentsAccepted();
+            ViewBag.Tracks = trackRepo.GetAll();
                 return View(students);
         }
 
-       
-        //public IActionResult EditStudentProfile(int ? id)
-        //{
-        //    if(id == null||id == 0)
-        //        return View();
-        //    var student = studentRepo.GetById(id.Value);
-        //    if (student == null)
-        //        return NotFound();  
-        //    ViewBag.Tracks = trackRepo.GetAll();
-        //    return View(student);
-        //}
-        //// again
-        //[HttpPost]
-        //public IActionResult EditStudentProfile(Student student)
-        //{
-        //    if(ModelState.IsValid)
-        //    {
-        //        studentRepo.Update(student);
-        //        return RedirectToAction("GetStudents");
-        //    }
-        //    ViewBag.Tracks = trackRepo.GetAll();
-        //    return View(student);
-        //}
-
+        public IActionResult EditStudentProfile(int? id)
+        {
+            if (id == null || id == 0)
+                return View();
+            var student = studentRepo.GetById(id.Value);
+            if (student == null)
+                return NotFound();
+            ViewBag.Tracks = trackRepo.GetAll();
+            return View(student);
+        }
+        [HttpPost]
       
+        public async Task<IActionResult> EditStudentProfile(Student student, IFormFile? EmpImage)
+        {
+            if (ModelState.IsValid)
+            {
+                if (EmpImage != null)
+                {
+                    string filename = $"Student {student.Id.ToString()}.{EmpImage.FileName.Split('.').Last()}";
+                    // Saving the file to the wwwroot/images folder
+                    string path = $"wwwroot/Images/{filename}";
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await EmpImage.CopyToAsync(stream);
+                    }
+
+                    student.UserImage = filename;
+                    studentRepo.Update(student);
+                    return RedirectToAction("GetStudents", "StudentAffairs", new { id = student.Id });
+                }
+                else
+                {
+                    studentRepo.Update(student);
+                    return RedirectToAction("ViewProfile", "StudentAffairs", new { id = student.Id });
+                }
+            }
+            else
+            {
+                ViewBag.Tracks = trackRepo.GetAll();
+                return View(student);
+            }
+        }
 
 
 
@@ -115,5 +148,7 @@ namespace Attendance_Tracking_System.Controllers
 
 
 
-    } 
+
+
+    }
 }

@@ -33,8 +33,6 @@ namespace Attendance_Tracking_System.Controllers
             var programms = programRepo.GetAll();  
             return View(programms);
         }
-
-     
         public IActionResult Create()
         {
             try
