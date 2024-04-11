@@ -9,5 +9,7 @@ namespace Attendance_Tracking_System.Models
         public int? ScheduleID { get; set; }
         [JsonIgnore]
         public virtual Schedule? Schedule { get; set; }
+
+        public bool? IsMarked {  get; set; } 
     }
 }

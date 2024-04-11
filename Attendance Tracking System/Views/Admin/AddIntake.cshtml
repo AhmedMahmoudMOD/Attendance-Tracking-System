@@ -1,0 +1,78 @@
+﻿@model Intake
+@{
+	ViewData["Title"] = "EditIntake";
+	var allProgs = ViewBag.progs as List<ITIProgram>;
+	SelectList programs = new SelectList(allProgs, "Id", "Name");
+
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<style>
+		.field-validation-error {
+			color: red;
+		}
+	</style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+	<div class="container">
+		<div style="display:flex;flex-direction:row">
+			<h2 class="text-center " style="color:#5D0E41;">Update Intake</h2>
+			<a class="btn btn-dark" style="height:40px;margin-left:10px" asp-action="GetAllIntakes">Back </a>
+		</div>
+		<br />
+		<div class="col-lg-6">
+			<form id="signupForm" method="post" asp-action="AddIntake" class="border border-dark p-4" enctype="multipart/form-data">
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label asp-for="Name">Name</label>
+						<input asp-for="Name" class="form-control" id="inputEmail4" placeholder="Name">
+						<span asp-validation-for="Name"></span>
+					</div>
+					<div class="form-group col-md-6">
+						<label asp-for="StartDate">Start Date</label>
+						<input asp-for="StartDate" class="form-control" placeholder="start date" id="startDate">
+						<span asp-validation-for="StartDate"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label asp-for="EndDate">End Date</label>
+					<input asp-for="EndDate" class="form-control" placeholder="end date" id="endDate">
+					<span asp-validation-for="EndDate"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="Program"></label>
+					<select asp-for="ProgramID">
+						@foreach(var item in programs)
+						{
+							<option value="@item.Value">@item.Text</option>
+						}
+					</select>
+				</div>
+				<button type="submit" class="btn btn-danger btn-block" id="saveBtn">Add Intake</button>
+
+			</form>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+	<script>
+		document.getElementById("saveBtn").addEventListener("click", function () {
+			var start = document.getElementById("startDate").value;
+			var end = document.getElementById("endDate").value;
+			if (end < start) {
+				event.preventDefault();
+				alert("End Date must be greater than start date");
+			}
+		});
+
+	</script>
+</body>
+</html>

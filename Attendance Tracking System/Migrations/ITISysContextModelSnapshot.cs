@@ -37,7 +37,6 @@ namespace Attendance_Tracking_System.Migrations
                         .HasColumnType("time");
 
                     b.Property<string>("AttendanceStatus")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AttendanceType")
@@ -125,10 +124,13 @@ namespace Attendance_Tracking_System.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("PermissionID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PermissionID"));
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
 
                     b.Property<bool?>("IsAccepted")
                         .HasColumnType("bit");
@@ -346,6 +348,9 @@ namespace Attendance_Tracking_System.Migrations
                 {
                     b.HasBaseType("Attendance_Tracking_System.Models.Attendance");
 
+                    b.Property<bool?>("IsMarked")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("ScheduleID")
                         .HasColumnType("int");
 
@@ -396,7 +401,8 @@ namespace Attendance_Tracking_System.Migrations
 
                     b.Property<string>("Faculty")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("GraduationYear")
                         .HasColumnType("int");
@@ -413,14 +419,17 @@ namespace Attendance_Tracking_System.Migrations
                         .HasColumnName("RegStatus");
 
                     b.Property<string>("Specialization")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int?>("TrackID")
                         .HasColumnType("int");
 
                     b.Property<string>("University")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasIndex("IntakeNo");
 

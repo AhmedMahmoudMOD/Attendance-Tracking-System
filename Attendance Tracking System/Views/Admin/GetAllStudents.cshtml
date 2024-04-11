@@ -2,38 +2,12 @@
 <html>
 <head>
 
-	<style>
-		td:hover {
-			cursor: pointer;
-		}
-
-		.rwd-table tr:first-child {
-			border-top: none;
-			background-color: white;
-			color: #212529;
-		}
-
-		.img-style {
-			width: 50px;
-			height: 50px;
-			border-radius: 50%;
-		}
-
-	</style>
-
 	<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-
-
+	<link href="~/css/dataTable.css" rel="stylesheet" />
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.6/css/jquery.dataTables.css">
 </head>
 <body>
-	@if (TempData["ShowAlert"] != null && (bool)TempData["ShowAlert"])
-	{
-		<div id="alertContainer">
-			<h1 class="alert alert-success" style="text-align:center">@TempData["ErrorMessage"]</h1>
-		</div>
-	}
-
-
 	<div style="display:flex;flex-direction:row;align-content:space-between">
 
 		<h2 style="color:#5D0E41;margin-left:10px;margin-right:60%">Students Data</h2>
@@ -55,13 +29,10 @@
 			<div class="alert alert-info mt-3">@ViewBag.Message</div>
 		}
 	</div>
-
-
-
-
-	<table class="table table-hover" style="text-align:center;width:90%;margin:20px;border-radius:15px;">
-		<thead class="thead-dark">
-			<tr>
+	<table id="example" class="table table-hover table-bordered display"
+		   style="text-align:center;width:100%;border-radius:15px;">
+		<thead>
+			<tr style="background-color:#001F3D;color:white;text-align:center">
 				<th scope="col">Id</th>
 				<th scope="col">Name</th>
 				<th scope="col">Image</th>
@@ -102,7 +73,7 @@
 						<td>@item.Age</td>
 						
 						<td>
-							<a asp-action="DeleteStudent" asp-controller="Admin" asp-route-id="@item.Id" onclick="return confirm('Are you sure you want to delete this Student?')">
+							<a onclick="showConfirmation('@Url.Action("DeleteStudent", "Admin", new { id = item.Id })')">
 								<i class="fa-solid fa-trash-can" style="color: darkred; font-size: 24px;"></i>
 							</a>
 						</td>
@@ -122,24 +93,35 @@
 
 		</tbody>
 	</table>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.datatables.net/1.11.6/js/jquery.dataTables.js"></script>
 
 	<script>
 		$(document).ready(function () {
-			$("#searchText").on("input", function () {
-				var data = $(this).val().trim().toLowerCase();
-				$("#keywords tbody tr").each(function () {
-					var rowText = $(this).text().trim().toLowerCase();
-					if (rowText.includes(data)) {
-						$(this).show();
-					} else {
-						$(this).hide();
-					}
-				});
-			});
-			setTimeout(function () {
-				document.getElementById('alertContainer').style.display = 'none';
-			}, 3000);
+			$('#example').DataTable();
+			pagingType: 'simple_numbers';
 		});
+		function showConfirmation(url) {
+			Swal.fire({
+				title: 'Are you sure You want to delete this intake?',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, delete it!',
+				cancelButtonText: 'No, cancel!',
+			}).then((result) => {
+				if (result.isConfirmed) {
+					window.location.href = url;
+					Swal.fire(
+						'Deleted!',
+						'Intake has been deleted.',
+						'success'
+					);
+				}
+
+			});
+		}
 	</script>
 </body>
 </html>

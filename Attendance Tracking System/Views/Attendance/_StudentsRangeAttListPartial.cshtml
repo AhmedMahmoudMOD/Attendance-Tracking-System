@@ -11,47 +11,39 @@
     <table class="table text-center mt-3 table-striped table-responsive table-bordered" id="listTable">
         <thead>
             <tr>
-                <th>
-                    ID
-                </th>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Attendance Status
-                </th>
-                <th>
-                    Date
-                </th>
-                <th>
-                    Arrival Time
-                </th>
-                <th>
-                    Leave Time
-                </th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Attendance Status</th>
+                <th>Date</th>
+                <th>Arrival Time</th>
+                <th>Leave Time</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var std in Model)
             {
-                <tr>
-                    <td>@std.Id</td>
-                    <td>@std.Name</td>
-                    @if (std.Attendances.Any())
+                @if (std.Attendances.Any())
+                {
+                    foreach (var attendance in std.Attendances)
                     {
-                        foreach (var attendance in std.Attendances)
-                        {
+                        <tr>
+                            <td>@std.Id</td>
+                            <td>@std.Name</td>
                             <td>@attendance.AttendanceStatus</td>
                             <td>@attendance.Date</td>
                             <td>@(attendance.ArrivalTime.HasValue ? attendance.ArrivalTime : "Not Set")</td>
                             <td>@(attendance.LeaveTime.HasValue ? attendance.LeaveTime : "Not Set")</td>
-                        }
+                        </tr>
                     }
-                    else
-                    {
-                        <td colspan="6">No attendance record</td>
-                    }
-                </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>@std.Id</td>
+                        <td>@std.Name</td>
+                        <td colspan="4">No attendance record</td>
+                    </tr>
+                }
             }
         </tbody>
     </table>

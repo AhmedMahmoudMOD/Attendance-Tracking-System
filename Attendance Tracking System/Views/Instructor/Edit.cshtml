@@ -1,6 +1,7 @@
 ﻿@model Instructor
 @{
-    Layout = null;
+    Layout = "_sharedIns";
+   
 }
 
 <!DOCTYPE html>
@@ -12,9 +13,12 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 </head>
 <body>
-    <form asp-action="Edit" asp-controller="Instructor" method="post">
-        <partial name="CreateEdit"></partial>
-        <input type="submit" value="SacesChanges"/>
-    </form>
+    <div class="CreateEdit">
+        <form asp-action="Edit" asp-controller="Instructor" method="post" enctype="multipart/form-data">
+            <partial name="CreateEdit"></partial>
+            <input type="submit" value="Save" />
+        </form>
+    </div>
+   
 </body>
 </html>

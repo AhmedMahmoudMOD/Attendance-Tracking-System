@@ -1,134 +1,201 @@
 ﻿@model Student
 @{
-    Layout = null;
-    var tracks = ViewBag.Tracks as List<Track>;
-    SelectList dep = new SelectList(tracks, "Id", "Name");
+	Layout = null;
+
+
+	var progs = ViewBag.Programs as List<ITIProgram>;
+	SelectList prog = new SelectList(progs, "Id", "Name");
 }
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <style>
-        .field-validation-error {
+	<style>
+		.field-validation-error {
 			color: red;
 		}
-    </style>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Account</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+	</style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Create Account</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container-fluid vh-100">
-        <div class="row h-100 align-items-center">
-            <div class="col-lg-6 text-center bg-light rounded">
-                <img src="./images/signup.svg" class="img-fluid" alt="Developer Activity">
-            </div>
-            <div class="col-lg-6">
-                <div class="container">
-                    <h2 class="text-center mb-4" style="color:#5D0E41;">Create Account</h2>
-                    <form id="signupForm" method="post" asp-action="SignUp" enctype="multipart/form-data">
-                        <div class="form-row">
-                           <input asp-for="IntakeNo" value="2" hidden />
-                            <input type="hidden" name="RoleId" value="1" />
+	<div class="container-fluid vh-100">
+		<div class="row h-100 align-items-center">
+			<div class="col-lg-6 text-center bg-light rounded">
+				<img src="~/images/developer-activity-animate.svg" />
+			</div>
+			<div class="col-lg-6">
+				<div class="container">
+					<h2 class="text-center mb-4" style="color:#5D0E41;">Create Account</h2>
+					<form id="signupForm" method="post" asp-action="SignUp" enctype="multipart/form-data">
+						<div class="form-row">
+							<input type="hidden" name="RoleId" value="1" />
+							<div class="form-group col-md-6">
+								<label asp-for="Name">Name</label>
+								<input asp-for="Name" class="form-control" id="inputEmail4" placeholder="Name">
+								<span asp-validation-for="Name"></span>
+							</div>
+							<div class="form-group col-md-6">
+								<label asp-for="Age">Age</label>
+								<input asp-for="Age" class="form-control" id="inputPassword4" placeholder="Age">
+								<span asp-validation-for="Age"></span>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label asp-for="Email">Email</label>
+								<input asp-for="Email" class="form-control" placeholder="Email" id="Email">
+								<span id="emailError" style="color:red"></span>
+								<span asp-validation-for="Email"></span>
 
-                            <div class="form-group col-md-6">
-                                <label asp-for="Name">Name</label>
-                                <input asp-for="Name" class="form-control" id="inputEmail4" placeholder="Name">
-                                <span asp-validation-for="Name"></span>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label asp-for="Age">Age</label>
-                                <input asp-for="Age" class="form-control" id="inputPassword4" placeholder="Age">
-                                <span asp-validation-for="Age"></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Email">Email</label>
-                            <input asp-for="Email" class="form-control" id="inputEmail" placeholder="Email">
-                            <span asp-validation-for="Email"></span>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label asp-for="Password">Password</label>
-                                <input asp-for="Password" class="form-control" id="inputPassword" placeholder="Password">
-                                <span asp-validation-for="Password"></span>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label asp-for="PhoneNumber">Phone</label>
-                                <input asp-for="PhoneNumber" type="tel" class="form-control" id="inputPhone" placeholder="Phone">
-                                <span asp-validation-for="PhoneNumber"></span>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label asp-for="Faculty">Faculty</label>
-                                <input asp-for="Faculty" class="form-control" id="inputFaculty" placeholder="Faculty">
-                                <span asp-validation-for="Faculty"></span>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label asp-for="Specialization">Specialization</label>
-                                <input asp-for="Specialization" class="form-control" id="inputSpecialization" placeholder="Specialization">
-                                <span asp-validation-for="Specialization"></span>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label asp-for="GraduationYear">Graduation Year</label>
-                                <input asp-for="GraduationYear" class="form-control" id="inputGradYear" placeholder="Graduation Year">
-                                <span asp-validation-for="GraduationYear"></span>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label asp-for="University">University</label>
-                                <input asp-for="University" class="form-control" id="inputUniversity" placeholder="University">
-                                <span asp-validation-for="University"></span>
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col-md-6">
-                                <label asp-for="UserImage">Image</label>
-                                <input type="file" name="Img" class="form-control-file" asp-for="UserImage" />
-                                <span id="imageError" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label asp-for="Track">Track</label>
-                                <div class="form-group">
-                                    <select asp-for="TrackID" class="form-control">
-                                        <option value="">-- Select Track --</option>
-                                        @foreach (var item in dep)
-                                        {
-                                            <option value="@item.Value">@item.Text</option>
-                                        }
-                                    </select>
-                                    <span id="trackError" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-danger btn-block">Register</button>
-                        <p class="mt-3 text-center">Already have an account? <a href="#">Login</a></p>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        document.getElementById('signupForm').addEventListener('submit', function (event) {
-            var userImage = document.getElementById('UserImage').files[0];
-            var track = document.getElementById('TrackID').value;
-            document.getElementById('imageError').innerText = '';
-            document.getElementById('trackError').innerText = '';
-            if (!userImage) {
-                document.getElementById('imageError').innerText = 'Please select an image.';
-                event.preventDefault();
-            }
-            if (!track) {
-                document.getElementById('trackError').innerText = 'Please select a track.';
-                event.preventDefault();
-            }
-        });
-    </script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+							</div>
+							<div class="form-group col-md-6">
+								<label asp-for="Password">Password</label>
+								<input asp-for="Password" class="form-control" id="inputPassword" placeholder="Password">
+								<span asp-validation-for="Password"></span>
+							</div>
+						</div>
+
+						<div class="form-row">
+
+							<div class="form-group col-md-6">
+								<label asp-for="PhoneNumber">Phone</label>
+								<input asp-for="PhoneNumber" type="tel" class="form-control" id="inputPhone" placeholder="Phone">
+								<span asp-validation-for="PhoneNumber"></span>
+							</div>
+							<div class="form-group col-md-6">
+								<label asp-for="Faculty">Faculty</label>
+								<input asp-for="Faculty" class="form-control" id="inputFaculty" placeholder="Faculty">
+								<span asp-validation-for="Faculty"></span>
+							</div>
+						</div>
+						<div class="form-row">
+							
+							<div class="form-group col-md-6">
+								<label asp-for="Specialization">Specialization</label>
+								<input asp-for="Specialization" class="form-control" id="inputSpecialization" placeholder="Specialization">
+								<span asp-validation-for="Specialization"></span>
+							</div>
+							<div class="form-group col-md-6">
+								<label asp-for="GraduationYear">Graduation Year</label>
+								<input asp-for="GraduationYear" class="form-control" id="inputGradYear" placeholder="Graduation Year">
+								<span asp-validation-for="GraduationYear"></span>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label asp-for="University">University</label>
+								<input asp-for="University" class="form-control" id="inputUniversity" placeholder="University">
+								<span asp-validation-for="University"></span>
+							</div>
+							<div class="form-group col-md-6">
+								<label asp-for="UserImage">Image</label>
+								<input type="file" name="Img" class="form-control" asp-for="UserImage" />
+								<span id="imageError" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="row form-group">
+							<div class="col-md-6">
+								<label asp-for="Program"></label>
+								<div class="form-group">
+									<select asp-for="ProgramID" class="form-control" id="programList">
+										@if (progs != null && progs.Any())
+										{
+											foreach (var item in prog)
+											{
+												<option value="@item.Value">@item.Text</option>
+											}
+										}
+									</select>
+									<span id="progError" class="text-danger"></span>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label asp-for="TrackID">Track</label>
+									<select asp-for="TrackID" class="form-control" id="TrackList">
+									</select>
+									<span id="trackError" class="text-danger"></span>
+								</div>
+
+							</div>
+						</div>
+						<button type="submit" class="btn btn-danger btn-block">Register</button>
+						<p class="mt-3 text-center">Already have an account? <a asp-action="login" asp-controller="account">Login</a></p>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		document.getElementById('signupForm').addEventListener('submit', function (event) {
+			var userImage = document.getElementById('UserImage').files[0];
+			var track = document.getElementById('TrackID').value;
+			document.getElementById('imageError').innerText = '';
+			document.getElementById('trackError').innerText = '';
+			if (!userImage) {
+				document.getElementById('imageError').innerText = 'Please select an image.';
+				event.preventDefault();
+			}
+			if (!track) {
+				document.getElementById('trackError').innerText = 'Please select a track.';
+				event.preventDefault();
+			}
+		});
+		$(document).ready(function () {
+			$('#programList').change(function () {
+				var selectedValue = $(this).val();
+				console.log("Selected value: " + selectedValue);
+				$.ajax({
+					url: '/StudentRegister/GetTracksBasedOnPrograms',
+					type: 'GET',
+					data: { programId: selectedValue },
+					dataType: 'json',
+					success: function (data) {
+						$('#TrackList').empty();
+						$.each(data, function (index, item) {
+							$('#TrackList').append($('<option>', {
+								value: item.value,
+								text: item.text
+							}));
+						});
+					},
+					error: function (xhr, status, error) {
+						console.error(xhr.responseText);
+					}
+				});
+			});
+			$('#Email').on('blur', function () {
+				var email = $(this).val();
+				if (email) {
+					$.ajax({
+						url: '/StudentRegister/CheckEmailUniqueness',
+						type: 'GET',
+						data: { email: email },
+						success: function (response) {
+							if (response.isUnique) {
+								// Email is unique
+								$('#emailError').text('');
+							} else {
+								// Email already exists
+								$('#emailError').text('Email already existss');
+								event.preventDefault();
+							}
+						},
+						error: function (xhr, status, error) {
+							console.error(xhr.responseText);
+						}
+					});
+				}
+			});
+		});
+	</script>
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
