@@ -42,5 +42,10 @@ namespace Attendance_Tracking_System.Repositories
             program.IsDeleted= true;// soft delete
             db.SaveChanges();
         }
+
+        public List<ITIProgram> GetAllPrograms()
+        {
+            return db.Program.ToList();
+        }
     }
 }

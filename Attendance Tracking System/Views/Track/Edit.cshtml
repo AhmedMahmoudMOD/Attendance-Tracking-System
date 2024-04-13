@@ -1,0 +1,111 @@
+﻿@model Track
+@{
+    Layout = null;
+    var program = ViewBag.programs;
+    var instructor = ViewBag.InsNotSuperVisor;
+    SelectList Programs = new SelectList(program, "Id", "Name");
+    SelectList Instrcutor = new SelectList(instructor, "Id", "Name");
+
+    SelectList TeachingTrack = new SelectList(ViewBag.TrackInstructor, "Id", "Name");
+    SelectList NotTeaching = new SelectList(ViewBag.NotTeachingIns, "Id", "Name");
+
+
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit</title>
+    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/ss.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+<body>
+    <div class="CreateEdit">
+        <form asp-action="Edit" asp-controller="track" method="post">
+            <div class="container mt-4 ">
+                <div class="main-body ">
+                    <div class="row gutters-sm">
+                        <div class="col-md-8">
+                            <div class="card mb-3">
+                                <div class="card-body">
+
+                                    <div class="row">
+                                        <div class="col-4 d-flex align-items-center justify-content-center">
+                                            <h6 class="mb-0">Name</h6>
+                                        </div>
+                                        <div class="col-6">
+                                            <input asp-for="Name" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div class="row">
+                                        <div class="col-4 d-flex align-items-center justify-content-center">
+                                            <h6 class="mb-0">Capacity</h6>
+                                        </div>
+                                        <div class="col-6">
+                                            <input asp-for="Capacity" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div class="row">
+                                        <div class="col-4 d-flex align-items-center justify-content-center">
+                                            <h6 class="mb-0">Program</h6>
+                                        </div>
+                                        <div class="col-6">
+                                            <select asp-for="ProgramID" asp-items="Programs" class="form-control"></select>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div class="row">
+                                        <div class="col-4 d-flex align-items-center justify-content-center">
+                                            <h6 class="mb-0">SuperVisor</h6>
+                                        </div>
+                                        <div class="col-6">
+                                            <select asp-for="SuperID" asp-items=" Instrcutor" class="form-control"></select>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div class="row">
+                                        <div class="col-4 d-flex align-items-center justify-content-center">
+                                            <h6 class="mb-0">Track Instructor</h6>
+                                        </div>
+                                        <div class="col-6">
+                                            <select multiple name="RemovedIns" asp-items="TeachingTrack" class="form-control"></select>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div class="row">
+                                        <div class="col-4 d-flex align-items-center justify-content-center">
+                                            <h6 class="mb-0">Not Track Instructor</h6>
+                                        </div>
+                                        <div class="col-6">
+                                            <select multiple name="AddedIns" asp-items="NotTeaching" class="form-control"></select>
+                                        </div>
+                                    </div>
+
+                                    <hr />
+                                    <div class="row justify-content-center align-items-center">
+                                        <div class="col-4">
+                                            <input type="submit" value="Save" class="btn btn-info  w-100" />
+                                        </div>
+                                    </div>
+                                    <hr />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+        </form>
+    </div>
+</body>
+</html>
