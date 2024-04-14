@@ -1,0 +1,200 @@
+﻿@model Track
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/ss.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        .card-body {
+            display: flex;
+            flex-direction: column;
+        }
+
+            .card-body > .row {
+                flex: 1;
+                display: flex;
+                align-items: center;
+            }
+
+        .text-secondary {
+            font-size: 20px; 
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="main-body">
+            <div class="row gutters-sm justify-content-center align-content-center">
+                <div class="col-md-4">
+                    <div class="card mb-3" style="min-height: 200px;">
+                        <div class="m-2">Track Details :</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h6 class="mb-0">supervisor ID</h6>
+                                </div>
+                                <div class="col-sm-3 text-secondary">@Model.Id</div>
+                            </div>
+                            <hr class="m-0">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h6 class="mb-0">Track Name</h6>
+                                </div>
+                                <div class="col-sm-3 text-secondary">@Model.Name</div>
+                            </div>
+                            <hr class="m-0">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h6 class="mb-0">Track Capacity</h6>
+                                </div>
+                                <div class="col-sm-3 text-secondary">@Model.Capacity</div>
+                            </div>
+                            <hr class="m-0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row gutters-sm">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div>Teaching Instructor :</div>
+                            <div class="d-flex flex-column align-items-center text-center">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <td>instructor ID</td>
+                                            <td>instructor Name</td>
+                                            <td>instructor Age</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Instructors)
+                                        {
+                                            <tr>
+                                                <td>@item.Id</td>
+                                                <td>@item.Name</td>
+                                                <td>@item.Age</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row gutters-sm justify-content-center align-content-center my-3">
+                <div class="col-md-6">
+                    <div class="card mb-3" style="min-height: 200px;">
+                        <div class="card-body">
+                            <div>SuperVisor Details :</div>
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h6 class="mb-0">SuperVisor ID</h6>
+                                </div>
+                                <div class="col-sm-3 text-secondary">@ViewBag.SuperVisorID.Id</div>
+                            </div>
+                            <hr class="m-0">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h6 class="mb-0">SuperVisor Name</h6>
+                                </div>
+                                <div class="col-sm-3 text-secondary">@ViewBag.SuperVisorID.Name</div>
+                            </div>
+                            <hr class="m-0">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h6 class="mb-0">SuperVisor Age</h6>
+                                </div>
+                                <div class="col-sm-3 text-secondary">@ViewBag.SuperVisorID.Age</div>
+                            </div>
+                            <hr class="m-0">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card mb-3" style="min-height: 200px;">
+                        <div class="card-body">
+                            <div>Program Details :</div>
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h6 class="mb-0">Program ID</h6>
+                                </div>
+                                <div class="col-sm-3 text-secondary">@ViewBag.Program.Id</div>
+                            </div>
+                            <hr class="m-0">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h6 class="mb-0">Program Name</h6>
+                                </div>
+                                <div class="col-sm-3 text-secondary">@ViewBag.Program.Name</div>
+                            </div>
+                            <hr class="m-0">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h6 class="mb-0">Program Duration</h6>
+                                </div>
+                                <div class="col-sm-3 text-secondary">@ViewBag.Program.Duration</div>
+                            </div>
+                            <hr class="m-0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row gutters-sm">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div>Intakes Details :</div>
+                            <div class="d-flex flex-column align-items-center text-center">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <td>Intake ID</td>
+                                            <td>Intake Name</td>
+                                            <td>Intake StartDate</td>
+                                            <td>Intake EndDate</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Intakes)
+                                        {
+                                            <tr>
+                                                <td>@item.No</td>
+                                                <td>@item.Name</td>
+                                                <td>@item.StartDate</td>
+                                                <td>@item.EndDate</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <a asp-controller="track" asp-action="index" class="btn btn-info">Back</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

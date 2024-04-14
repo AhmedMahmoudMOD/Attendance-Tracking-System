@@ -1,5 +1,5 @@
-﻿﻿@{
-	var currentUser = User.Identity.Name;
+﻿@{
+	
 
 }
 <!DOCTYPE html>
@@ -14,17 +14,19 @@
 	<link href="/css/styles.css" rel="stylesheet" />
 	<link href="/css/ss.css" rel="stylesheet">
 	<link href="/css/program.css" rel="stylesheet" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.dataTables.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 	<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
-	<!-- Syncfusion ASP.NET Core controls styles -->
-	<link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/25.1.35/fluent.css" />
-	<!-- Syncfusion ASP.NET Core controls scripts -->
-	<script src="https://cdn.syncfusion.com/ej2/25.1.35/dist/ej2.min.js"></script>
 </head>
 <body class="sb-nav-fixed">
 	<nav class="sb-topnav navbar navbar-expand">
 		<!-- Navbar Brand-->
-		<b class="navbar-brand ps-3">Welcome @currentUser</b>
+		
 		<!-- Sidebar Toggle-->
 		<button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars" style="color:white"></i></button>
 		<!-- Navbar-->
@@ -45,100 +47,30 @@
 			<nav class="sb-sidenav accordion" id="sidenavAccordion">
 				<div class="sb-sidenav-menu">
 					<div class="nav">
-						<br />
-						@if (User.IsInRole("admin"))
-						{
-							<a class="nav-link m-1 selected" asp-controller="Admin" asp-action="Profile">
-								<div class="sb-nav-link-icon">
-									<i class="fas fa-user"></i>
-								</div>
-								Profile
-							</a>
+						<a class="nav-link m-1" asp-action="index" asp-asp-controller="Track" >
+							<div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+							AllTracks
+						</a>
+						@* <a class="nav-link collapsed m-1" asp-action="Edit" asp-controller="instructor" asp-route-Id="@Model.Id">
+							<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+							Edit Profile
+						</a>
 
-							<a class="nav-link m-1" asp-controller="Admin" asp-action="GetAllStudents">
-								<div class="sb-nav-link-icon">
-									<i class="fas fa-graduation-cap"></i>
-								</div>
-								Students Crud
-							</a>
+						<a class="nav-link collapsed m-1" asp-action="TrackSchedule" asp-controller="instructor" asp-route-Id="@Model.Id">
+							<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+							Track Shedulue
+						</a>
 
-							<a class="nav-link m-1" asp-controller="Admin" asp-action="GetEmployees">
-								<div class="sb-nav-link-icon">
-									<i class="fas fa-user-tie"></i>
-								</div>
-								Employee Crud
-							</a>
+						<a class="nav-link collapsed m-1" asp-action="Permission" asp-controller="instructor" asp-route-Id="@Model.Id">
+							<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+							Permission
+						</a>
 
-							<a class="nav-link m-1" asp-action="Index" asp-controller="Program">
-								<div class="sb-nav-link-icon">
-									<i class="fas fa-book"></i>
-								</div>
-								Program Crud
-							</a>
-
-							<a class="nav-link m-1" asp-controller="Admin" asp-action="GetAllIntakes">
-								<div class="sb-nav-link-icon">
-									<i class="fas fa-calendar"></i>
-								</div>
-								Intake Crud
-							</a>
-
-							<a class="nav-link m-1" asp-action="Index" asp-controller="Instructor">
-								<div class="sb-nav-link-icon">
-									<i class="fas fa-chalkboard-teacher"></i>
-								</div>
-								Instructor Crud
-							</a>
-						}
-						else if (User.IsInRole("student"))
-						{
-							//actions of student
-						}
-						else if (User.IsInRole("instructor"))
-						{
-							<a class="nav-link m-1" asp-action="Details" asp-asp-controller="instructor" asp-route-Id="">
-								<div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-								Profile
-							</a>
-
-							<a class="nav-link collapsed m-1" asp-action="Edit" asp-controller="instructor" >
-								<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-								Edit Profile
-							</a>
-
-							<a class="nav-link collapsed m-1" asp-action="TrackSchedule" asp-controller="instructor" >
-								<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-								Track Shedulue
-							</a>
-
-							<a class="nav-link collapsed m-1" asp-action="Permission" asp-controller="instructor" >
-								<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-								Permission
-							</a>
-
-							<a class="nav-link collapsed m-1" asp-action="AddWeeklyShedule" asp-controller="instructor" >
-								<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-								Add Schedule
-							</a>
-						}
-						else if (User.IsInRole("StudentAffairs"))
-						{
-							//actions of StudentAffairs
-
-						}
-						else if (User.IsInRole("Supervisor"))
-						{
-							//actions of Supervisor
-
-						}
-						else if (User.IsInRole("Security"))
-						{
-							//actions of Security
-						}
-						else
-						{
-						}
-
+						<a class="nav-link collapsed m-1" asp-action="AddWeeklyShedule" asp-controller="instructor" asp-route-Id="@Model.Id">
+							<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+							Add Schedule
+						</a> *@
+						
 					</div>
 				</div>
 				<div class="sb-sidenav-footer">

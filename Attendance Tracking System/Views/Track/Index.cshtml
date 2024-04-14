@@ -1,0 +1,100 @@
+﻿    @model IEnumerable<Track>
+    @{
+        Layout = "SharedTrackLayout";
+        int counter =0 ;
+        var Prgrams = ViewBag.Programs;
+        SelectList PrgramLIst = new SelectList(Prgrams, "Id", "Name");
+    }
+
+    <div class="container">
+        <div style="display:flex;flex-direction:row;align-content:space-between">
+            <h2 style="color:#5D0E41;margin-left:10px;margin-right:60%">Tracks Data</h2>
+            <a class="btn btn-dark" asp-action="Add" asp-controller="Track" style="height:40px">Add Track</a>
+        </div>
+    </div>
+
+    <table id="AllTracks" class="table table-hover table-bordered display" 
+       style="width:100%; border-radius:15px; margin-top: 20px;margin :20px">
+        <thead>
+            <tr style="background-color:#001F3D; color:white; text-align:center;">
+                <th>TrackID</th>
+                <th>TrackName</th>
+                <th>Capacity</th>
+                <th>Actual No</th>
+                <th style="text-align: center;">Edit</th>
+                <th style="text-align: center;">Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="text-align: center;">@item.Id</td>
+                    <td style="text-align: center;">@item.Name</td>
+                    <td style="text-align: center;">@item.Capacity</td>
+                    <td style="text-align: center;">@ViewBag.StudentCounter[counter]</td>
+                    <td style="text-align: center;">
+                        <a asp-action="Edit" asp-controller="track" asp-route-Id="@item.Id"><i class="fa-regular fa-pen-to-square" style="color: #00224D; font-size: 24px;"></i></a>
+                    </td>
+                    <td style="text-align: center;">
+                        <a asp-action="Details" asp-controller="track" asp-route-Id="@item.Id"><i class="fa-solid fa-eye" style="color: #5D0E41; font-size: 24px;"></i></a>
+                    </td>
+                </tr>
+                counter++;
+            }
+        </tbody>
+    </table>
+    <div class="program-tracks row">
+        <label for="Programs" class="program-tracks-label btn btn-dark col-2">Program Tracks</label>
+        <div class="col-8">
+            <select asp-items="PrgramLIst" onchange="GetProgramesTrack();" id="Programs" class="form-control"></select>
+        </div>
+    </div>
+    <table id="program" class="table">
+        <thead>
+            <tr>
+                <th>Program ID</th>
+                <th>Program Name</th>
+                <th>Capacity</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+
+        </tbody>
+    </table>
+    @section Scripts {
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.6/js/jquery.dataTables.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#AllTracks').DataTable();
+            });
+
+            function GetProgramesTrack() {
+                let _ProgramID = document.getElementById("Programs").value
+      
+                console.log(_ProgramID)
+                $.ajax({
+                    type: "get",
+                    url: "/track/ProgramTracks/" ,
+                    data: { "ProgramID": _ProgramID },
+                    success: function (result) {
+                        console.log(result);
+                       $('#tableBody').empty();
+                        result.forEach(function (track) {
+                       
+                            let row = `<tr>
+                                          <td>${track.id}</td>
+                                          <td>${track.name}</td>
+                                          <td>${track.capacity}</td>
+                                       </tr>`;
+                            $('#tableBody').append(row);
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+        </script>
+    }

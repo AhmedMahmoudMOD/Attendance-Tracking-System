@@ -9,5 +9,8 @@ namespace Attendance_Tracking_System.Repositories
         ITIProgram GetByID(int id);
         void Update(ITIProgram program);
         void Delete(int id);
+
+        public List<ITIProgram> GetAllPrograms();
+
     }
 }
