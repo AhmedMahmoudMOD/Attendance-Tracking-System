@@ -56,7 +56,7 @@
 		</div>
 	</div>
 	<div style="align-items:center" class="d1">
-		<form method="post" asp-action="EditProfile" enctype="multipart/form-data">
+		<form method="post" asp-action="EditProfile" enctype="multipart/form-data" id="editForm">
 			<input asp-for="Id" hidden />
 			<div class="col-md-12">
 				<label asp-for="Name">Name</label>
@@ -88,12 +88,21 @@
 			</div>
 			<br />
 			<div class="col-md-12">
-				<input type="file" name="Img" class="form-control-file" asp-for="UserImage" />
+				<input type="file" name="Img" class="form-control-file" asp-for="UserImage"  id="img"/>
+				<span id="imgError" class="field-validation-error"></span>
 			</div><br />
 			<button type="submit" class="btn" style="background-color:#ff5454;color:white">Save Changes</button>
 		</form>
 	</div>
 	<script>
+
+		document.getElementById("editForm").addEventListener("submit", function () {
+			var imageFile = document.getElementById("img").files[0];
+			var error = document.getElementById("imgError").innerText = '';
+			if (!imageFile) {
+				document.getElementById("imgError").innerText = "you must choose an image";
+					}
+		});
 		$('#Email').on('blur', function () {
 			var email = $(this).val();
 			var id = @Model.Id;

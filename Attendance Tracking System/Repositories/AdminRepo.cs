@@ -1,5 +1,6 @@
 ﻿using Attendance_Tracking_System.Data;
 using Attendance_Tracking_System.Models;
+using DocumentFormat.OpenXml.Spreadsheet;
 using MailKit.Net.Smtp;
 using Microsoft.EntityFrameworkCore;
 using MimeKit;
@@ -43,7 +44,7 @@ namespace Attendance_Tracking_System.Repositories
 			res.UserImage = ImgName;
 			context.SaveChanges();
 		}
-		public bool CheckEmailUniqueness(string email,int id)
+		public bool CheckEmailUniqueness(string email, int id)
 		{
 			return !context.User.Any(a => a.Email == email && a.Id != id);
 		}
@@ -81,7 +82,7 @@ namespace Attendance_Tracking_System.Repositories
 				for (int row = 2; row <= rowCount; row++)
 				{
 					Student entity = new Student();
-					entity.Name = worksheet.Cells[row, 1].Value.ToString()??"";
+					entity.Name = worksheet.Cells[row, 1].Value.ToString() ?? "";
 					entity.Email = worksheet.Cells[row, 2].Value.ToString() ?? "";
 					entity.Password = worksheet.Cells[row, 3].Value.ToString() ?? "";
 					entity.Age = int.Parse(worksheet.Cells[row, 4].Value.ToString() ?? "");
@@ -137,11 +138,11 @@ namespace Attendance_Tracking_System.Repositories
 		}
 		public List<Track> GetAllTracks()
 		{
-			return context.Track.ToList();
+			return context.Track.Where(t => t.Status == true).ToList();
 		}
 		public List<ITIProgram> GetAllPrograms()
 		{
-			return context.Program.ToList();
+			return context.Program.Where(p => p.IsDeleted == false).ToList();
 		}
 		public List<Employee> GetAllEmployees()
 		{
@@ -255,9 +256,23 @@ namespace Attendance_Tracking_System.Repositories
 				context.SaveChanges();
 			}
 		}
-		public List<ITIProgram> GetITIPrograms() { 
-			return context.Program.ToList(); 
+		public void AddTracksToIntake(int intakeId, List<int> TracksId)
+		{
+			var intake = context.Intake.FirstOrDefault(i => i.No == intakeId);
+			if (intake != null)
+			{
+				foreach (var trackId in TracksId)
+				{
+					var track = context.Track.FirstOrDefault(t => t.Id == trackId);
+					intake.Tracks.Add(track);
+					context.SaveChanges();
+				}
+			}
 		}
-		
+		public List<ITIProgram> GetITIPrograms()
+		{
+			return context.Program.Where(p => p.IsDeleted == false).ToList();
+		}
+
 	}
 }

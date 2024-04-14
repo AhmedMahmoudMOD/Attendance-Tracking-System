@@ -382,16 +382,18 @@ namespace Attendance_Tracking_System.Controllers
 		}
 		public IActionResult AddIntake()
 		{
+			ViewBag.tracks = repo.GetAllTracks();
 			ViewBag.progs= repo.GetITIPrograms();
 			return View();
 		}
 		[HttpPost]
-		public IActionResult AddIntake(Intake intake)
+		public IActionResult AddIntake(Intake intake,List<int> Tracks)
 		{
 			ViewBag.progs = repo.GetITIPrograms();
 			if (ModelState.IsValid)
 			{
 				repo.AddIntake(intake);
+				repo.AddTracksToIntake(intake.No, Tracks) ;
 				return RedirectToAction("GetAllIntakes");
 			}
 			return View();
