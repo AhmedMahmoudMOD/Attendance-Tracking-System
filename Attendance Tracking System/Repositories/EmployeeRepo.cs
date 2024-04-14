@@ -137,6 +137,12 @@ namespace Attendance_Tracking_System.Repositories
             return studentAffairs;
         }
 
+        public List<Attendance> GetAttendancesByEmpID(int EmpID)
+        {
+             var list = db.Attendance.Where(a=>a.UserID==EmpID).ToList();
+            return list;
+        }
+
 
 
     }

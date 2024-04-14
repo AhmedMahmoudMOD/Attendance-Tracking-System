@@ -15,7 +15,8 @@
 	 <link href="/css/Nss.css" rel="stylesheet">
 	<link href="/css/program.css" rel="stylesheet" />
 	<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.3/css/dataTables.bootstrap5.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.dataTables.css" />
 	<!-- Syncfusion ASP.NET Core controls styles -->
 	<link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/25.1.35/fluent.css" />
 	<!-- Syncfusion ASP.NET Core controls scripts -->
@@ -117,7 +118,7 @@
 								Profile
 							</a>
 
-							<a class="nav-link m-1" asp-controller="Security" asp-action="ViewProfile">
+							<a class="nav-link m-1" asp-controller="Security" asp-action="MyAttendance">
 								<div class="sb-nav-link-icon">
 									<i class="fas fa-user"></i>
 								</div>
@@ -128,14 +129,14 @@
 								<div class="sb-nav-link-icon">
 									<i class="fas fa-graduation-cap"></i>
 								</div>
-								Students Attedance
+								Students Attendance
 							</a>
 
 							<a class="nav-link m-1" asp-controller="Security" asp-action="StaffAttendance">
 								<div class="sb-nav-link-icon">
 									<i class=" fas fa-user-tie"></i>
 								</div>
-								Staff Attedance
+								Staff Attendance
 							</a>
 						}
 						else
@@ -159,8 +160,8 @@
 	</div>
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-	<script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+	<script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+	<script src="https://cdn.datatables.net/2.0.3/js/dataTables.bootstrap5.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>
 	<script src="/js/scripts.js"></script>
 	<ejs-scripts></ejs-scripts>
