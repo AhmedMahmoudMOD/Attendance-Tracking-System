@@ -1,0 +1,114 @@
+﻿@model List<Permission>
+@{
+    ViewData["Title"] = "Your Permissions";
+    Layout = "StdLayout";
+}
+
+<h1>Get All Permissions</h1>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Permissions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .accepted {
+            color: green;
+        }
+
+        .not-accepted {
+            color: red;
+        }
+
+        .waiting {
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="goBack()" class="btn btn-primary">Back</button>
+    <table>
+        <thead>
+            <tr>
+                <th>Permission Id</th>
+                <th>Permission Date</th>
+                <th>Permission Reason</th>
+                <th>Permission Type</th>
+                <th>Permission Status</th>
+                <th>Operation</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.PermissionID</td>
+                    <td>@item.Date</td>
+                    <td>@item.Reason</td>
+                    <td>@item.Type</td>
+                    <td>
+                        @if(item.IsAccepted==true)
+						{
+							<span class="accepted">Accepted</span>
+						}
+						else if(item.IsAccepted == false)
+						{
+							<span class="not-accepted">Not Accepted</span>
+						}
+						else
+						{
+							<span class="waiting">Waiting</span>
+						}
+                        
+                    </td>
+                    <td>
+                        <button onclick="removePermission(@item.PermissionID, @item.StudentID)" class="btn btn-danger">Remove</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <script>
+        function removePermission(permissionId, studentId) {
+            if (confirm("Are you sure you want to remove this permission?")) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Student/RemovePermission",
+                    data: { Perid: permissionId, Stdid: studentId },
+                    success: function () {
+                        $("#permission-" + permissionId).remove(); // Remove the row from the table
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+        }
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

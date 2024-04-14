@@ -1,4 +1,5 @@
 ﻿using Attendance_Tracking_System.Data;
+
 using Attendance_Tracking_System.Enums;
 using Attendance_Tracking_System.Models;
 
@@ -12,6 +13,12 @@ namespace Attendance_Tracking_System.Repositories
         {
             this.db = db;
         }
+		public List<StudentAttendance> getAllAttendance(int studentId)
+		{
+			var att = db.StudentAttendance.Where(s => s.UserID == studentId).ToList();
+            return att;
+		}
+	
 
         public bool Add(Attendance attendance)
         {
@@ -103,3 +110,4 @@ namespace Attendance_Tracking_System.Repositories
 
     }
 }
+

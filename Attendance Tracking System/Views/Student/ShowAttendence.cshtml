@@ -1,0 +1,33 @@
+﻿@model List<StudentAttendance>
+@{
+	Layout = "StdLayout";
+}
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head><title></title></head>
+    <body>
+        <table class="table table-bordered">
+			<thead>
+				<tr>
+					<td>Student Name</td>
+				<td>ArrivalTime</td>
+				<td>LeaveTime</td>
+				<td>AttendanceStatus</td>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td>@item.Date</td>
+						<td>@item.ArrivalTime</td>
+						<td>@item.LeaveTime</td>
+						<td>@item.AttendanceStatus</td>
+
+					</tr>
+				}
+			</tbody>
+		</table>
+    </body>
+</html>

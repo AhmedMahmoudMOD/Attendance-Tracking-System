@@ -6,6 +6,7 @@ using System.Security.Claims;
 using Attendance_Tracking_System;
 using Microsoft.EntityFrameworkCore;
 using Attendance_Tracking_System.Enums;
+using Attendance_Tracking_System.Models;
 
 namespace Attendance_Tracking_System.Controllers
 {
@@ -27,7 +28,6 @@ namespace Attendance_Tracking_System.Controllers
 			if (!ModelState.IsValid)
 			{
 				return View(loginViewModel);
-
 			}
 			var res = context.User.Include(a=>a.role).FirstOrDefault(a =>a!=null && a.Email == loginViewModel.email && a.Password == loginViewModel.password);
 			if (res?.IsDeleted == true)
@@ -62,7 +62,13 @@ namespace Attendance_Tracking_System.Controllers
 			ClaimsPrincipal principal = new ClaimsPrincipal();
 			principal.AddIdentity(claimsIdentity);
 			await HttpContext.SignInAsync(principal);
-			; return RedirectToAction("index", "home");
+			return RedirectToAction("index", "home");
+
+			//ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
+			//string Role = identity.FindFirst(ClaimTypes.Role)?.Value;
+			//Response.Cookies.Append("Id", res.Id.ToString());
+
+			//return RedirectToAction("index", "student",new {id = res.Id});
 		}
 		public async Task<IActionResult> Logout()
 		{
