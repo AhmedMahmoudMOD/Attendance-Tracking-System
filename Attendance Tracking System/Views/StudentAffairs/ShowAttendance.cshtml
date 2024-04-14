@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewData["Title"] = "Show Attendance";
+}
+<style>
+
+</style>
+<div class="w-75 ms-3 text-center">
+    
+    <div class="row">
+        <div class="col-md-6 text-start">
+            <div class="form-group">
+                <label for="startDate" >Start Date:</label>
+                <input type="date" class="form-control" id="startDate" name="startDate">
+            </div>
+        </div>
+        <div class="col-md-6 text-start">
+            <div class="form-group">
+                <label for="endDate" class="text-start">End Date:</label>
+                <input type="date" class="form-control" id="endDate" name="endDate">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <button id="fetchAttendanceBtn" class="btn w-25 mt-4 m-auto" style="background-color:#15859c;color:#fff">Fetch Attendance</button>
+        </div>
+    </div>
+
+
+<div mt-3">
+            <table class="table">
+                <thead>
+                    <tr>
+                    
+                    </tr>
+                </thead>
+                <tbody id="attendanceTableBody">
+                </tbody>
+            </table>
+        </div>
+        </div>
+
+
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#fetchAttendanceBtn').click(function () {
+                var startDate = $('#startDate').val();
+                var endDate = $('#endDate').val();
+
+                $.ajax({
+                    url: '@Url.Action("ShowAttendancePost", "StudentAffairs")',
+                    type: 'POST',
+                    data: { startDate: startDate, endDate: endDate },
+                    success: function (data) {
+                        $('#attendanceTableBody').html(data);
+                    },
+                    error: function () {
+                        alert('Error fetching attendance records.');
+                    }
+                });
+            });
+        });
+    </script>
+}

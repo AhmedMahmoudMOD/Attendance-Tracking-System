@@ -19,8 +19,14 @@ namespace Attendance_Tracking_System.Repositories
             var target = db.Employee.SingleOrDefault(e=>e.Id == id);
             return target;
         }
+		public User GetUserById(int id)
+		{
+			User user = db.User.SingleOrDefault(e => e.Id == id);
+			return user;
+		}
 
-        public bool Update(Employee employee) {
+
+		public bool Update(Employee employee) {
             try
             {
                 

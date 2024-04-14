@@ -23,5 +23,6 @@ namespace Attendance_Tracking_System.Repositories
         List<object> GetForRangeAttendanceReport(DateOnly date, DateOnly EndDate);
 
         List<Employee> GetAllStudentAffairs();
-    }
+		User GetUserById(int id);
+	}
 }

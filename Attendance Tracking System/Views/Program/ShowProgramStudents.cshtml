@@ -1,41 +1,57 @@
-﻿@model List<ITIProgram>
+﻿@model ITIProgram
 @{
     ViewData["Title"] = "ShowProgramStudents";
-    Layout = "~/Views/Shared/_ProgramLayout.cshtml";
 }
-<style>
-    .tstyle {
-        text-align: center;
-        width: 90%;
-        margin: 20px;
-        border-radius: 15px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        font-weight: 500;
-    }
-</style>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.6/css/jquery.dataTables.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="~/css/dataTable.css" rel="stylesheet" />
+    <style>
+        .tstyle {
+            text-align: center;
+            width: 90%;
+            margin: 20px;
+            border-radius: 15px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 500;
+        }
 
+        .nav-link:hover {
+            background-color: transparent;
+            color: #001F3D;
+        }
+    </style>
+</head>
+<body>
 <div class="container-fluid w-75 text-center">
+    <a class="nav-link m-1" asp-controller="Program" asp-action="Index">
+        <div class="sb-nav-link-icon" style="color:#001F3D;font-size:40px;text-align:left">
+            <i class="fas fa-arrow-left"></i>
+        </div>
+    </a>
     <h1 style="color:#15859c;margin-left:15px;">Program Students</h1>
-    <table class="table table-bordered tstyle">
-        <thead style="background-color:#001F3D;color:white">
+    <table  id="example" class="table table-bordered tstyle">
+            <thead style="background-color:#001F3D;color:white" class="text-center">
             <tr>
                 <th>Program</th>
                 <th>Student</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var program in Model)
+           
             {
-                @if (program.Students.Any())
+                @if (Model.Students.Any())
                 {
-                    <tr>
-                        <td rowspan="@program.Students.Count">@program.Name</td>
-                        <td>@program.Students.First().Name</td>
-                    </tr>
-                    @foreach (var student in program.Students.Skip(1))
+          
+                    @foreach (var student in Model.Students)
                     {
                         <tr>
-
+                            <td>@student.Id</td>
                             <td>@student.Name</td>
                         </tr>
                     }
@@ -43,14 +59,23 @@
                 else
                 {
                     <tr>
-                        <td>@program.Name</td>
-                        <td>No students available</td>
+                        <td colspan="2">No students available</td>
                     </tr>
                 }
-            }
+            
         </tbody>
     </table>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.6/js/jquery.dataTables.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>
+</body>
+</html>
 
 
 

@@ -46,9 +46,7 @@ namespace Attendance_Tracking_System.Controllers
                 List<Instructor> instructors = instructorRepo.GetAll() ?? new List<Instructor>();
                 ViewBag.Instructors = instructors;
 
-                //List<Student> students = studentRepo.GetAll() ?? new List<Student>();
-                //ViewBag.Students = students;
-
+              
                 return View();
             }
             catch (Exception ex)
@@ -123,28 +121,27 @@ namespace Attendance_Tracking_System.Controllers
             ViewBag.Intakes = intakes;
             return View(program);
         }
-
-        public IActionResult ShowProgramTracks()
+        public IActionResult ShowProgramTracks(int ? id)
         {
-            var programs = programRepo.GetAll();
-            return View(programs);
+            var program = programRepo.GetByID(id.Value);
+            return View(program);
         }
 
-        public IActionResult ShowProgramIntakes()
+        public IActionResult ShowProgramIntakes(int? id)
         {
-            var programs = programRepo.GetAll();
-            return View(programs);
+            var program = programRepo.GetByID(id.Value);
+            return View(program);
         }
 
-        public IActionResult ShowProgramInstructors() {
-            var programs = programRepo.GetAll();
-            return View(programs);
+        public IActionResult ShowProgramInstructors(int? id) {
+            var program = programRepo.GetByID(id.Value);
+            return View(program);
         }
 
-        public IActionResult ShowProgramStudents()
+        public IActionResult ShowProgramStudents(int? id)
         {
-            var programs = programRepo.GetAll();
-            return View(programs);
+            var program = programRepo.GetByID(id.Value);
+            return View(program);
         }
         public IActionResult Details(int ?id)
         {
