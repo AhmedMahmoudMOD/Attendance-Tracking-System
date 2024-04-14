@@ -22,6 +22,8 @@ namespace Attendance_Tracking_System.Models
         public string? Specialization { get; set; }
 
         public int AttendanceDegrees { get; set; } = 250;
+        [NotMapped]
+        public int NoOfDeductions { get; set; } = 0;
         [Column("RegStatus")]
         public RegisterationStatus RegisterationStatus { get; set; } = RegisterationStatus.Pending;
 

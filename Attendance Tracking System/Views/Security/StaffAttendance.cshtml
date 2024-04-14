@@ -1,20 +1,39 @@
 ﻿
 @{
     ViewData["Title"] = "Staff Attendance";
-    Layout = "~/Views/Shared/_SLayout.cshtml";
+    Layout = "~/Views/Shared/SharedLayout.cshtml";
+
 }
+<head>
+    <style>
+        .btn-theme {
+            background-color: #001F3D !important;
+            color: white;
+        }
+
+        .btn:hover {
+            background-color: #15859c !important;
+            color: white;
+        }
+
+        .btn-inv {
+            background-color: #d8e5e8 !important;
+            color: black
+        }
+    </style>
+</head>
 <div id="container" class="container-fluid mt-4">
-    <div class="row justify-content-evenly">
-        <div class="col-6">
+    <div class="row justify-content-around">
+        <div class="col-xxl-7">
             <label class="fst-italic text-muted ms-1">Staff</label>
             <select id="stafftype" class="form-control" onchange="GetStaffAttendanceList(this.value)">
                 <option selected value="1">Instructors</option>
                 <option value="2">Employees</option>
             </select>
         </div>
-        <div class="col-3 mt-4 offset-1">
-            <input type="submit" value="Show Staff" name="Submit" class="btn btn-success" onclick="GetStaffAttendanceList(stafftype.value)" />
-            <button class="btn btn-dark MarkBtn" type="submit" onclick="MarkAbsence(stafftype.value)">Mark Absence <i class="fas fa-times fa-lg"></i></button>
+        <div class="col-xxl-3 mt-4 offset-xxl-1">
+            <button type="submit" name="Submit" class="btn btn-theme" onclick="GetStaffAttendanceList(stafftype.value)">Show Staff <i class="fas fa-user-tie"></i></button>
+            <button class="btn btn-inv MarkBtn" type="submit" onclick="MarkAbsence(stafftype.value)">Mark Absence <i class="fas fa-times fa-lg"></i></button>
         </div>
     </div>
 </div>

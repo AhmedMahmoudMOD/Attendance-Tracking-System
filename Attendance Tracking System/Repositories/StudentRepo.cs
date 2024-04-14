@@ -45,6 +45,16 @@ namespace Attendance_Tracking_System.Repositories
             return list;
         }
 
+        public List<Student> GetForUpdateAttendanceDegExplicit(int Pid, int Tid, int Ino, DateOnly date, DateOnly EndDate)
+        {
+            var list = db.Student
+                .Include(s => s.Attendances.Where(a => a.Date >= date && a.Date <= EndDate)).Include(s => s.Permissions.Where(p => p.Date >= date && p.Date <= EndDate))
+                .Where(s => s.ProgramID == Pid && s.TrackID == Tid && s.IntakeNo == Ino && s.IsDeleted==false && s.RegisterationStatus==Enums.RegisterationStatus.Approved && s.Attendances.Any())
+                .ToList();
+
+            return list;
+        }
+
         public List<object> GetForAttendanceReport(int Pid, int Tid, int Ino, DateOnly date)
         {
             var list = db.Student
@@ -104,6 +114,20 @@ namespace Attendance_Tracking_System.Repositories
         {
             db.Update(student);
             db.SaveChanges();
+        }
+
+        public bool UpdateAttendanceDegrees(List<Student> students)
+        {
+            try
+            {
+                db.Student.UpdateRange(students);
+                db.SaveChanges();
+                return true;
+            } catch
+            {
+                return false;
+            }
+           
         }
     }
 }

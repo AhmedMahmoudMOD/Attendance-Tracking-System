@@ -11,5 +11,8 @@ namespace Attendance_Tracking_System.Repositories
         bool MarkAbsence(List<Student> students,int ScheduleID);
 
         bool Update(StudentAttendance studentAttendance);
+
+        bool CalculateNoOfDeductions(Student student);
+
     }
 }
