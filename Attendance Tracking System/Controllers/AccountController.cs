@@ -30,6 +30,11 @@ namespace Attendance_Tracking_System.Controllers
 
 			}
 			var res = context.User.Include(a=>a.role).FirstOrDefault(a =>a!=null && a.Email == loginViewModel.email && a.Password == loginViewModel.password);
+			if (res?.IsDeleted == true)
+			{
+				ModelState.AddModelError("UserIsDeleted", "Access to your account has been restricted.");
+				return View(loginViewModel);
+			}
 			if (res == null)
 			{
 				ModelState.AddModelError("StudentNotFound", "Invalid Email or Password");

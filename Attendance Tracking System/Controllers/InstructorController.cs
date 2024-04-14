@@ -1,6 +1,7 @@
 ﻿using Attendance_Tracking_System.Data;
 using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging;
@@ -9,6 +10,7 @@ using System.Linq;
 
 namespace Attendance_Tracking_System.Controllers
 {
+    [Authorize(Roles="instructor")]
     public class InstructorController : Controller
     {
         ITISysContext db = new ITISysContext();
@@ -17,11 +19,13 @@ namespace Attendance_Tracking_System.Controllers
         IInstructorRepo instructorRepo;
         ITrackRepo trackRepo;
         IScheduleRepo scheduleRepo;
-        public InstructorController(IInstructorRepo _instructorRepo, ITrackRepo _trackRepo, IScheduleRepo _scheduleRepo)
+        IStudentRepo studentRepo;
+        public InstructorController(IInstructorRepo _instructorRepo, ITrackRepo _trackRepo, IScheduleRepo _scheduleRepo, IStudentRepo _studentRepo)
         {
             instructorRepo = _instructorRepo;
             trackRepo = _trackRepo;
             scheduleRepo = _scheduleRepo;
+           studentRepo = _studentRepo;
         }
 
 
@@ -47,7 +51,7 @@ namespace Attendance_Tracking_System.Controllers
         public async Task<IActionResult> Add(Instructor instructor, IFormFile InsImg)
         {
             instructorRepo.AddNewInstructor(instructor);
-            var Tracks = trackRepo.getAllTracks();
+            var Tracks = trackRepo.GetAll();
             ViewBag.AllTracks = Tracks;
             string fileName = $"{instructor.Id}.{InsImg.FileName.Split(".").Last()}";
             string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "instructor");
@@ -72,7 +76,7 @@ namespace Attendance_Tracking_System.Controllers
             var Instructor = instructorRepo.GetInstructorById(id);
             var InstructorTracks = instructorRepo.getInstructorTracks(id);
             ViewBag.InstructorTracks = InstructorTracks;
-            var Alltracks = trackRepo.getAllTracks();
+            var Alltracks = trackRepo.GetAll();
             var ExceptTracks = Alltracks.Except(InstructorTracks).ToList();
             ViewBag.ExceptTracks = ExceptTracks;
 
@@ -137,7 +141,7 @@ namespace Attendance_Tracking_System.Controllers
         public IActionResult Details(int ID)
         {
             bool found = false;
-            var AllTracks=trackRepo.getAllTracks();
+            var AllTracks=trackRepo.GetAll();
             ViewBag.AllTracks = AllTracks;
             foreach(var track in AllTracks)
             {
@@ -165,7 +169,9 @@ namespace Attendance_Tracking_System.Controllers
             ViewBag.Instructor = id;
             ViewBag.TrackSchedule = sc;
             var instructor=instructorRepo.GetInstructorById(id);
-            int trackid = db.Track.SingleOrDefault(a => a.SuperID == id).Id;
+           // int trackid = db.Track.SingleOrDefault(a => a.SuperID == id).Id;
+
+            var trackid = trackRepo.getTrackIDBySuperVisor(id);
             //ViewBag.trackid = trackid;
             return View(instructor);
         }
@@ -184,7 +190,8 @@ namespace Attendance_Tracking_System.Controllers
         [HttpPost]
         public IActionResult TrackSchedule(TimeOnly StartTime, DateOnly Date,int id)
         {
-            int trackid = db.Track.SingleOrDefault(a => a.SuperID == id).Id;
+           // int trackid = db.Track.SingleOrDefault(a => a.SuperID == id).Id;
+            var trackid = trackRepo.getTrackIDBySuperVisor(id);
             // ViewBag.trackid = trackid;
             var instructor = instructorRepo.GetInstructorById(id);
             Schedule schedule = new Schedule
@@ -218,8 +225,9 @@ namespace Attendance_Tracking_System.Controllers
             ViewBag.InstructorID = id;
             ViewBag.permission = Permissions;
             var instructor = instructorRepo.GetInstructorById(id);
-            var students=db.Student.ToList();
-         
+            //var students=db.Student.ToList();
+
+            var students = studentRepo.GetAll();
             ViewBag.students = students;
             return View(instructor);
         }
@@ -246,7 +254,8 @@ namespace Attendance_Tracking_System.Controllers
         public IActionResult AddWeeklyShedule(int id)
         {
             var instructor=instructorRepo.GetInstructorById(id);
-            var trackid = db.Track.FirstOrDefault(a => a.SuperID == id).Id;
+            //var trackid = db.Track.FirstOrDefault(a => a.SuperID == id).Id;
+            var trackid = trackRepo.getTrackIDBySuperVisor(id);
             ViewBag.trackid =trackid;
             return View(instructor);
         }
