@@ -1,39 +1,53 @@
 ﻿
 @{
     ViewData["Title"] = "Staff Attendance";
-    Layout = "~/Views/Shared/_SLayout.cshtml";
+    Layout = "~/Views/Shared/SharedLayout.cshtml";
     var today = DateOnly.FromDateTime(DateTime.Now);
     string formattedDate = today.ToString("yyyy-MM-dd");
 
 }
-<div id="container" class="container-fluid mt-3">
-    <div class="row justify-content-center">
-        <form asp-action="GetStaffAttPieChart" asp-controller="Chart" class="row col-12 justify-content-evenly">
+<head>
+    <style>
+        .btn-theme {
+            background-color: #001F3D !important;
+            color: white;
+        }
 
-        <div class="col-3">
+        .btn:hover {
+            background-color: #15859c !important;
+            color: white;
+        }
+
+        .btn-inv {
+            background-color: #d8e5e8 !important;
+            color: black
+        }
+    </style>
+</head>
+<div id="container" class="container-fluid mt-3">
+    <div class="row justify-content-around">
+        <form asp-action="GetStaffAttPieChart" asp-controller="Chart" class="row col-12">
+
+            <div class="col-lg-2 col-xl-2 col-xxl-2">
              <label class="fst-italic text-muted">Date</label>
             <input type="date" class="form-control" id="date" name="Date" value="@formattedDate" />
         </div>
-        <div class="col-5">
+            <div class="col-lg-2 col-xl-2 col-xxl-4">
                 <label class="fst-italic text-muted">Type</label>
             <select id="stafftype" class="form-control" name="TypeNo" onchange="GetStaffAttendanceList(this.value)">
                 <option selected value="1">Instructors</option>
                 <option value="2">Employees</option>
             </select>
         </div>
-        <div class="col-3 mt-4 offset-1">
-            <div class="row justify-content-start">
-                <div class="col-12">
-            <input type="button" value="Show Staff" name="Submit" class="btn btn-success" onclick="GetStaffAttendanceList(stafftype.value,date.value)" />
-            <button type="button" value="Get Report" name="Submit" class="btn" onclick="GetAttendanceReport(stafftype.value,date.value)"><i class="fa-solid fa-print fa-lg" style="color: #121212;"></i></button>
-            <button type="submit" value="Get Chart" name="Submit" class="btn"><i class="fa-solid fa-chart-pie fa-lg" style="color: #0c0d0d;"></i></button>
-                 </div>
-            </div>
+            <div class="col-lg-6 col-xl-6 col-xxl-4 mt-lg-4 mt-5 offset-xxl-2">
+            <button type="button" name="Submit" class="btn btn-theme" onclick="GetStaffAttendanceList(stafftype.value,date.value)"><i class="fas fa-user-tie"></i> Show Staff</button>
+            <button type="button" value="Get Report" name="Submit" class="btn btn-inv" onclick="GetAttendanceReport(stafftype.value,date.value)"><i class="fa-solid fa-file-pdf fa-lg"></i> PDF</button>
+            <button type="submit" value="Get Chart" name="Submit" class="btn btn-theme"><i class="fa-solid fa-chart-pie fa-lg"></i> Attendance Chart</button>
         </div>
         </form>
     </div>
 </div>
-<div id="AttList" class="mt-3 container row justify-content-around">
+<div id="AttList" class="mt-3 container row justify-content-center">
 </div>
 
 @section Scripts {

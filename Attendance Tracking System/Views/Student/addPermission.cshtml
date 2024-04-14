@@ -1,0 +1,93 @@
+﻿@model Permission
+@{
+    ViewData["Title"] = "addPermission";
+    var studentId = ViewBag.studentId;
+}
+
+<h1>Add Permission</h1>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Permission</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="datetime-local"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form method="post">
+            <div>
+                <label for="PermissionID">Permission ID</label>
+                <input type="text" id="PermissionID" asp-for="PermissionID" />
+            </div>
+            <div>
+                <label for="StudentID">Student ID</label>
+                <input type="text" id="StudentID" asp-for="StudentID" value="@studentId" readonly />
+            </div>
+            <div>
+                <label for="Reason">Reason</label>
+                <input type="text" id="Reason" asp-for="Reason" />
+            </div>
+            <div>
+                <label for="DateTime">Date and Time</label>
+                <input type="datetime-local" id="DateTime" asp-for="Date" />
+            </div>
+            <div>
+                <label for="Type">Permission Type</label>
+                <select id="Type" asp-for="Type">
+                    <option value="1">Late</option>
+                    <option value="2">Absent</option>
+                </select>
+            </div>
+
+            <input type="submit" value="Submit" />
+            <a asp-action="GetAllPermission" asp-controller="Student" class="btn btn-primary">Cancel</a>
+        </form>
+    </div>
+</body>
+</html>

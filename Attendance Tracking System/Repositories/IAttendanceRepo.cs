@@ -4,6 +4,7 @@ namespace Attendance_Tracking_System.Repositories
 {
     public interface IAttendanceRepo
     {
+        public List<StudentAttendance> getAllAttendance(int studentId);
         bool Add(Attendance attendance);
 
         bool MarkEmpAbsence(List<Employee> staff);

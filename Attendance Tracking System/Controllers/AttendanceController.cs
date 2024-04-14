@@ -3,6 +3,7 @@ using Attendance_Tracking_System.Repositories;
 using Attendance_Tracking_System.View_Models;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.DependencyResolver;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Attendance_Tracking_System.Controllers
 {
@@ -35,6 +36,7 @@ namespace Attendance_Tracking_System.Controllers
             var schedule = scheduleRepo.GetScheduleForToday(TrackID, DateOnly.FromDateTime(DateTime.Now));
             studentAttendance.ScheduleID = schedule.Id;
             studentAttendance.ArrivalTime = TimeOnly.FromDateTime(DateTime.Now);
+            studentAttendance.IsMarked = false;
             if (ModelState.IsValid)
             {
                 // check if the arrival time is within five minutes of the scheduled time
@@ -79,6 +81,7 @@ namespace Attendance_Tracking_System.Controllers
             if (ModelState.IsValid)
             {
                 studentAttendance.AttendanceStatus = Enums.AttendanceStatus.Absent;
+                studentAttendance.IsMarked = false;
                 studentAttendanceRepo.Add(studentAttendance);
                 return Json(new { success = true });
             }
@@ -266,6 +269,147 @@ namespace Attendance_Tracking_System.Controllers
                     return PartialView("_EmpRangeAttListPartial", emplist);
                 default:
                     return BadRequest();
+            }
+        }
+
+        //public IActionResult CalculateStudentsAttendace()
+        //{
+        //    int Pid = 1; int Tid = 4; int Ino = 2; DateOnly Date = new DateOnly(2024, 04, 09); DateOnly EndDate = new DateOnly(2024, 04, 09);
+        //    var list = studentRepo.GetForUpdateAttendanceDegExplicit(Pid, Tid, Ino, Date, EndDate);
+
+        //    foreach (var student in list)
+        //    {
+        //        studentAttendanceRepo.CalculateNoOfDeductions(student);
+        //    }
+        //    foreach (var student in list)
+        //    {
+        //        for (DateOnly date = Date; date <= EndDate; date = date.AddDays(1)){
+        //            //var stdAttendance = student.StudentAttendances.SingleOrDefault(a => a.Date == date && ( a.AttendanceStatus==Enums.AttendanceStatus.Late || a.AttendanceStatus==Enums.AttendanceStatus.Absent));
+        //            var stdAttendance = studentAttendanceRepo.GetStdAttendance(student, date);
+        //            if (stdAttendance != null)
+        //            {
+        //                var permission = student.Permissions.SingleOrDefault(p => p.Date == date);
+        //                if(permission != null)
+        //                {
+        //                    if(permission.IsAccepted==true)
+        //                    {
+        //                        if(student.NoOfDeductions>=0&& student.NoOfDeductions < 3)
+        //                        {
+        //                            student.AttendanceDegrees -= 5;
+        //                            student.NoOfDeductions++;
+        //                            stdAttendance.IsMarked = true;
+        //                        }
+        //                        else if(student.NoOfDeductions>=3&& student.NoOfDeductions < 6)
+        //                        {
+        //                            student.AttendanceDegrees -= 10;
+        //                            student.NoOfDeductions++;
+        //                            stdAttendance.IsMarked = true;
+        //                        }
+        //                        else if(student.NoOfDeductions>=6)
+        //                        {
+        //                            student.AttendanceDegrees -= 15;
+        //                            student.NoOfDeductions++;
+        //                            stdAttendance.IsMarked = true;
+        //                        }
+                                
+        //                    }
+        //                    else
+        //                    {
+        //                        student.AttendanceDegrees -= 25;
+        //                        student.NoOfDeductions++;
+        //                        stdAttendance.IsMarked = true;
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    student.AttendanceDegrees -= 25;
+        //                    student.NoOfDeductions++;
+        //                    stdAttendance.IsMarked = true;
+        //                }
+        //            }
+
+        //        }
+        //    }
+        //    if (studentRepo.UpdateAttendanceDegrees(list))
+        //    {
+        //        return Json(new { success = true });
+        //    }
+        //    else
+        //    {
+        //        return Json(new { success = false });
+        //    }
+        //}
+
+        public IActionResult CalculateStudentsAttendace(int Pid,int Tid,int Ino,DateOnly Date , DateOnly EndDate)
+        {
+            var list = studentRepo.GetForUpdateAttendanceDegExplicit(Pid, Tid, Ino, Date, EndDate);
+
+            foreach (var student in list)
+            {
+                studentAttendanceRepo.CalculateNoOfDeductions(student);
+            }
+            foreach (var student in list)
+            {
+                for (DateOnly date = Date; date <= EndDate; date = date.AddDays(1))
+                {
+                    var stdAttendance = student.Attendances.SingleOrDefault(a => a.Date == date &&  (a as StudentAttendance).IsMarked==false) as StudentAttendance;
+                    if (stdAttendance != null )
+                    {
+                        if (stdAttendance.AttendanceStatus == Enums.AttendanceStatus.Late || stdAttendance.AttendanceStatus == Enums.AttendanceStatus.Absent)
+                        {
+                            var permission = student.Permissions.SingleOrDefault(p => p.Date == date);
+                            if (permission != null)
+                            {
+                                if (permission.IsAccepted == true)
+                                {
+                                    if (student.NoOfDeductions >= 0 && student.NoOfDeductions < 3)
+                                    {
+                                        student.AttendanceDegrees -= 5;
+                                        student.NoOfDeductions++;
+
+                                    }
+                                    else if (student.NoOfDeductions >= 3 && student.NoOfDeductions < 6)
+                                    {
+                                        student.AttendanceDegrees -= 10;
+                                        student.NoOfDeductions++;
+
+                                    }
+                                    else if (student.NoOfDeductions >= 6)
+                                    {
+                                        student.AttendanceDegrees -= 15;
+                                        student.NoOfDeductions++;
+
+                                    }
+
+                                }
+                                else
+                                {
+                                    student.AttendanceDegrees -= 25;
+                                    student.NoOfDeductions++;
+
+                                }
+                            }
+                            else
+                            {
+                                student.AttendanceDegrees -= 25;
+                                student.NoOfDeductions++;
+
+                            }
+                        }
+                      
+                      stdAttendance.IsMarked = true;
+                    }
+                    
+
+                }
+            }
+            if (studentRepo.UpdateAttendanceDegrees(list))
+            {
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false });
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿@{
+﻿﻿@{
 	var currentUser = User.Identity.Name;
 
 }
@@ -12,10 +12,11 @@
 	<meta name="author" content="" />
 	<title>@ViewData["Title"]</title>
 	<link href="/css/styles.css" rel="stylesheet" />
-	<link href="/css/ss.css" rel="stylesheet">
+	 <link href="/css/Nss.css" rel="stylesheet">
 	<link href="/css/program.css" rel="stylesheet" />
 	<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.3/css/dataTables.bootstrap5.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.dataTables.css" />
 	<!-- Syncfusion ASP.NET Core controls styles -->
 	<link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/25.1.35/fluent.css" />
 	<!-- Syncfusion ASP.NET Core controls scripts -->
@@ -96,7 +97,30 @@
 						}
 						else if (User.IsInRole("instructor"))
 						{
-							//actions of instructor
+							<a class="nav-link m-1" asp-action="Details" asp-asp-controller="instructor" asp-route-Id="">
+								<div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+								Profile
+							</a>
+
+							<a class="nav-link collapsed m-1" asp-action="Edit" asp-controller="instructor" >
+								<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+								Edit Profile
+							</a>
+
+							<a class="nav-link collapsed m-1" asp-action="TrackSchedule" asp-controller="instructor" >
+								<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+								Track Shedulue
+							</a>
+
+							<a class="nav-link collapsed m-1" asp-action="Permission" asp-controller="instructor" >
+								<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+								Permission
+							</a>
+
+							<a class="nav-link collapsed m-1" asp-action="AddWeeklyShedule" asp-controller="instructor" >
+								<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+								Add Schedule
+							</a>
 						}
 						else if (User.IsInRole("StudentAffairs"))
 						{
@@ -110,7 +134,33 @@
 						}
 						else if (User.IsInRole("Security"))
 						{
-							//actions of Security
+							<a class="nav-link m-1" asp-controller="Security" asp-action="ViewProfile">
+								<div class="sb-nav-link-icon">
+									<i class="fas fa-user"></i>
+								</div>
+								Profile
+							</a>
+
+							<a class="nav-link m-1" asp-controller="Security" asp-action="MyAttendance">
+								<div class="sb-nav-link-icon">
+									<i class="fas fa-user"></i>
+								</div>
+								My Attendance
+							</a>
+
+							<a class="nav-link m-1" asp-controller="Security" asp-action="Index">
+								<div class="sb-nav-link-icon">
+									<i class="fas fa-graduation-cap"></i>
+								</div>
+								Students Attendance
+							</a>
+
+							<a class="nav-link m-1" asp-controller="Security" asp-action="StaffAttendance">
+								<div class="sb-nav-link-icon">
+									<i class=" fas fa-user-tie"></i>
+								</div>
+								Staff Attendance
+							</a>
 						}
 						else
 						{
@@ -133,11 +183,21 @@
 	</div>
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-	<script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+	<script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+	<script src="https://cdn.datatables.net/2.0.3/js/dataTables.bootstrap5.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>
 	<script src="/js/scripts.js"></script>
 	<ejs-scripts></ejs-scripts>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+	<script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+	<script src="https://cdn.datatables.net/buttons/3.0.1/js/dataTables.buttons.js"></script>
+	<script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.dataTables.js"></script>
+	<scriptsrc ="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></scriptsrc>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+	<script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.html5.min.js"></script>
+	<script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.print.min.js"></script>
 
 	@await RenderSectionAsync("Scripts", required: false)
 </body>

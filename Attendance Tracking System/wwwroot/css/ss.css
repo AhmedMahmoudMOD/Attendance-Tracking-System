@@ -45,9 +45,25 @@ body {
 }
 
 .dropdown-menu {
-    background-color: #7f6565b5; /* Lighter shade of red */
+  background-color: #D8E5E8;
 }
 
 .nav-link {
     border-radius: 15px;
+}
+
+.program-tracks {
+    margin: 20px;
+    padding: 20px;
+}
+
+.program-tracks-label {
+   
+    font-weight: bold;
+    margin-bottom: 5px;
+    
+}
+
+.program-tracks-select {
+    
 }

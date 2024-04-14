@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewData["Title"] = "Students Attendance";
-    Layout = "~/Views/Shared/_SLayout.cshtml";
+    Layout = "~/Views/Shared/SharedLayout.cshtml";
     var Programs = ViewBag.Programs;
     SelectList ProgramsList = new SelectList(Programs, "Id", "Name");
     var Tracks = ViewBag.Tracks;
@@ -10,34 +10,51 @@
     var today = DateOnly.FromDateTime(DateTime.Now);
     string formattedDate = today.ToString("yyyy-MM-dd");
 }
+<head>
+    <style>
+        .btn-theme {
+            background-color: #001F3D !important;
+            color: white;
+        }
 
+        .btn:hover {
+            background-color: #15859c !important;
+            color: white;
+        }
+
+        .btn-inv {
+            background-color: #d8e5e8 !important;
+            color: black
+        }
+    </style>
+</head>
 <div id="container" class="container-fluid mt-3">
     <div class="row justify-content-around">
-        <form asp-action="GetAttPieChart" asp-controller="Chart" class="row col-12">
+        <form asp-action="GetAttPieChart" asp-controller="Chart" class="row col-12 justify-content-around">
         <input type="hidden" value="@cIntake.No" name="Ino" id="intake" />
-        <div class="col-3 ">
+        <div class="col-lg-3 ">
           <label class="fst-italic text-muted ms-1">Date</label>
            <input type="date" class="form-control" id="date" name="Date" value="@formattedDate" />
         </div>
-        <div class="col-3 ">
+        <div class="col-lg-3 ">
                 <label class="fst-italic text-muted ms-1">Program</label>
             <select asp-items=ProgramsList id="pros" class="form-control" name="Pid" onchange="GetTracks(this.value)"></select>
         </div>
-        <div class="col-3">
+        <div class="col-lg-3">
                 <label class="fst-italic text-muted ms-1">Track</label>
             <select asp-items=TracksList id="tracks" class="form-control" name="Tid"></select>
         </div>
-        <div class="col-3 mt-4">
-            
-        <input type="button" value="Show Students" name="Submit" class="btn btn-success" onclick="GetAttendanceList(pros.value,tracks.value,intake.value,date.value)" />
-        <button type="button" value="Get Report" name="Submit" class="btn" onclick="GetAttendanceReport(pros.value,tracks.value,intake.value,date.value)"><i class="fa-solid fa-print fa-lg" style="color: #121212;"></i></button>
-        <button type="submit" value="Get Chart" name="Submit" class="btn"><i class="fa-solid fa-chart-pie fa-lg" style="color: #0c0d0d;"></i></button>
+        <div class="col-lg-6 offset-lg-1 mt-5">
+
+         <button type="button" name="Submit" class="btn btn-theme me-sm-2" onclick="GetAttendanceList(pros.value,tracks.value,intake.value,date.value)"><i class="fas fa-graduation-cap"></i> Show Students</button>
+        <button type="button" value="Get Report" name="Submit" class="btn btn-inv me-sm-2" onclick="GetAttendanceReport(pros.value,tracks.value,intake.value,date.value)"> PDF <i class="fa-solid fa-file-pdf fa-lg"></i></button>
+        <button type="submit" value="Get Chart" name="Submit" class="btn btn-theme me-sm-2"><i class="fa-solid fa-chart-pie fa-lg"></i> Attendance Chart</button>
         
         </div>
         </form>
     </div>
 </div>
-<div id="AttList" class="mt-3 container row justify-content-around">
+<div id="AttList" class="mt-3 container row justify-content-center">
 
 </div>
 
