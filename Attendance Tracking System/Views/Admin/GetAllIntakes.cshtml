@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Intake>
 @{
-	ViewData["Title"] = "GetAllIntakes";
+	ViewData["Title"] = "All Intakes";
 }
 
 <html>
@@ -16,8 +16,8 @@
 	<h2 style="color:#5D0E41;margin-left:10px;margin-right:60%">Intakes Data</h2>
 	<a class="btn btn-dark" asp-action="AddIntake" asp-controller="Admin" style="height:40px">Add Intake</a>
 	</div>
-	<table id="example" class="table table-hover table-bordered display" 
-		style="text-align:center;width:100%;border-radius:15px;">
+	<table id="example" class="table table-hover table-bordered display"
+		   style="text-align:center;width:100%;border-radius:15px;margin-top:10px">
 		<thead >
 			<tr style="background-color:#001F3D;color:white;text-align:center">
 				<th scope="col">Id</th>
@@ -42,8 +42,8 @@
 				@foreach (var item in Model)
 				{
 					<tr>
-						<td>@item.No</td>
-						<td>@item.Name</td>
+						<td>@item?.No</td>
+						<td>@item?.Name</td>
 						<td>@item?.StartDate</td>
 						<td>@item?.EndDate</td>
 						<td>@item?.Program.Name<td>

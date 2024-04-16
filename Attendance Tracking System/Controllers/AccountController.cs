@@ -62,8 +62,34 @@ namespace Attendance_Tracking_System.Controllers
 			ClaimsPrincipal principal = new ClaimsPrincipal();
 			principal.AddIdentity(claimsIdentity);
 			await HttpContext.SignInAsync(principal);
-			return RedirectToAction("index", "home");
-
+			if (claimsIdentity.HasClaim(ClaimTypes.Role, "admin"))
+			{
+				return RedirectToAction("Profile", "Admin");
+			}
+			else if (claimsIdentity.HasClaim(ClaimTypes.Role, "student"))
+			{
+				return RedirectToAction("Index", "Student");
+			}
+			else if (claimsIdentity.HasClaim(ClaimTypes.Role, "instructor"))
+			{
+				return RedirectToAction("Details", "Instructor");
+			}
+			else if (claimsIdentity.HasClaim(ClaimTypes.Role, "StudentAffairs"))
+			{
+				return RedirectToAction("ViewProfile", "StudentAffairs");
+			}
+			else if (claimsIdentity.HasClaim(ClaimTypes.Role, "Supervisor"))
+			{
+				return RedirectToAction("Details", "Instructor");
+			}
+			else if (claimsIdentity.HasClaim(ClaimTypes.Role, "Security"))
+			{
+				return RedirectToAction("ViewProfile", "Security");
+			}
+			else
+			{
+				return RedirectToAction("Index", "Home");
+			}
 			//ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
 			//string Role = identity.FindFirst(ClaimTypes.Role)?.Value;
 			//Response.Cookies.Append("Id", res.Id.ToString());

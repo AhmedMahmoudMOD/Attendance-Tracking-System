@@ -1,6 +1,6 @@
 ﻿@model Student
 @{
-
+	ViewData["title"] = "Update Student";
 	var tracks = ViewBag.Tracks as List<Track>;
 	var progs = ViewBag.programs as List<ITIProgram>;
 	SelectList dep = new SelectList(tracks, "Id", "Name");
@@ -27,9 +27,8 @@
 
 		<div class="col-lg-6">
 			@*  *@
-			<form id="signupForm" method="post" asp-action="UpdateStudent" enctype="multipart/form-data">
+			<form id="UpdateStudent" method="post" asp-action="UpdateStudent" enctype="multipart/form-data">
 				<div class="form-row">
-					<input asp-for="IntakeNo" value="2" hidden />
 					<input type="hidden" name="RoleId" value="1" />
 					<div class="form-group col-md-6">
 						<label asp-for="Name">Name</label>
@@ -86,7 +85,7 @@
 				<div class="row form-group">
 					<div class="col-md-6">
 						<label asp-for="UserImage">Image</label>
-						<input type="file" name="Img" class="form-control-file" asp-for="UserImage" />
+						<input type="file" name="Img" class="form-control-file" asp-for="UserImage" id="UserImage" />
 						<span id="imageError" class="text-danger"></span>
 					</div>
 					<div class="col-md-6">
@@ -95,7 +94,7 @@
 							<select asp-for="TrackID" class="form-control" id="trackSelect">
 								@foreach (var item in dep)
 								{
-									<option value="@item.Value">@item.Text</option>	
+									<option value="@item.Value">@item.Text</option>
 								}
 							</select>
 							<span id="trackError" class="text-danger"></span>
@@ -124,28 +123,17 @@
 	</div>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script>
-		document.getElementById('signupForm').addEventListener('submit', function (event) {
+		document.getElementById('UpdateStudent').addEventListener('submit', function (event) {
 			var userImage = document.getElementById('UserImage').files[0];
-			var track = document.getElementById('TrackID').value;
 			document.getElementById('imageError').innerText = '';
-			document.getElementById('trackError').innerText = '';
 			if (!userImage) {
 				document.getElementById('imageError').innerText = 'Please select an image.';
 				event.preventDefault();
 			}
-			if (!track) {
-				document.getElementById('trackError').innerText = 'Please select a track.';
-				event.preventDefault();
-			}
 		});
-		<script src="https://code.jquery.com/jquery-3.6.0.min.js" ></script>
-
-
-	</
-	
 	</script>
-
-		<script src="~/lib/jquery/dist/jquery.min.js" ></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 </body>
