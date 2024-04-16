@@ -11,13 +11,38 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Permission</title>
+     <title>Permission</title>
+    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/ss.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.dataTables.css">
+
+    <style>
+     
+        .container {
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+
+        .container table {
+            width: 100%;
+        }
+
+        #week td {
+            text-align: center;
+        }
+       
+    </style>
+   
 </head>
 <body>
     <div class="container permission">
-         <table id="permission">
+        <table id="permission" class="table table-hover table-bordered display"
+               style="text-align:center;width:100%;border-radius:15px;">
              <thead>
-                 <tr class="text-center">
+                 <tr style="background-color:#001F3D;color:white;text-align:center">
                      <td class="text-center">PermissionID</td>
                      <td class="text-center">Reason</td>
                      <td class="text-center">Type</td>
@@ -38,22 +63,29 @@
         }
     </table>
 
-    <input type="date" id="dt" onchange="handler('@ViewBag.InstructorID');" />
+    
+    </div>
 
-    <table class="table" id="week">
-        <thead>
-            <tr>
-                <td>ID</td>
-                <td> Date</td>
-                <td>Reason</td>
-                <td>Type</td>
-                <td>StudentName</td>   
-                <td>Response</td>
-            </tr>
-        </thead>
-        <tbody id="tableBody">
-        </tbody>
-    </table>
+      <div class="container scheduleBorder">
+        <div class="p-3">
+                <label for="getAllTracksButton" style="color:#5D0E41;font-weight:bold">
+                    Click here to get Permission By Date:</label>
+             <input type="date" id="dt" onchange="handler('@ViewBag.InstructorID');" />
+        </div>
+        <table class="table" id="week">
+            <thead>
+                <tr>
+                    <td>ID</td>
+                    <td> Date</td>
+                    <td>Reason</td>
+                    <td>Type</td>
+                    <td>StudentName</td>   
+                    <td>Response</td>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+            </tbody>
+        </table>
     </div>
    
     <script src=" ~ /lib/jquery/dist/jquery.min.js"></script>

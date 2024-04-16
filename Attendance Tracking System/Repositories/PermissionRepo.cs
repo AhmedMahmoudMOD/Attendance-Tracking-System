@@ -11,6 +11,16 @@ namespace Attendance_Tracking_System.Repositories
         {
             this.db = db;
         }
+        public Permission getPermissionByID(int id)
+        {
+            return db.Permission.SingleOrDefault(a => a.PermissionID == id);
+        }
+
+        public void UpdatePermissionAcceptance(Permission permission,bool Response)
+        {
+            permission.IsAccepted = Response;
+            db.SaveChanges();
+        }
         public Permission addPermission(Permission permission)
         {
             db.Permission.Add(permission);

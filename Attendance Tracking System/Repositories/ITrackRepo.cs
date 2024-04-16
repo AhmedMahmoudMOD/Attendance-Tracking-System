@@ -28,5 +28,7 @@ namespace Attendance_Tracking_System.Repositories
         void RemoveInsFromTrack(List<int> RemovedIns, int TrackId);
 
         void AddInstructorToTrack(List<int> AddedIns, int TrackId);
+
+        
     }
 }
