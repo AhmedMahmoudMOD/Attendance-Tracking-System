@@ -7,9 +7,11 @@ using Attendance_Tracking_System;
 using Microsoft.EntityFrameworkCore;
 using Attendance_Tracking_System.Enums;
 using Attendance_Tracking_System.Models;
+using CRUD.CustomFilters;
 
 namespace Attendance_Tracking_System.Controllers
 {
+	
 	public class AccountController : Controller
 	{
 		private readonly ITISysContext context;
@@ -93,8 +95,7 @@ namespace Attendance_Tracking_System.Controllers
 			//ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
 			//string Role = identity.FindFirst(ClaimTypes.Role)?.Value;
 			//Response.Cookies.Append("Id", res.Id.ToString());
-
-			//return RedirectToAction("index", "student",new {id = res.Id});
+			//return RedirectToAction("index", "student", new { id = res.Id });
 		}
 		public async Task<IActionResult> Logout()
 		{

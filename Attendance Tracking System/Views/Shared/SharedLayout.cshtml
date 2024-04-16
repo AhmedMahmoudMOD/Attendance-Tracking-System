@@ -61,36 +61,49 @@
 								<div class="sb-nav-link-icon">
 									<i class="fas fa-graduation-cap"></i>
 								</div>
-								Students Crud
+								Students 
 							</a>
 
 							<a class="nav-link m-1" asp-controller="Admin" asp-action="GetEmployees">
 								<div class="sb-nav-link-icon">
 									<i class="fas fa-user-tie"></i>
 								</div>
-								Employee Crud
+								Employee
+							</a>
+							<a class="nav-link m-1" asp-action="Index" asp-controller="Instructor">
+								<div class="sb-nav-link-icon">
+									<i class="fas fa-chalkboard-teacher"></i>
+								</div>
+								Instructor
 							</a>
 
 							<a class="nav-link m-1" asp-action="Index" asp-controller="Program">
 								<div class="sb-nav-link-icon">
 									<i class="fas fa-book"></i>
 								</div>
-								Program Crud
+								Program
 							</a>
 
 							<a class="nav-link m-1" asp-controller="Admin" asp-action="GetAllIntakes">
 								<div class="sb-nav-link-icon">
 									<i class="fas fa-calendar"></i>
 								</div>
-								Intake Crud
+								Intake 
 							</a>
 
-							<a class="nav-link m-1" asp-action="Index" asp-controller="Instructor">
+							<a class="nav-link m-1" asp-controller="Track" asp-action="Index">
 								<div class="sb-nav-link-icon">
-									<i class="fas fa-chalkboard-teacher"></i>
+									<i class=" fas fa-book"></i>
 								</div>
-								Instructor Crud
+								Tracks
 							</a>
+							<a class="nav-link m-1" asp-controller="Security" asp-action="StaffAttendance">
+								<div class="sb-nav-link-icon">
+									<i class=" fas fa-user-tie"></i>
+								</div>
+								Staff Attendance
+							</a>
+
 						}
 						else if (User.IsInRole("student"))
 						{

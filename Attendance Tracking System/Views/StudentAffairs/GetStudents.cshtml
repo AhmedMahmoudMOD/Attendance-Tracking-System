@@ -107,12 +107,12 @@
                                 <img src="@Url.Content("~/images/user.png")" class="img"/>
                             }
                         </td>
-                        <td>@student.Email</td>
-                        <td>@student.Password</td>
-                        <td>@student.Faculty</td>
-                        <td>@student.Program.Name</td>
-                        <td>@student.Intake.Name</td>
-                        <td>@student.Track.Name</td>
+                        <td>@student?.Email</td>
+                        <td>@student?.Password</td>
+                        <td>@student?.Faculty</td>
+                        <td>@student?.Program?.Name</td>
+                        <td>@student?.Intake?.Name</td>
+                        <td>@student?.Track?.Name</td>
                         <td>
                             <a asp-action="EditStudentProfile" asp-controller="StudentAffairs" asp-route-id="@student.Id">
                                 <i class="fa-solid fa-pen-to-square" style="color: #5D0E41; font-size: 24px;"></i>

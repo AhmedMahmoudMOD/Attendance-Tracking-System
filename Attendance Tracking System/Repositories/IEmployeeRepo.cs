@@ -27,6 +27,7 @@ namespace Attendance_Tracking_System.Repositories
         List<Attendance> GetAttendancesByEmpID(int EmpID);
 
 		User GetUserById(int id);
-	}
-		
+    }	
+
+	
 }

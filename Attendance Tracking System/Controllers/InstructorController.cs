@@ -1,6 +1,7 @@
 ﻿using Attendance_Tracking_System.Data;
 using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
+using CRUD.CustomFilters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,8 +12,9 @@ using System.Security.Claims;
 
 namespace Attendance_Tracking_System.Controllers
 {
-    [Authorize(Roles="instructor")]
-    public class InstructorController : Controller
+	//   [Authorize(Roles="instructor")]
+	[AuthFilter]
+	public class InstructorController : Controller
     {
         ITISysContext db = new ITISysContext();
 
