@@ -21,6 +21,7 @@ namespace Attendance_Tracking_System.Models
         [StringLength(30, MinimumLength = 2)]
         public string? Specialization { get; set; }
 
+        [Range(0, 250, ErrorMessage = "Attendance degrees must be between 0 and 250.")]
         public int AttendanceDegrees { get; set; } = 250;
         [NotMapped]
         public int NoOfDeductions { get; set; } = 0;

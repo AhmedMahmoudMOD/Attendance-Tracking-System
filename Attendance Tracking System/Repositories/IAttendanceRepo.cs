@@ -12,6 +12,7 @@ namespace Attendance_Tracking_System.Repositories
         bool MarkInstAbsence(List<Instructor> staff);
 
         Attendance GetAttendance(int studentId, DateOnly date);
+        List<Attendance> GetAttendanceRecords(int id ,DateOnly startDate,DateOnly endDate );
 
         bool Update(Attendance attendance);
     }

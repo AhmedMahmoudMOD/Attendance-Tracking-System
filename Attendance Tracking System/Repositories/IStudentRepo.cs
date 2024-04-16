@@ -22,7 +22,9 @@ namespace Attendance_Tracking_System.Repositories
         void AddRange(List<Student> students);
         List<Student> GetAll();
          Student GetById(int id);
-        void Update(Student student);
+        void Update(Student student); 
+        void UpdateStudentByStudentAffairs(Student student);    
+        List<Student> GetStudentsAccepted(); 
 
         bool UpdateAttendanceDegrees(List<Student> students);
 

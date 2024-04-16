@@ -2,6 +2,7 @@
 
 using Attendance_Tracking_System.Enums;
 using Attendance_Tracking_System.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Attendance_Tracking_System.Repositories
 {
@@ -87,12 +88,19 @@ namespace Attendance_Tracking_System.Repositories
             }
 
         }
-
         public Attendance GetAttendance(int id, DateOnly date)
         {
             var attendance = db.Attendance.SingleOrDefault(s => s.UserID == id && s.Date == date);
             return attendance;
         }
+        public List<Attendance> GetAttendanceRecords(int id ,DateOnly startDate, DateOnly endDate)
+        {
+            // Fetch attendance records within the specified date range
+            var attendances = db.Attendance.Where(a => a.Date >= startDate && a.Date <= endDate && a.UserID==id).ToList();
+            return attendances;
+        }
+
+
 
         public bool Update(Attendance attendance)
         {

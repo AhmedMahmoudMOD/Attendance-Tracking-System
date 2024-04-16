@@ -1,6 +1,7 @@
 ﻿using Attendance_Tracking_System.Data;
 using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.View_Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -181,6 +182,32 @@ namespace Attendance_Tracking_System.Repositories
                 return false;
             }
            
+        }
+
+        public List<Student>GetStudentsAccepted()
+        {
+            var students = db.Student.Where(s=>s.RegisterationStatus==Enums.RegisterationStatus.Approved&&s.IsDeleted==false)
+                .Include(a=>a.Track).Include(a=>a.Program).Include(a=>a.Intake)
+                .ToList();
+            return students;
+        }
+
+        public void UpdateStudentByStudentAffairs(Student student)
+        {
+            var st = db.Student.SingleOrDefault(a=>a.Id==student.Id);  
+            if (st!=null)
+            {
+                st.Name = student.Name;
+                st.Email = student.Email;
+                st.TrackID = student.TrackID;
+                st.Age = student.Age;
+                st.IsDeleted = student.IsDeleted;
+                st.PhoneNumber  = student.PhoneNumber;
+                st.Attendances = student.Attendances;
+                st.UserImage = student.UserImage;
+
+            }
+
         }
     }
 }
