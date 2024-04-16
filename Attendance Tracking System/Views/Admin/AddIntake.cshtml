@@ -1,6 +1,8 @@
 ﻿@model Intake
 @{
-	ViewData["Title"] = "EditIntake";
+	ViewData["Title"] = "Add Intake";
+	var allTracks = ViewBag.tracks as List<Track>;
+	SelectList tracks = new SelectList(allTracks, "Id", "Name");
 	var allProgs = ViewBag.progs as List<ITIProgram>;
 	SelectList programs = new SelectList(allProgs, "Id", "Name");
 
@@ -20,7 +22,7 @@
 <body>
 	<div class="container">
 		<div style="display:flex;flex-direction:row">
-			<h2 class="text-center " style="color:#5D0E41;">Update Intake</h2>
+			<h2 class="text-center " style="color:#5D0E41;">Add Intake</h2>
 			<a class="btn btn-dark" style="height:40px;margin-left:10px" asp-action="GetAllIntakes">Back </a>
 		</div>
 		<br />
@@ -43,15 +45,29 @@
 					<input asp-for="EndDate" class="form-control" placeholder="end date" id="endDate">
 					<span asp-validation-for="EndDate"></span>
 				</div>
-				<div class="form-group">
-					<label asp-for="Program"></label>
-					<select asp-for="ProgramID">
-						@foreach(var item in programs)
-						{
-							<option value="@item.Value">@item.Text</option>
-						}
-					</select>
+				<div class="row">
+					<div class="form-group col-md-6">
+						<label asp-for="Program"></label>
+						<select asp-for="ProgramID">
+							@foreach (var item in programs)
+							{
+								<option value="@item.Value">@item.Text</option>
+							}
+						</select>
+					</div>
+					<div class="form-group col-md-6">
+						<label asp-for="Tracks"></label>
+						<select asp-for="Tracks" id="tracksId" multiple>
+							@foreach (var item in tracks)
+							{
+								<option value="@item.Value">@item.Text</option>
+							}
+
+						</select>
+						<span id="TError" class="field-validation-error"></span>
+					</div>
 				</div>
+
 				<button type="submit" class="btn btn-danger btn-block" id="saveBtn">Add Intake</button>
 
 			</form>
@@ -67,9 +83,15 @@
 		document.getElementById("saveBtn").addEventListener("click", function () {
 			var start = document.getElementById("startDate").value;
 			var end = document.getElementById("endDate").value;
+			var tIds = document.getElementById("tracksId").selectedOptions;
+			document.getElementById("TError").innerText = '';
 			if (end < start) {
 				event.preventDefault();
 				alert("End Date must be greater than start date");
+			}
+			if (tIds.length === 0) {
+				document.getElementById("TError").innerText = 'You must choose tracks';
+				event.preventDefault();
 			}
 		});
 

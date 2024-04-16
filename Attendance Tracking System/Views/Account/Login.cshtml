@@ -98,7 +98,7 @@
 										<input asp-for="password" class="form-control" placeholder="Password" id="password">
 										<div class="input-group-append">
 											<span class="input-group-text">
-												<i id="password-toggle" class="fas fa-eye"></i>
+												<i id="password-toggle" class="fas fa-eye-slash"></i>
 											</span>
 										</div>
 									</div>
@@ -126,15 +126,14 @@
 		document.getElementById("password-toggle").addEventListener("click", function () {
 			var passwordInput = document.getElementById("password");
 			var icon = document.getElementById("password-toggle");
-
 			if (passwordInput.type === "password") {
 				passwordInput.type = "text";
-				icon.classList.remove("fa-eye");
-				icon.classList.add("fa-eye-slash");
+				icon.classList.add("fa-eye");
+				icon.classList.remove("fa-eye-slash");
 			} else {
 				passwordInput.type = "password";
-				icon.classList.remove("fa-eye-slash");
-				icon.classList.add("fa-eye");
+				icon.classList.add("fa-eye-slash");
+				icon.classList.remove("fa-eye");
 			}
 		});
 	</script>

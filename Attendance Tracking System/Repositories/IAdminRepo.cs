@@ -30,5 +30,6 @@ namespace Attendance_Tracking_System.Repositories
 		public int updateIntake(Intake intake);
 		public void AddIntake(Intake intake);
 		public List<ITIProgram> GetITIPrograms();
+		public void AddTracksToIntake(int intakeId, List<int> TracksId);
 	}
 }
