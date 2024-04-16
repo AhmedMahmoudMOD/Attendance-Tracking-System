@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Attendance_Tracking_System.Models
 {
-    public abstract class User
+    public class User
     {
         public int Id { get; set; }
         [Required]

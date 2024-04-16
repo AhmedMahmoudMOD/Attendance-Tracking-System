@@ -21,7 +21,7 @@ namespace Attendance_Tracking_System.Models
 
         [ForeignKey("User")]
         public int UserID { get; set; }
-         [JsonIgnore]
+        [JsonIgnore]
         public virtual User? User { get; set; }
     }
 }
