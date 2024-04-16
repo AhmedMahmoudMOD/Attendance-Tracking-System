@@ -114,5 +114,11 @@ namespace Attendance_Tracking_System.Repositories
             }
             db.SaveChanges();
         }
+
+        public void AddTrack(Track _track)
+        {
+           db.Track.Add(_track);
+           db.SaveChanges();
+        }
     }
 }

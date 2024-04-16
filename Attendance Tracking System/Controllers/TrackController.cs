@@ -2,7 +2,9 @@
 using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
 using CRUD.CustomFilters;
+using DocumentFormat.OpenXml.Office2019.Presentation;
 using Microsoft.AspNetCore.Mvc;
+using Track = Attendance_Tracking_System.Models.Track;
 
 namespace Attendance_Tracking_System.Controllers
 {
@@ -87,5 +89,36 @@ namespace Attendance_Tracking_System.Controllers
 			TrackRepo.UpdateTrack(track);
             return RedirectToAction("index");
         }
+
+
+		[HttpGet]
+		public IActionResult Add()
+		{
+            var programs = programRepo.GetAllPrograms();
+            var InsNotSuperVisor = TrackRepo.NotSuperVisor();
+            var AllInstructor = InstructorRepo.GetAll();
+            ViewBag.InsNotSuperVisor = InsNotSuperVisor;
+            ViewBag.programs = programs;
+            ViewBag.AllInstructor = AllInstructor;
+            return View(new Track());
+		}
+
+
+		[HttpPost]
+		public IActionResult Add(Track _track , List<int> AddedIns)
+		{
+			if(ModelState.IsValid)
+			{
+                TrackRepo.AddTrack(_track);
+                if (AddedIns != null)
+                    TrackRepo.AddInstructorToTrack(AddedIns, _track.Id);
+                return RedirectToAction("index");
+            }
+			else{ 
+				return View(new Track());
+			}
+		}
+
+
     }
 }
