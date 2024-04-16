@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging;
 using System.Linq;
+using System.Security.Claims;
 
 
 namespace Attendance_Tracking_System.Controllers
@@ -20,12 +21,15 @@ namespace Attendance_Tracking_System.Controllers
         ITrackRepo trackRepo;
         IScheduleRepo scheduleRepo;
         IStudentRepo studentRepo;
-        public InstructorController(IInstructorRepo _instructorRepo, ITrackRepo _trackRepo, IScheduleRepo _scheduleRepo, IStudentRepo _studentRepo)
+        IPermissionRepo permissionRepo;
+    
+        public InstructorController(IInstructorRepo _instructorRepo, ITrackRepo _trackRepo, IScheduleRepo _scheduleRepo, IStudentRepo _studentRepo,IPermissionRepo _permissionrepo)
         {
             instructorRepo = _instructorRepo;
             trackRepo = _trackRepo;
             scheduleRepo = _scheduleRepo;
-           studentRepo = _studentRepo;
+            studentRepo = _studentRepo;
+            permissionRepo = _permissionrepo;
         }
 
 
@@ -69,17 +73,22 @@ namespace Attendance_Tracking_System.Controllers
             return RedirectToAction("index");
         }
 
+        public User GetCurrentUser()
+        {
+            ClaimsIdentity? identity = HttpContext.User.Identity as ClaimsIdentity;
+            var userId = identity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            int id = int.Parse(userId);
+            User user = instructorRepo.GetInstructorById(id);
+            return user;
+        }
+
+
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public IActionResult Edit()
         {
+            int id = GetCurrentUser().Id;
             var Instructor = instructorRepo.GetInstructorById(id);
-            var InstructorTracks = instructorRepo.getInstructorTracks(id);
-            ViewBag.InstructorTracks = InstructorTracks;
-            var Alltracks = trackRepo.GetAll();
-            var ExceptTracks = Alltracks.Except(InstructorTracks).ToList();
-            ViewBag.ExceptTracks = ExceptTracks;
-
             return View(Instructor);
         }
 
@@ -88,14 +97,6 @@ namespace Attendance_Tracking_System.Controllers
         public async Task<IActionResult> Edit(Instructor instructor, IFormFile InsImg)
         {
             instructorRepo.EditInstructor(instructor);
-            //HashSet<Track> InstructorTrack = (HashSet<Track>)instructor.Tracks;
-            //InstructorTrack.AddRange(AddedTracks);
-            //foreach (var track in Removedtraks)
-            //{
-            //    InstructorTrack.Remove(track);
-            //}
-                
-
             string DirectoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "instructor");
             string[] filePaths = Directory.GetFiles(DirectoryPath);
             string FoundFileName = string.Empty;
@@ -138,8 +139,9 @@ namespace Attendance_Tracking_System.Controllers
 
 
 
-        public IActionResult Details(int ID)
+        public IActionResult Details()
         {
+            int ID = GetCurrentUser().Id;
             bool found = false;
             var AllTracks=trackRepo.GetAll();
             ViewBag.AllTracks = AllTracks;
@@ -163,8 +165,9 @@ namespace Attendance_Tracking_System.Controllers
 
 
         [HttpGet]
-        public IActionResult TrackSchedule(int id)
+        public IActionResult TrackSchedule()
         {
+            int id = GetCurrentUser().Id;
             HashSet<Schedule> sc = instructorRepo.getSheduleForTrack(id);
             ViewBag.Instructor = id;
             ViewBag.TrackSchedule = sc;
@@ -178,8 +181,9 @@ namespace Attendance_Tracking_System.Controllers
 
 
 
-        public IActionResult AllTrackSchedules(int id)
+        public IActionResult AllTrackSchedules()
         {
+            int id = GetCurrentUser().Id;
             HashSet<Schedule> sc = instructorRepo.getSheduleForTrack(id);
             return Json(sc);
         } 
@@ -188,9 +192,10 @@ namespace Attendance_Tracking_System.Controllers
 
 
         [HttpPost]
-        public IActionResult TrackSchedule(TimeOnly StartTime, DateOnly Date,int id)
+        public IActionResult TrackSchedule(TimeOnly StartTime, DateOnly Date)
         {
-           // int trackid = db.Track.SingleOrDefault(a => a.SuperID == id).Id;
+            int id = GetCurrentUser().Id;
+            // int trackid = db.Track.SingleOrDefault(a => a.SuperID == id).Id;
             var trackid = trackRepo.getTrackIDBySuperVisor(id);
             // ViewBag.trackid = trackid;
             var instructor = instructorRepo.GetInstructorById(id);
@@ -211,16 +216,19 @@ namespace Attendance_Tracking_System.Controllers
         }
 
 
-        public IActionResult WeeklyTable(int id, DateOnly date) {
-
+        public IActionResult WeeklyTable( DateOnly date) {
+            int id = GetCurrentUser().Id;
             List<Schedule> WeeklySchedule = new List<Schedule>();
             WeeklySchedule=instructorRepo.getWeeklyTable(id,date);
-            
+            if(WeeklySchedule!=null)
             return Json (WeeklySchedule);
+            else 
+                return Json(null);  
         }
 
-        public IActionResult Permission(int id)
+        public IActionResult Permission()
         {
+            int id = GetCurrentUser().Id;
             var Permissions = instructorRepo.GetPermissionsByTrack( id);
             ViewBag.InstructorID = id;
             ViewBag.permission = Permissions;
@@ -232,27 +240,29 @@ namespace Attendance_Tracking_System.Controllers
             return View(instructor);
         }
 
-        public IActionResult PermissionBydate(DateOnly date,int id)
+        public IActionResult PermissionBydate(DateOnly date)
         {
+            int id = GetCurrentUser().Id;
             List<Permission> permissions = instructorRepo.GetPermissionsByTrack(id);
             var FliteredPer = instructorRepo.getPermissionsByDateAndTrack(date, permissions);
             return Json(FliteredPer);
         }
-
+  /*----------------------------------------------------------------------------------------------*/
 
         [HttpPost]
         public ActionResult InstructorResponse(int permissionId, bool acceptanceValue)
         {
-            var per = db.Permission.SingleOrDefault(a => a.PermissionID == permissionId);
-            per.IsAccepted = acceptanceValue;
-            db.SaveChanges();
+            var per = permissionRepo.getPermissionByID(permissionId); 
+            permissionRepo.UpdatePermissionAcceptance(per,acceptanceValue);
+           
             return Json(" Permission ID: " + permissionId + "Acceptance Value: " + acceptanceValue);
         }
 
 
         [HttpGet]
-        public IActionResult AddWeeklyShedule(int id)
+        public IActionResult AddWeeklyShedule()
         {
+            int id = GetCurrentUser().Id;
             var instructor=instructorRepo.GetInstructorById(id);
             //var trackid = db.Track.FirstOrDefault(a => a.SuperID == id).Id;
             var trackid = trackRepo.getTrackIDBySuperVisor(id);
@@ -263,13 +273,19 @@ namespace Attendance_Tracking_System.Controllers
 
 
         [HttpPost]
-        public IActionResult AddWeeklyShedule(List<Schedule> schedules,int id)
+        public IActionResult AddWeeklyShedule(List<Schedule> schedules)
         {
-            db.Schedule.AddRange(schedules);
-            db.SaveChanges();
+            int id = GetCurrentUser().Id;
+            scheduleRepo.AddWeeklySchedules(schedules);
             return RedirectToAction("AddWeeklyShedule");
         }
 
+        public IActionResult Attandence()
+        {
+            int id = GetCurrentUser().Id;
+            var AttandenecRecords=instructorRepo.getAttandence(id);
+            return View(AttandenecRecords);
+        }
         
 
     }

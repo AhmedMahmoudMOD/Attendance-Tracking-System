@@ -137,24 +137,7 @@ namespace Attendance_Tracking_System.Repositories
             return db.Instructor.ToList();
         }
 
-        public List<Schedule>getWeeklyTable(int id, DateOnly date)
-        {
-            int TrackId = db.Track.SingleOrDefault(a => a.SuperID == id).Id;
-            Schedule schedule = db.Schedule.SingleOrDefault(sh => sh.TrackID == TrackId && sh.Date == date);
-            int StartDay = schedule.Date.Day;
-            int StartMonth = schedule.Date.Month;
-            int StartYear = schedule.Date.Year;
-            int scheduleId = schedule.Id;
-            List<Schedule> WeeklySchedule = new List<Schedule>();
-            for (int i = StartDay; i < StartDay + 6; i++)
-            {
-                Schedule sc = db.Schedule.FirstOrDefault(
-                      a => a.Date.Day == i && a.Date.Month == StartMonth && a.Date.Year == StartYear);
-                WeeklySchedule.Add(sc);
-            }
-            return WeeklySchedule;
-        }
-
+       
         public List<Permission> getPermissionsByDateAndTrack(DateOnly date,List<Permission> permissions)
         {
             return permissions.Where(a => a.Date == date).ToList();
@@ -173,6 +156,42 @@ namespace Attendance_Tracking_System.Repositories
         {
             var instructor = db.Instructor.Include(a=>a.Tracks).FirstOrDefault(a => a.Id == id);
             return instructor.Tracks.ToList();
+        }
+
+        public List<Attendance>getAttandence(int id)
+        {
+            return db.Attendance.Where(a => a.UserID == id).ToList();
+        }
+
+        public List<Schedule> getWeeklyTable(int id, DateOnly date)
+        {
+            int trackId = db.Track.SingleOrDefault(a => a.SuperID == id)?.Id ?? -1; // Default value if not found
+            if (trackId == -1)
+            {
+                // Handle the case where the track is not found
+                return new List<Schedule>();
+            }
+
+            Schedule schedule = db.Schedule.SingleOrDefault(sh => sh.TrackID == trackId && sh.Date == date);
+            if (schedule == null)
+            {
+                // Handle the case where the schedule is not found
+                return new List<Schedule>();
+            }
+
+            int startDay = schedule.Date.Day;
+            int startMonth = schedule.Date.Month;
+            int startYear = schedule.Date.Year;
+            int scheduleId = schedule.Id;
+            List<Schedule> weeklySchedule = new List<Schedule>();
+            for (int i = startDay; i < startDay + 6; i++)
+            {
+                Schedule sc = db.Schedule.FirstOrDefault(
+                    a => a.Date.Day == i && a.Date.Month == startMonth && a.Date.Year == startYear);
+                weeklySchedule.Add(sc);
+            }
+
+            return weeklySchedule;
         }
     }
 }

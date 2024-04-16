@@ -18,7 +18,7 @@
                                 <p class="text-secondary mb-1">Instructor</p>
                             </div>
                             <div>
-                                <input type="file" name="InsImg" />
+                                <input type="file" name="InsImg"  />
                             </div>
                         </div>
                     </div>
@@ -34,6 +34,7 @@
                             </div>
                             <div class="col-7">
                                 <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name"></span>
                             </div>
                         </div>
 
@@ -45,6 +46,7 @@
                             </div>
                             <div class="col-7">
                                 <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email"></span>
                             </div>
                         </div>
 
@@ -57,6 +59,7 @@
                             </div>
                             <div class="col-7">
                                 <input asp-for="Age" class="form-control" />
+                                <span asp-validation-for="Age"></span>
                             </div>
                         </div>
 
@@ -68,6 +71,7 @@
                             </div>
                             <div class="col-7">
                                 <input asp-for="PhoneNumber" class="form-control" />
+                                <span asp-validation-for="PhoneNumber"></span>
                             </div>
                         </div>
 
@@ -80,6 +84,7 @@
                             </div>
                             <div class="col-7">
                                 <input asp-for="Salary" class="form-control" />
+                                <span asp-validation-for="Salary"></span>
                             </div>
                         </div>
                         <hr />

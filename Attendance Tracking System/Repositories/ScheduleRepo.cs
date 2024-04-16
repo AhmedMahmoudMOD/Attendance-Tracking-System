@@ -51,5 +51,25 @@ namespace Attendance_Tracking_System.Repositories
             db.Schedule.Add(schedule);
             db.SaveChanges();
         }
+
+        public void AddWeeklySchedules(List<Schedule> schedules)
+        {
+            List<Schedule> AllSC = GetAllSchedules();
+            bool FoundDayAdded = false;
+            foreach (var schedule in schedules)
+            {
+                var ScheduleDay = AllSC.FirstOrDefault(a => a.Date == schedule.Date);
+                if (ScheduleDay != null) 
+                {
+                    FoundDayAdded = true;
+                    break;
+                }
+            }
+            if (!FoundDayAdded)
+            {
+                db.Schedule.AddRange(schedules);
+                db.SaveChanges();
+            }
+        }
     }
 }
