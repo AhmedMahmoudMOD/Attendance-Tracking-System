@@ -1,10 +1,12 @@
 ﻿using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
+using CRUD.CustomFilters;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol.Core.Types;
 
 namespace Attendance_Tracking_System.Controllers
 {
+	
 	public class StudentRegisterController : Controller
 	{
 		IRegisterStudentRepo repo;

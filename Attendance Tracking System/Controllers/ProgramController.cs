@@ -3,10 +3,12 @@ using Attendance_Tracking_System.Data;
 using Attendance_Tracking_System.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using CRUD.CustomFilters;
 
 namespace Attendance_Tracking_System.Controllers
 {
-    public class ProgramController : Controller
+	[AuthFilter]
+	public class ProgramController : Controller
     {
         readonly IProgramRepo programRepo;
         readonly IIntakeRepo intakeRepo;

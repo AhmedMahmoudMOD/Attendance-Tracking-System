@@ -1,11 +1,13 @@
 ﻿using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
+using CRUD.CustomFilters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
 namespace Attendance_Tracking_System.Controllers
 {
-    public class StudentAffairsController : Controller
+	[AuthFilter]
+	public class StudentAffairsController : Controller
     {
         private readonly IEmployeeRepo employeeRepo;
         private readonly IStudentRepo studentRepo;

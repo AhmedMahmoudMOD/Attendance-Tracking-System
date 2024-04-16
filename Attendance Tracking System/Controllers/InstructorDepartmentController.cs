@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CRUD.CustomFilters;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Attendance_Tracking_System.Controllers
 {
-    public class InstructorDepartmentController : Controller
+	[AuthFilter]
+	public class InstructorDepartmentController : Controller
     {
         public IActionResult Index()
         {

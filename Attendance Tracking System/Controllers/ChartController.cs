@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Security.Cryptography;
 using Attendance_Tracking_System.Charts;
+using CRUD.CustomFilters;
 
 namespace Attendance_Tracking_System.Controllers
 {
-    public class ChartController : Controller
+	[AuthFilter]
+	public class ChartController : Controller
     {
         private readonly IStudentRepo studentRepo;
         private readonly IEmployeeRepo employeeRepo;

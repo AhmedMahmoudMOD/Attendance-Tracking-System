@@ -25,5 +25,8 @@ namespace Attendance_Tracking_System.Repositories
         List<Employee> GetAllStudentAffairs();
 
         List<Attendance> GetAttendancesByEmpID(int EmpID);
+		User GetUserById(int id);
+
     }
+  
 }

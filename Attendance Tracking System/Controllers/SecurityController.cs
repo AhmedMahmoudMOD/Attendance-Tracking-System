@@ -1,13 +1,15 @@
 ﻿using Attendance_Tracking_System.Data;
 using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
+using CRUD.CustomFilters;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading;
 
 namespace Attendance_Tracking_System.Controllers
 {
-    public class SecurityController : Controller
+	[AuthFilter]
+	public class SecurityController : Controller
     {
         private readonly IProgramRepo programRepo;
         private readonly IEmployeeRepo employeeRepo;

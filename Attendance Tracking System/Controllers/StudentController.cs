@@ -1,13 +1,15 @@
 ﻿using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
 using Attendance_Tracking_System.View_Models;
+using CRUD.CustomFilters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using System.Security.Claims;
 
 namespace Attendance_Tracking_System.Controllers
 {
-    public class StudentController : Controller
+	[AuthFilter]
+	public class StudentController : Controller
     {
         private readonly IStudentRepo studentRepo;
         private readonly IAttendanceRepo AttendanceRepo;
@@ -40,8 +42,11 @@ namespace Attendance_Tracking_System.Controllers
 
             public IActionResult Index()
             {
-                var id = GetUserIdFromCookie();
-                if (id.HasValue)
+            // var id = GetUserIdFromCookie();
+            var id = GetCurrentUser();
+
+
+				if (id!=null)
                 {
                     var student = studentRepo.GetStudentById(id);
                     if (student != null)
@@ -143,5 +148,13 @@ namespace Attendance_Tracking_System.Controllers
             permissionRepo.removePermission(Perid);
             return RedirectToAction("GetAllPermission",Stdid);
         }
-    }
+		public int GetCurrentUser()
+		{
+			ClaimsIdentity? identity = HttpContext.User.Identity as ClaimsIdentity;
+			var userId = identity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			int id = int.Parse(userId);
+			
+			return id;
+		}
+	}
 }
