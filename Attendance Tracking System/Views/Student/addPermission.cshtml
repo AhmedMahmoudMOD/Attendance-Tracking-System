@@ -62,8 +62,7 @@
     <div class="container">
         <form method="post">
             <div>
-                <label for="PermissionID">Permission ID</label>
-                <input type="text" id="PermissionID" asp-for="PermissionID" />
+                <input type="text" id="PermissionID" asp-for="PermissionID" hidden />
             </div>
             <div>
                 <label for="StudentID">Student ID</label>
@@ -74,8 +73,8 @@
                 <input type="text" id="Reason" asp-for="Reason" />
             </div>
             <div>
-                <label for="DateTime">Date and Time</label>
-                <input type="datetime-local" id="DateTime" asp-for="Date" />
+                <label for="Date">Date and Time</label>
+                <input type="date" id="Date" asp-for="Date" />
             </div>
             <div>
                 <label for="Type">Permission Type</label>
