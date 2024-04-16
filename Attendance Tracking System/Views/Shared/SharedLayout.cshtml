@@ -26,21 +26,33 @@
 <body class="sb-nav-fixed">
 	<nav class="sb-topnav navbar navbar-expand">
 		<!-- Navbar Brand-->
-		<b class="navbar-brand ps-3">Welcome @currentUser</b>
+		<a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
 		<!-- Sidebar Toggle-->
 		<button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars" style="color:white"></i></button>
 		<!-- Navbar-->
 		<div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"></div>
 		<ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+			<li class="nav-item">
+				<a class="nav-link" asp-action="index" asp-controller="student">
+					<span class="me-2">
+						<i class="fas fa-user"></i>
+					</span>
+					Welcome, @User.Identity.Name
+				</a>
+			</li>
+
 			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+				<a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+					<i class="fas fa-bars"></i> <!-- Icon for the dropdown -->
+				</a>
 				<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-					<li><a class="dropdown-item" href="#!">Home</a></li>
-					<li><hr class="dropdown-divider" /></li>
+					<li><a class="dropdown-item" asp-action="Index" asp-controller="Home">Home</a></li>
+					<li><hr class="dropdown-divider"></li>
 					<li><a class="dropdown-item" asp-action="logout" asp-controller="Account">Logout</a></li>
 				</ul>
 			</li>
 		</ul>
+
 	</nav>
 	<div id="layoutSidenav">
 		<div id="layoutSidenav_nav">
@@ -107,7 +119,23 @@
 						}
 						else if (User.IsInRole("student"))
 						{
-							//actions of student
+                            <a class="nav-link m-1" asp-action="Index" asp-controller="Home">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Home
+                        </a>
+                        <a class="nav-link collapsed m-1" asp-action="Index" asp-controller="Student">
+                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                            Profile
+                        </a>
+                        <a class="nav-link m-1" asp-action="GetAllPermission" asp-controller="Student">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Permission
+                        </a>
+                        <a class="nav-link m-1" asp-action="ShowAttendence" asp-controller="Student">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Attendance
+                        </a>
+                  
 						}
 						else if (User.IsInRole("instructor"))
 						{
