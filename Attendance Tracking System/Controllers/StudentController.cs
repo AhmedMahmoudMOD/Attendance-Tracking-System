@@ -23,24 +23,26 @@ namespace Attendance_Tracking_System.Controllers
             this.AttendanceRepo = _AttendanceRepo;
             this.permissionRepo = permissionRepo;
         }
-		
-		private int? GetUserIdFromCookie()
-            {
-                // Retrieve the value of the "UserId" cookie
-                string userIdString = HttpContext.Request.Cookies["Id"];
 
-                // Check if the cookie exists and has a value
-                if (!string.IsNullOrEmpty(userIdString) && int.TryParse(userIdString, out int userId))
-                {
-                    // User ID retrieved successfully
-                    return userId;
-                }
-                else
-                {
-                    // Cookie does not exist or has no value, or the value is not a valid integer
-                    return null;
-                }
-            }
+       
+            //private int? GetUserIdFromCookie()
+            //{
+            //    // Retrieve the value of the "UserId" cookie
+            //    string userIdString = HttpContext.Request.Cookies["Id"];
+
+
+            //    // Check if the cookie exists and has a value
+            //    if (!string.IsNullOrEmpty(userIdString) && int.TryParse(userIdString, out int userId))
+            //    {
+            //        // User ID retrieved successfully
+            //        return userId;
+            //    }
+            //    else
+            //    {
+            //        // Cookie does not exist or has no value, or the value is not a valid integer
+            //        return null;
+            //    }
+            //}
 
             public IActionResult Index()
             {
@@ -90,23 +92,23 @@ namespace Attendance_Tracking_System.Controllers
             var attendance = AttendanceRepo.getAllAttendance(id);
             return View(attendance);
         }
-        public IActionResult EditStd()
-        {
-            var id = GetUserIdFromCookie();
-            var student = studentRepo.GetStudentById(id);
-            EditStudentViewModel editStudentViewModel = new EditStudentViewModel
-            {
-                Id = student.Id,
-                Name = student.Name,
-                Email = student.Email,
-                Image = student.Image,
-                ImagePath = student.UserImage,
-                Password = student.Password,
+		public IActionResult EditStd()
+		{
+			var id = GetCurrentUser();
+			var student = studentRepo.GetStudentById(id);
+			EditStudentViewModel editStudentViewModel = new EditStudentViewModel
+			{
+				Id = student.Id,
+				Name = student.Name,
+				Email = student.Email,
+				Image = student.Image,
+				ImagePath = student.UserImage,
+				Password = student.Password,
 
-            };
-            return View(editStudentViewModel);
-        }
-        [HttpPost]
+			};
+			return View(editStudentViewModel);
+		}
+		[HttpPost]
         public async Task<IActionResult> EditStd(EditStudentViewModel student)
         {
             if (!ModelState.IsValid)
@@ -120,28 +122,24 @@ namespace Attendance_Tracking_System.Controllers
             }
         }
         [HttpGet]
-        public IActionResult AddPermission(int id)
+        public IActionResult AddPermission()
         {
-            ViewBag.StudentID = id;
+            ViewBag.StudentID = GetCurrentUser();
             return View();
         }
         [HttpPost]
         public IActionResult AddPermission(Permission permission)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(permission);
-            }
-            else
-            {
+           
                var per = permissionRepo.addPermission(permission);
                var std = studentRepo.GetStudentById(per.StudentID);
                 return View("Index",std);
-            }
+            
         
         }
-        public IActionResult GetAllPermission(int id)
+        public IActionResult GetAllPermission()
         {
+            var id = GetCurrentUser();
             var permission = permissionRepo.getAllPermission(id);
             return View(permission);
         }

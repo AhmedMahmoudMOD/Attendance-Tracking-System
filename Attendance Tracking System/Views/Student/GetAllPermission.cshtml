@@ -48,8 +48,8 @@
     </style>
 </head>
 <body>
-    <button onclick="goBack()" class="btn btn-primary">Back</button>
-    <table>
+@*     <button onclick="goBack()" class="btn btn-primary">Back</button>
+ *@    <table>
         <thead>
             <tr>
                 <th>Permission Id</th>
@@ -90,6 +90,7 @@
             }
         </tbody>
     </table>
+    <a asp-action="addPermission" class="btn btn-outline-dark">Add Permission</a>
     <script>
         function removePermission(permissionId, studentId) {
             if (confirm("Are you sure you want to remove this permission?")) {
@@ -106,9 +107,9 @@
                 });
             }
         }
-        function goBack() {
-            window.history.back();
-        }
+        // function goBack() {
+        //     window.history.back();
+        // }
     </script>
 </body>
 </html>
