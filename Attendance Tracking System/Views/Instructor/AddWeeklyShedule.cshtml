@@ -19,7 +19,6 @@
 <body>
     <form method="post">
         <div class="row mb-3">
-
         </div>
         <div class="form-check day">
             <div class="badge bg-primary">First Day</div>
@@ -150,8 +149,8 @@
                 inputField.value = formattedDate;
             }
         }
-        function GetSameTime() {
 
+        function GetSameTime() {
             let StartTime = document.getElementById("time1").value
             for (var i = 1; i < 7; i++) {
                 document.getElementById(`time${i}`).value = StartTime
