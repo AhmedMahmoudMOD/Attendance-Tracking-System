@@ -6,5 +6,8 @@ namespace Attendance_Tracking_System.Repositories
     {
         Permission getPermissionByID(int id);
         void UpdatePermissionAcceptance(Permission permission, bool Response);
+        Permission addPermission(Permission permission);
+        void removePermission(int id);
+        List<Permission> getAllPermission(int id);
     }
 }

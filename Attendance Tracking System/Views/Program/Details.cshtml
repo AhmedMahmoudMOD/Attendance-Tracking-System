@@ -1,14 +1,25 @@
 ﻿@model ITIProgram
 @{
     ViewData["Title"] = "Details";
-    Layout = "~/Views/Shared/_ProgramLayout.cshtml";
 }
 
-<h1 class="ms-5"> Program Details</h1>
 
-<h2 class="alert alert-info ms-5 mt-4 w-75 m-auto" role="alert" >
-   @Model.Name :: @Model.Duration ::@Model.IsDeleted
-</h2>
+
+<div class="container">
+    <h1 style="color:#001F3D">Program Details</h1>
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@Model.Name</h5>
+                    <p class="card-text">Duration: @Model.Duration</p>
+                    <p class="card-text">Is Deleted: @Model.IsDeleted</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="btn " style="height:40px;background-color:#001F3D;color:white" href="/Program/Index">Back</a>
+</div>
 
 
 

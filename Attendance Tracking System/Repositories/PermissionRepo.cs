@@ -21,5 +21,21 @@ namespace Attendance_Tracking_System.Repositories
             permission.IsAccepted = Response;
             db.SaveChanges();
         }
+        public Permission addPermission(Permission permission)
+        {
+            db.Permission.Add(permission);
+            db.SaveChanges();
+            return permission;
+        }
+        public void removePermission(int id)
+        {
+            var permission = db.Permission.FirstOrDefault(p => p.PermissionID == id);
+            db.Permission.Remove(permission);
+            db.SaveChanges();
+        }
+        public List<Permission> getAllPermission(int id)
+        {
+            return db.Permission.Where(p => p.StudentID == id).ToList();
+        }
     }
 }

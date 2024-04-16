@@ -13,7 +13,7 @@
         }
 
         th {
-            background-color: black !important;
+            background-color: #001F3D !important;
             color: white;
         }
 
@@ -56,7 +56,7 @@
                          <input type="hidden" name="AttendanceType" value="StudentAttendance"/>
                          <input type="hidden" name="Date" value="@today" />
                          <input type="hidden" name="TrackID" value="@ViewBag.CurentTrackId" />
-                         <button class="btn btn-success ArrBtn" type="submit"><i class="fas fa-clock fa-lg"></i></button>
+                         <button class="btn btn-theme ArrBtn" type="submit"><i class="fas fa-clock fa-lg"></i></button>
                     </form>
                     <form class="d-inline-block LeaveForm" asp-action="SetLeaveTime" asp-controller="Attendance">
                           <input type="hidden" name="UserID" value="@std.Id" />
@@ -68,7 +68,7 @@
                             <input type="hidden" name="AttendanceType" value="StudentAttendance" />
                             <input type="hidden" name="Date" value="@today" />
                             <input type="hidden" name="TrackID" value="@ViewBag.CurentTrackId" />
-                            <button class="btn btn-dark AbsentBtn" type="submit"><i class="fas fa-times fa-lg"></i></button>
+                            <button class="btn btn-inv AbsentBtn" type="submit"><i class="fas fa-times fa-lg"></i></button>
                     </form>
                 </td>
             </tr>             

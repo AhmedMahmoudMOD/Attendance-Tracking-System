@@ -1,7 +1,7 @@
 ﻿@model Employee
 
 @{
-    ViewData["Title"] = "AddEmployee";
+    ViewData["Title"] = "Add Employee";
 	var RoleId = ViewBag.StdRoleId;
 
 }
@@ -21,12 +21,12 @@
 <body>
 	<div class="container">
 		<div style="display:flex;flex-direction:row">
-			<h2 class="text-center " style="color:#5D0E41;">Add new Employee</h2>
+			<h2 class="text-center " style="color:#5D0E41;">Add New Employee</h2>
 			<a class="btn btn-dark" style="height:40px;margin-left:10px" asp-action="GetEmployees">Back </a>
 		</div>
 		<br />
 		<div class="col-lg-6">
-			<form id="signupForm" method="post" asp-action="AddEmployee" class="border border-dark p-4" enctype="multipart/form-data">
+			<form id="AddEmp" method="post" asp-action="AddEmployee" class="border border-dark p-4" enctype="multipart/form-data">
 				<div class="form-row">
 					<input type="hidden" name="RoleId" value="@RoleId" />
 					<div class="form-group col-md-6">
@@ -66,7 +66,9 @@
 					</div>
 					<div class="col-md-6">
 						<label asp-for="Salary"></label>
-						<input class="form-control" asp-for="Salary" />
+						
+						<input class="form-control" id="sal" asp-for="Salary" placeholder="0" type="number" min="1000" pattern="[0-9]*" />
+						<span id="salError" class="text-danger"></span>
 					</div>
 				</div>
 				<div class="col-md-6">
@@ -78,23 +80,23 @@
 					<input type="radio" asp-for="Type" name="Type" value="Security">
 					<label for="Security">Secuirity</label>
 				</div>
-				<button type="submit" class="btn btn-danger btn-block">Save Changes</button>
+				<button type="submit" class="btn btn-danger btn-block">Add Employee</button>
 			</form>
 		</div>
 	</div>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script>
-		document.getElementById('signupForm').addEventListener('submit', function (event) {
+		document.getElementById('AddEmp').addEventListener('submit', function (event) {
 			var userImage = document.getElementById('UserImage').files[0];
-			var track = document.getElementById('TrackID').value;
+			var Salary = document.getElementById('sal').value;
 			document.getElementById('imageError').innerText = '';
-			document.getElementById('trackError').innerText = '';
-			if (!userImage) {
-				document.getElementById('imageError').innerText = 'Please select an image.';
+			document.getElementById('salError').innerText = '';
+			if (Salary < 1000) {
+				document.getElementById('salError').innerText = 'salary must be between 1000 & 20.000';
 				event.preventDefault();
 			}
-			if (!track) {
-				document.getElementById('trackError').innerText = 'Please select a track.';
+			if (!userImage) {
+				document.getElementById('imageError').innerText = 'Please select an image.';
 				event.preventDefault();
 			}
 		});

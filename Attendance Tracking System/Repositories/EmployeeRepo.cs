@@ -19,10 +19,17 @@ namespace Attendance_Tracking_System.Repositories
             var target = db.Employee.SingleOrDefault(e=>e.Id == id);
             return target;
         }
+		public User GetUserById(int id)
+		{
+			User user = db.User.SingleOrDefault(e => e.Id == id);
+			return user;
+		}
 
-        public bool Update(Employee employee) {
+
+		public bool Update(Employee employee) {
             try
             {
+                
                 db.Employee.Update(employee);
                 db.SaveChanges();
                 return true;
@@ -31,9 +38,8 @@ namespace Attendance_Tracking_System.Repositories
             {
                 return false;
             }
-            
-           
         }
+       
 
         public bool Add(Employee employee)
         {
@@ -135,6 +141,12 @@ namespace Attendance_Tracking_System.Repositories
         {
             var studentAffairs = db.Employee.Where(e => e.Type == Enums.EmployeeType.StudentAffairs).ToList();
             return studentAffairs;
+        }
+
+        public List<Attendance> GetAttendancesByEmpID(int EmpID)
+        {
+             var list = db.Attendance.Where(a=>a.UserID==EmpID).ToList();
+            return list;
         }
 
 

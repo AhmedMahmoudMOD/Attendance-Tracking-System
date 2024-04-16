@@ -10,5 +10,6 @@ namespace Attendance_Tracking_System
 		[Required]
 		[DataType(DataType.Password)]
 		public string password { get; set; }
+
 	}
 }

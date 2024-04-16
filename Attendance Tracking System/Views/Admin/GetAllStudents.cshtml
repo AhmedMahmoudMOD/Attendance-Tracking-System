@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<Student>
+@{
+	ViewData["Title"] = "All Students";
+}
 <html>
 <head>
 
@@ -30,7 +33,7 @@
 		}
 	</div>
 	<table id="example" class="table table-hover table-bordered display"
-		   style="text-align:center;width:100%;border-radius:15px;">
+		   style="text-align:center;width:100%;border-radius:15px;margin-top:10px">
 		<thead>
 			<tr style="background-color:#001F3D;color:white;text-align:center">
 				<th scope="col">Id</th>
@@ -56,8 +59,8 @@
 				@foreach (var item in Model)
 				{
 					<tr>
-						<td>@item.Id</td>
-						<td>@item.Name</td>
+						<td>@item?.Id</td>
+						<td>@item?.Name</td>
 						<td>
 							@if (!string.IsNullOrEmpty(item.UserImage))
 							{
@@ -68,9 +71,9 @@
 								<img src="@Url.Content("~/images/user.png")" class="img-style" />
 							}
 						</td>
-						<td>@item.Email</td>
-						<td>@item.Password</td>
-						<td>@item.Age</td>
+						<td>@item?.Email</td>
+						<td>@item?.Password</td>
+						<td>@item?.Age</td>
 						
 						<td>
 							<a onclick="showConfirmation('@Url.Action("DeleteStudent", "Admin", new { id = item.Id })')">

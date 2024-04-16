@@ -1,6 +1,7 @@
 ﻿using NuGet.Protocol;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Attendance_Tracking_System.Models
 {
@@ -25,6 +26,8 @@ namespace Attendance_Tracking_System.Models
         public string? PhoneNumber { get; set; }
 
         public string? UserImage { get; set; }
+        [NotMapped]
+        public IFormFile? Image { get; set; }
 
         public bool IsDeleted { get; set; } = false;
         [JsonIgnore]

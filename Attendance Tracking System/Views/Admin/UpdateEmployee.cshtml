@@ -24,7 +24,7 @@
 		</div>
 		<br />
 		<div class="col-lg-6">
-			<form id="signupForm" method="post" asp-action="UpdateEmployee" class="border border-dark p-4" enctype="multipart/form-data">
+			<form id="UpdateForm" method="post" asp-action="UpdateEmployee" class="border border-dark p-4" enctype="multipart/form-data">
 				<div class="form-row">
 					@* <input type="hidden" name="RoleId" value="@RoleId" /> *@
 					<div class="form-group col-md-6">
@@ -59,7 +59,7 @@
 				<div class="row form-group">
 					<div class="col-md-6">
 						<label asp-for="UserImage">Image</label>
-						<input type="file" name="Img" class="form-control-file" asp-for="UserImage" />
+						<input type="file" name="Img" class="form-control-file" asp-for="UserImage"  id="img"/>
 						<span id="imageError" class="text-danger"></span>
 					</div>
 					<div class="col-md-6">
@@ -83,17 +83,11 @@
 	</div>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script>
-		document.getElementById('signupForm').addEventListener('submit', function (event) {
-			var userImage = document.getElementById('UserImage').files[0];
-			var track = document.getElementById('TrackID').value;
+		document.getElementById('UpdateForm').addEventListener('submit', function (event) {
+			var userImage = document.getElementById('img').files[0];
 			document.getElementById('imageError').innerText = '';
-			document.getElementById('trackError').innerText = '';
 			if (!userImage) {
 				document.getElementById('imageError').innerText = 'Please select an image.';
-				event.preventDefault();
-			}
-			if (!track) {
-				document.getElementById('trackError').innerText = 'Please select a track.';
 				event.preventDefault();
 			}
 		});

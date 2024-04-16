@@ -17,6 +17,7 @@ namespace Attendance_Tracking_System
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mgo+DSMBMAY9C3t2UFhhQlJBfV5AQmBIYVp/TGpJfl96cVxMZVVBJAtUQF1hTX5XdkRhW31YdXBRQ2Vd");
 
             builder.Services.AddDbContext<ITISysContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("Azure")));
@@ -30,10 +31,9 @@ namespace Attendance_Tracking_System
             builder.Services.AddScoped<IStudentAttendanceRepo, StudentAttendanceRepo>();
             builder.Services.AddScoped<IScheduleRepo, ScheduleRepo>();
             builder.Services.AddScoped<IPermissionRepo, PermissionRepo>();
-            builder.Services.AddScoped<IRegisterStudentRepo,RegisterRepo>();   
             builder.Services.AddScoped<IAdminRepo, AdminRepo>();
-			//register auth type "cookie"
-			builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+            builder.Services.AddScoped<IUploadFile, UploadFileRepo>();
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {

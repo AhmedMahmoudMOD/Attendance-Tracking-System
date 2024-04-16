@@ -1,6 +1,5 @@
 ﻿﻿@{
 	var currentUser = User.Identity.Name;
-
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -13,9 +12,10 @@
 	<title>@ViewData["Title"]</title>
 	<link href="/css/styles.css" rel="stylesheet" />
 	<link href="/css/ss.css" rel="stylesheet">
-	<link href="/css/program.css" rel="stylesheet" />
+	<link href="/css/program.css" rel="stylesheet"/>
 	<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.3/css/dataTables.bootstrap5.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.dataTables.css" />
 	<!-- Syncfusion ASP.NET Core controls styles -->
 	<link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/25.1.35/fluent.css" />
 	<!-- Syncfusion ASP.NET Core controls scripts -->
@@ -129,7 +129,32 @@
 						}
 						else if (User.IsInRole("StudentAffairs"))
 						{
-							//actions of StudentAffairs
+							<a class="nav-link m-1 selected" asp-controller="StudentAffairs" asp-action="ViewProfile">
+								<div class="sb-nav-link-icon">
+									<i class="fas fa-user"></i>
+								</div>
+								Profile
+							</a>
+							<a class="nav-link m-1 selected" asp-controller="StudentAffairs" asp-action="EditProfile">
+								<div class="sb-nav-link-icon">
+									<i class="fas fa-user"></i>
+								</div>
+								EditProfile
+							</a>
+
+							<a class="nav-link m-1 selected" asp-controller="StudentAffairs" asp-action="GetStudents">
+									<div class="sb-nav-link-icon">
+									<i class="fas fa-user"></i>
+									</div>
+								View All Students & Edit Student Profile
+							</a>
+							
+							<a class="nav-link m-1 selected" asp-controller="StudentAffairs" asp-action="ShowAttendance">
+								<div class="sb-nav-link-icon">
+									<i class="fas fa-user"></i>
+								</div>
+								ShowAttendance
+							</a>
 
 						}
 						else if (User.IsInRole("Supervisor"))
@@ -139,7 +164,33 @@
 						}
 						else if (User.IsInRole("Security"))
 						{
-							//actions of Security
+							<a class="nav-link m-1" asp-controller="Security" asp-action="ViewProfile">
+								<div class="sb-nav-link-icon">
+									<i class="fas fa-user"></i>
+								</div>
+								Profile
+							</a>
+
+							<a class="nav-link m-1" asp-controller="Security" asp-action="MyAttendance">
+								<div class="sb-nav-link-icon">
+									<i class="fas fa-user"></i>
+								</div>
+								My Attendance
+							</a>
+
+							<a class="nav-link m-1" asp-controller="Security" asp-action="Index">
+								<div class="sb-nav-link-icon">
+									<i class="fas fa-graduation-cap"></i>
+								</div>
+								Students Attendance
+							</a>
+
+							<a class="nav-link m-1" asp-controller="Security" asp-action="StaffAttendance">
+								<div class="sb-nav-link-icon">
+									<i class=" fas fa-user-tie"></i>
+								</div>
+								Staff Attendance
+							</a>
 						}
 						else
 						{
@@ -156,14 +207,13 @@
 			<main class="pb-3 mt-3">
 				@RenderBody()
 			</main>
-			<footer class="py-4 bg-light mt-auto">
-			</footer>
+			
 		</div>
 	</div>
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-	<script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+	<script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+	<script src="https://cdn.datatables.net/2.0.3/js/dataTables.bootstrap5.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>
 	<script src="/js/scripts.js"></script>
 	<ejs-scripts></ejs-scripts>

@@ -2,6 +2,7 @@
 using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading;
 
 namespace Attendance_Tracking_System.Controllers
@@ -13,7 +14,7 @@ namespace Attendance_Tracking_System.Controllers
         private readonly IIntakeRepo intakeRepo;
         private readonly IStudentRepo studentRepo;
         private readonly IInstructorRepo instructorRepo;
-
+        private int EmpId;
         public SecurityController(IProgramRepo programRepo,IEmployeeRepo employeeRepo,IIntakeRepo intakeRepo,IStudentRepo studentRepo  , IInstructorRepo instructorRepo)
         {
             this.programRepo = programRepo;
@@ -61,8 +62,8 @@ namespace Attendance_Tracking_System.Controllers
         }
 
         public IActionResult ViewProfile() {
-            int EmpId = 16;
-            var model = employeeRepo.GetByID(EmpId);
+			 EmpId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+			var model = employeeRepo.GetByID(EmpId);
             return View(model);
         
         }
@@ -165,6 +166,13 @@ namespace Attendance_Tracking_System.Controllers
                 default:
                     return PartialView("_StaffAttendancePartial", null);
             }
+        }
+
+        public IActionResult MyAttendance()
+        {
+            EmpId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var list = employeeRepo.GetAttendancesByEmpID(EmpId);
+            return View(list);
         }
     }
 }

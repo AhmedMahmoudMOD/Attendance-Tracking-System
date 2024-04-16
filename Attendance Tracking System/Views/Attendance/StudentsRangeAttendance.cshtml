@@ -1,6 +1,6 @@
 ﻿@{
-    ViewData["Title"] = "StudentsAttendance";
-    Layout = "~/Views/Shared/_SLayout.cshtml";
+    ViewData["Title"] = "Students Attendance";
+    Layout = "~/Views/Shared/SharedLayout.cshtml";
     var Programs = ViewBag.Programs;
     SelectList ProgramsList = new SelectList(Programs, "Id", "Name");
     var Tracks = ViewBag.Tracks;
@@ -9,32 +9,49 @@
     var today = DateOnly.FromDateTime(DateTime.Now);
     string formattedDate = today.ToString("yyyy-MM-dd");
 }
+<head>
+    <style>
+        .btn-theme {
+            background-color: #001F3D !important;
+            color: white;
+        }
+
+        .btn:hover {
+            background-color: #15859c !important;
+            color: white;
+        }
+        .btn-inv{
+            background-color: #d8e5e8 !important;
+              color: black
+        }
+    </style>
+</head>
 
 <div id="container" class="container-fluid mt-3">
     <div class="row justify-content-evenly">
-        <form asp-action="GetRangeStdAttBarChart" asp-controller="Chart" class="row col-12">
+        <form asp-action="GetRangeStdAttBarChart" asp-controller="Chart" class="row col-12 justify-content-around">
             <input type="hidden" value="@cIntake.No" name="Ino" id="intake" />
-            <div class="col-2 ">
+            <div class="col-xl-2 col-lg-3">
                 <label class="fst-italic text-muted">Start Date</label>
                 <input type="date" class="form-control" id="date" name="Date" value="@formattedDate" />
             </div>
-            <div class="col-2 ">
+            <div class="col-xl-2 col-lg-3">
                 <label class="fst-italic text-muted">End Date</label>
                 <input type="date" class="form-control" id="enddate" name="EndDate" value="@formattedDate" />
             </div>
-            <div class="col-2">
+            <div class="col-xl-2 col-lg-2">
                 <label class="fst-italic text-muted">Program</label>
                 <select asp-items=ProgramsList id="pros" class="form-control" name="Pid" onchange="GetTracks(this.value)"></select>
             </div>
-            <div class="col-2">
+            <div class="col-xl-2 col-lg-2">
                 <label class="fst-italic text-muted">Track</label>
                 <select asp-items=TracksList id="tracks" class="form-control" name="Tid"></select>
             </div>
-            <div class="col-3 offset-1 mt-4">
-                <input type="button" value="Show Students" name="Submit" class="btn btn-success" onclick="GetAttendanceList(pros.value,tracks.value,intake.value,date.value,enddate.value)" />
-                <button type="button" value="Get Report" name="Submit" class="btn" onclick="GetAttendanceReport(pros.value,tracks.value,intake.value,date.value,enddate.value)"><i class="fa-solid fa-print fa-lg" style="color: #121212;"></i></button>
-                <button type="submit" value="Get Chart" name="Submit" class="btn"><i class="fa-solid fa-chart-bar fa-lg" style="color: #0c0d0d;"></i></button>
-
+            <div class="row mt-5 justify-content-center">
+                <button type="button" value="Show Students" name="Submit" class="btn btn-theme col-xxl-2 col-lg-3 me-3 mb-lg-0 mb-2" onclick="GetAttendanceList(pros.value,tracks.value,intake.value,date.value,enddate.value)"><i class="fas fa-graduation-cap"></i> Show Students </button>
+                <button type="button" value="Get Report" name="Submit" class="btn btn-inv col-xxl-2 col-lg-1 me-3 mb-lg-0 mb-2" onclick="GetAttendanceReport(pros.value,tracks.value,intake.value,date.value,enddate.value)"><i class="fa-solid fa-file-pdf fa-lg"></i> PDF</button>
+                <button type="submit" value="Get Chart" name="Submit" class="btn btn-theme col-xxl-2 col-lg-3 me-3 mb-lg-0 mb-2"> <i class="fa-solid fa-chart-bar fa-lg"></i> Attendance Chart</button>
+                <button type="button" name="Submit" class="btn btn-inv col-xxl-2 col-lg-3 me-3 mb-lg-0 mb-2" onclick="UpdateDegrees(pros.value,tracks.value,intake.value,date.value,enddate.value)"><i class="fa-solid fa-pen-to-square"></i> Update Degrees</button>
             </div>
         </form>
     </div>
@@ -63,6 +80,26 @@
                 data: { Pid: pid, Tid: tid, Ino: ino, Date: date, EndDate: endDate },
                 success: function (result) {
                     $("#AttList").html(result)
+                }
+            });
+        }
+        function UpdateDegrees(pid, tid, ino, date, endDate) {
+            $.ajax({
+                url: "/Attendance/CalculateStudentsAttendace",
+                data: { Pid: pid, Tid: tid, Ino: ino, Date: date, EndDate: endDate },
+                success: function () {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Attendance Degrees Has Been Updated Successfully'
+                    });
+                },
+                error: function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Some Erroe Occured'
+                    });
                 }
             });
         }
@@ -99,4 +136,6 @@
         }
         );
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 }
