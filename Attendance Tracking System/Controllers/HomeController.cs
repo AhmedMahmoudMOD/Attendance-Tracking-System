@@ -1,11 +1,13 @@
 using Attendance_Tracking_System.Models;
+using CRUD.CustomFilters;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
 
 namespace Attendance_Tracking_System.Controllers
 {
-    public class HomeController : Controller
+	[AuthFilter]
+	public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
 

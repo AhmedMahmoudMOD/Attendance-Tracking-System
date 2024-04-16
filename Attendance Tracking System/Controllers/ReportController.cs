@@ -6,10 +6,12 @@ using Attendance_Tracking_System.Repositories;
 using Syncfusion.Drawing;
 using Humanizer;
 using System.Security.Cryptography;
+using CRUD.CustomFilters;
 
 namespace Attendance_Tracking_System.Controllers
 {
-    public class ReportController : Controller
+	[AuthFilter]
+	public class ReportController : Controller
     {
         private readonly IStudentRepo studentRepo;
         private readonly IInstructorRepo instructorRepo;

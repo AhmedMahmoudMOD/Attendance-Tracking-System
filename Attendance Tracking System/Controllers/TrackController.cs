@@ -1,10 +1,12 @@
 ﻿using Attendance_Tracking_System.Data;
 using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
+using CRUD.CustomFilters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Attendance_Tracking_System.Controllers
 {
+	[AuthFilter]
 	public class TrackController : Controller
 	{
 		ITrackRepo TrackRepo { get; set; }

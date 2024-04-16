@@ -3,6 +3,7 @@ using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Newtonsoft.Json;
 using OfficeOpenXml;
 using System.Text.Json.Serialization;
@@ -34,6 +35,7 @@ namespace Attendance_Tracking_System
             builder.Services.AddScoped<IAdminRepo, AdminRepo>();
             builder.Services.AddScoped<IUploadFile, UploadFileRepo>();
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+            builder.Services.AddScoped<IRegisterStudentRepo,RegisterRepo>();
 
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
