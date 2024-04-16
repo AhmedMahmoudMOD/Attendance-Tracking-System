@@ -97,6 +97,10 @@ namespace Attendance_Tracking_System.Controllers
 			//Response.Cookies.Append("Id", res.Id.ToString());
 			//return RedirectToAction("index", "student", new { id = res.Id });
 		}
+		public IActionResult AccessDenied()
+		{
+			return View();
+		}
 		public async Task<IActionResult> Logout()
 		{
 			await HttpContext.SignOutAsync();

@@ -2,6 +2,7 @@
 using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
 using CRUD.CustomFilters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Attendance_Tracking_System.Controllers
@@ -17,14 +18,17 @@ namespace Attendance_Tracking_System.Controllers
         public ScheduleController(IScheduleRepo _scheduleRepo,ITrackRepo _trackRepo) {
             scheduleRepo = _scheduleRepo;
             trackRepo = _trackRepo;
-        } 
-        public IActionResult Index()
+        }
+		[Authorize(Roles = "instructor")]
+		[Authorize(Roles = "Supervisor")]
+		public IActionResult Index()
         {
             var schedules = scheduleRepo.GetAllSchedules();
             return View(schedules);
         }
-
-        public IActionResult Details(int ID) 
+		[Authorize(Roles = "instructor")]
+		[Authorize(Roles = "Supervisor")]
+		public IActionResult Details(int ID) 
         {
             Schedule schedule=scheduleRepo.GetScheduleById(ID);    
             return View(schedule);
