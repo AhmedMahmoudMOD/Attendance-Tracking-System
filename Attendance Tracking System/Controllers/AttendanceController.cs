@@ -1,13 +1,15 @@
 ﻿using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
 using Attendance_Tracking_System.View_Models;
+using CRUD.CustomFilters;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.DependencyResolver;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Attendance_Tracking_System.Controllers
 {
-    public class AttendanceController : Controller
+	[AuthFilter]
+	public class AttendanceController : Controller
     {
         private readonly IProgramRepo programRepo;
         private readonly IEmployeeRepo employeeRepo;

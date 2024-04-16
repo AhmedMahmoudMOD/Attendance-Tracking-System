@@ -67,3 +67,7 @@ body {
 .program-tracks-select {
     
 }
+
+th {
+    height: fit-content;
+}

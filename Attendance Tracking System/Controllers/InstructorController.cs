@@ -1,6 +1,7 @@
 ﻿using Attendance_Tracking_System.Data;
 using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
+using CRUD.CustomFilters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,8 +12,9 @@ using System.Security.Claims;
 
 namespace Attendance_Tracking_System.Controllers
 {
-    [Authorize(Roles="instructor")]
-    public class InstructorController : Controller
+	//   [Authorize(Roles="instructor")]
+	[AuthFilter]
+	public class InstructorController : Controller
     {
         ITISysContext db = new ITISysContext();
 
@@ -54,23 +56,31 @@ namespace Attendance_Tracking_System.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(Instructor instructor, IFormFile InsImg)
         {
-            instructorRepo.AddNewInstructor(instructor);
-            var Tracks = trackRepo.GetAll();
-            ViewBag.AllTracks = Tracks;
-            string fileName = $"{instructor.Id}.{InsImg.FileName.Split(".").Last()}";
-            string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "instructor");
-            if (!Directory.Exists(directoryPath))
+            if (ModelState.IsValid)
             {
-                Directory.CreateDirectory(directoryPath);
+                instructorRepo.AddNewInstructor(instructor);
+                var Tracks = trackRepo.GetAll();
+                ViewBag.AllTracks = Tracks;
+                string fileName = $"{instructor.Id}.{InsImg.FileName.Split(".").Last()}";
+                string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "instructor");
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+                string filePath = Path.Combine(directoryPath, fileName);
+                using (var fs = new FileStream(filePath, FileMode.CreateNew))
+                {
+                    await InsImg.CopyToAsync(fs);
+                    instructor.UserImage = fileName;
+                    instructorRepo.UpdateInstructorImage(fileName, instructor.Id);
+                }
+                return RedirectToAction("index");
             }
-            string filePath = Path.Combine(directoryPath, fileName);
-            using (var fs = new FileStream(filePath, FileMode.CreateNew))
+            else
             {
-                await InsImg.CopyToAsync(fs);
-                instructor.UserImage = fileName;
-                instructorRepo.UpdateInstructorImage(fileName, instructor.Id);
+                return View(instructor);
             }
-            return RedirectToAction("index");
+          
         }
 
         public User GetCurrentUser()
@@ -116,9 +126,12 @@ namespace Attendance_Tracking_System.Controllers
                     }
                     using (FileStream fs = new FileStream(FoundFilpath, FileMode.Create))
                     {
-                        await InsImg.CopyToAsync(fs);
-                        instructor.UserImage = FoundFileName;
-                        instructorRepo.UpdateInstructorImage(FoundFileName, instructor.Id);
+                        if(InsImg!=null)
+                        {
+                            await InsImg.CopyToAsync(fs);
+                            instructor.UserImage = FoundFileName;
+                            instructorRepo.UpdateInstructorImage(FoundFileName, instructor.Id);
+                        }
                     }
                     return View(instructor);
                 }
