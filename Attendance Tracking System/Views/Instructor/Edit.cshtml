@@ -15,8 +15,10 @@
 </head>
 <body>
     <div class="CreateEdit">
-        <form asp-action="Edit" asp-controller="Instructor" method="post" enctype="multipart/form-data">
+        <form  method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Id" />
             <partial name="CreateEdit"></partial>
+           
             <input type="submit" value="Save" />
         </form>
     </div>

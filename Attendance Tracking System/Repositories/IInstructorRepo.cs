@@ -36,5 +36,7 @@ namespace Attendance_Tracking_System.Repositories
         public List<Permission> GetPermissionsByTrack ( int id);
 
         List<Track> getInstructorTracks(int id);
-        }
+
+        List<Attendance> getAttandence(int id);
+    }
 }

@@ -1,0 +1,57 @@
+﻿@model List<Attendance>
+@{
+    Layout = "~/Views/Shared/SharedLayout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.6/css/jquery.dataTables.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="~/css/dataTable.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.dataTables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div style="display:flex;flex-direction:row;align-content:space-between">
+        <h2 style="color:#5D0E41;margin-left:10px;margin-right:60%">Instructors Attandence</h2>
+    </div>
+    <table id="example" class="table table-hover table-bordered display"
+           style="text-align:center;width:100%;border-radius:15px;">
+        <thead>
+            <tr style="background-color:#001F3D;color:white;text-align:center">
+                <th>UserID</th>
+                <th>Date</th>
+                <th>ArrivalTime</th>
+                <th>LeaveTime</th>
+                <th>AttendanceStatus</th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.UserID</td>
+                <td>@item.Date</td>
+                <td>@item.ArrivalTime</td>
+                <td>@item.LeaveTime</td>
+                <td>@item.AttendanceStatus</td>
+            </tr>
+        }
+    </table>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.6/js/jquery.dataTables.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+
+</body>
+</html>
