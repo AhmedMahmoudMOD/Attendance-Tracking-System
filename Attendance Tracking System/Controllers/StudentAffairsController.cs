@@ -1,6 +1,7 @@
 ﻿using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
 using CRUD.CustomFilters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using System.Security.Claims;
@@ -22,11 +23,13 @@ namespace Attendance_Tracking_System.Controllers
             this.trackRepo = trackRepo;
             this.attendanceRepo = attendanceRepo;
         }
-        public IActionResult Index()
+		[Authorize(Roles = "StudentAffairs")]
+		public IActionResult Index()
         {
             var studentAffaira = employeeRepo.GetAllStudentAffairs();
             return View(studentAffaira);
         }
+
 		public User GetCurrentUser()
 		{
 			ClaimsIdentity? identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -35,6 +38,7 @@ namespace Attendance_Tracking_System.Controllers
 			User user = employeeRepo.GetUserById(id);
 			return user;
 		}
+		[Authorize(Roles = "StudentAffairs")]
 		public IActionResult ViewProfile()
         {
           
@@ -45,8 +49,8 @@ namespace Attendance_Tracking_System.Controllers
             return View(user);
 			
         }
-
-        public IActionResult EditProfile()
+		[Authorize(Roles = "StudentAffairs")]
+		public IActionResult EditProfile()
         {
 			ClaimsIdentity? identity = HttpContext.User.Identity as ClaimsIdentity;
 			var role = identity?.FindFirst(ClaimTypes.Role)?.Value;
@@ -57,7 +61,8 @@ namespace Attendance_Tracking_System.Controllers
 
         [
             HttpPost]
-        public async Task<IActionResult> EditProfile(Employee Emp, IFormFile? EmpImage)
+		[Authorize(Roles = "StudentAffairs")]
+		public async Task<IActionResult> EditProfile(Employee Emp, IFormFile? EmpImage)
         {
             if (ModelState.IsValid)
             {
@@ -86,16 +91,16 @@ namespace Attendance_Tracking_System.Controllers
                 return View(Emp);
             }
         }
-      
-        public IActionResult GetStudents()
+		[Authorize(Roles = "StudentAffairs")]
+		public IActionResult GetStudents()
         {
             
             var students = studentRepo.GetStudentsAccepted();
             ViewBag.Tracks = trackRepo.GetAll();
                 return View(students);
         }
-
-        public IActionResult EditStudentProfile(int? id)
+		[Authorize(Roles = "StudentAffairs")]
+		public IActionResult EditStudentProfile(int? id)
         {
             if (id == null || id == 0)
                 return View();
@@ -106,8 +111,8 @@ namespace Attendance_Tracking_System.Controllers
             return View(student);
         }
         [HttpPost]
-      
-        public async Task<IActionResult> EditStudentProfile(Student student, IFormFile? EmpImage)
+		[Authorize(Roles = "StudentAffairs")]
+		public async Task<IActionResult> EditStudentProfile(Student student, IFormFile? EmpImage)
         {
             if (ModelState.IsValid)
             {
@@ -137,7 +142,8 @@ namespace Attendance_Tracking_System.Controllers
                 return View(student);
             }
         }
-        public IActionResult ShowAttendance()
+		[Authorize(Roles = "StudentAffairs")]
+		public IActionResult ShowAttendance()
         {
             ClaimsIdentity? identity = HttpContext.User.Identity as ClaimsIdentity;
             var role = identity?.FindFirst(ClaimTypes.Role)?.Value;
@@ -146,7 +152,8 @@ namespace Attendance_Tracking_System.Controllers
             return View(user);
         }
         [HttpPost]
-        public IActionResult ShowAttendancePost(DateOnly startDate, DateOnly endDate)
+		[Authorize(Roles = "StudentAffairs")]
+		public IActionResult ShowAttendancePost(DateOnly startDate, DateOnly endDate)
         {
             // Check if both start date and end date are selected
             if (startDate != null && endDate != null)
@@ -161,18 +168,5 @@ namespace Attendance_Tracking_System.Controllers
                 return View("_ShowAttendanceNewPartial", new List<Attendance>()); // Return an empty list if dates are not selected
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }

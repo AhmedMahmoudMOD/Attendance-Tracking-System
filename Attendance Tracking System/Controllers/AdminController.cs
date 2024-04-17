@@ -9,6 +9,7 @@ using OfficeOpenXml;
 using System.Net.Mail;
 using System.Net;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Attendance_Tracking_System.Controllers
 {
@@ -20,10 +21,12 @@ namespace Attendance_Tracking_System.Controllers
 		{
 			repo = _repo;
 		}
+		[Authorize(Roles = "admin")]
 		public IActionResult Index()
 		{
 			return View();
 		}
+		[Authorize(Roles = "admin")]
 		public IActionResult Profile()
 		{
 			ClaimsIdentity? identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -32,6 +35,7 @@ namespace Attendance_Tracking_System.Controllers
 			ViewBag.currentUser = GetCurrentUser();
 			return View();
 		}
+		[Authorize(Roles = "admin")]
 		public IActionResult EditProfile()
 		{
 			var adminId = GetCurrentUser();
@@ -39,6 +43,7 @@ namespace Attendance_Tracking_System.Controllers
 
 			return View(currentUser);
 		}
+		[Authorize(Roles = "admin")]
 		[HttpPost]
 		public async Task<IActionResult> EditProfile(Admin admin, IFormFile Img)
 		{
@@ -72,6 +77,7 @@ namespace Attendance_Tracking_System.Controllers
 			}
 			return View(admin);
 		}
+		[Authorize(Roles = "admin")]
 		public User GetCurrentUser()
 		{
 			ClaimsIdentity? identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -80,12 +86,14 @@ namespace Attendance_Tracking_System.Controllers
 			User user = repo.AdminData(id);
 			return user;
 		}
+		[Authorize(Roles = "admin")]
 		public IActionResult GetAllStudents()
 		{
 			var students = repo.GetStudents();
 
 			return View(students);
 		}
+		[Authorize(Roles = "admin")]
 		public IActionResult StudentDetails(int? Id)
 		{
 			if (Id == null)
@@ -99,6 +107,7 @@ namespace Attendance_Tracking_System.Controllers
 			var student = repo.GetStudentById(Id.Value);
 			return View(student);
 		}
+		[Authorize(Roles = "admin")]
 
 		public IActionResult DeleteStudent(int? Id)
 		{
@@ -125,6 +134,7 @@ namespace Attendance_Tracking_System.Controllers
 			}
 
 		}
+		[Authorize(Roles = "admin")]
 		[HttpPost]
 		public ActionResult UploadExcel(IFormFile file)
 		{
@@ -156,6 +166,7 @@ namespace Attendance_Tracking_System.Controllers
 
 			return RedirectToAction("GetAllStudents");
 		}
+		[Authorize(Roles = "admin")]
 		public IActionResult UpdateStudent(int? Id)
 		{
 			ViewBag.Tracks = repo.GetAllTracks();
@@ -171,6 +182,7 @@ namespace Attendance_Tracking_System.Controllers
 			var res = repo.GetStudentById(Id);
 			return View(res);
 		}
+		[Authorize(Roles = "admin")]
 		[HttpPost]
 		public async Task<IActionResult> UpdateStudent(Student student, IFormFile Img)
 		{
@@ -199,12 +211,14 @@ namespace Attendance_Tracking_System.Controllers
 			}
 			return View(student);
 		}
+		[Authorize(Roles = "admin")]
 		public IActionResult GetEmployees()
 		{
 			var res = repo.GetAllEmployees();
 
 			return View(res);
 		}
+		[Authorize(Roles = "admin")]
 		public IActionResult EmployeeDetails(int? Id)
 		{
 			if (Id == null)
@@ -218,7 +232,7 @@ namespace Attendance_Tracking_System.Controllers
 			var student = repo.GetEmployeeById(Id.Value);
 			return View(student);
 		}
-
+		[Authorize(Roles = "admin")]
 		public IActionResult DeleteEmployee(int? Id)
 		{
 			if (Id == null)
@@ -244,7 +258,7 @@ namespace Attendance_Tracking_System.Controllers
 			}
 
 		}
-
+		[Authorize(Roles = "admin")]
 		public IActionResult UpdateEmployee(int? Id)
 		{
 			if (Id == null)
@@ -258,6 +272,7 @@ namespace Attendance_Tracking_System.Controllers
 			var res = repo.GetEmployeeById(Id);
 			return View(res);
 		}
+		[Authorize(Roles = "admin")]
 		[HttpPost]
 		public async Task<IActionResult> UpdateEmployee(Employee employee, IFormFile Img)
 		{
@@ -289,10 +304,12 @@ namespace Attendance_Tracking_System.Controllers
 			}
 			return View(employee);
 		}
+		[Authorize(Roles = "admin")]
 		public IActionResult AddEmployee()
 		{
 			return View();
 		}
+		[Authorize(Roles = "admin")]
 		[HttpPost]
 		public async Task<IActionResult> AddEmployee(Employee employee, IFormFile Img)
 		{
@@ -329,11 +346,13 @@ namespace Attendance_Tracking_System.Controllers
 			}
 			return View(employee);
 		}
+		[Authorize(Roles = "admin")]
 		public IActionResult GetAllIntakes()
 		{
 			var res = repo.GetIntakes();
 			return View(res);
 		}
+		[Authorize(Roles = "admin")]
 		public IActionResult DeleteIntake(int? id)
 		{
 			if (id == null)
@@ -356,6 +375,7 @@ namespace Attendance_Tracking_System.Controllers
 				return RedirectToAction("GetAllIntakes");
 			}
 		}
+		[Authorize(Roles = "admin")]
 		public IActionResult EditIntake(int? id)
 		{
 			if (id == null)
@@ -369,6 +389,7 @@ namespace Attendance_Tracking_System.Controllers
 			var intake = repo.GetIntakeById(id);
 			return View(intake);
 		}
+		[Authorize(Roles = "admin")]
 		[HttpPost]
 		public IActionResult EditIntake(Intake intake)
 		{
@@ -380,12 +401,14 @@ namespace Attendance_Tracking_System.Controllers
 			}
 			return View(intake);
 		}
+		[Authorize(Roles = "admin")]
 		public IActionResult AddIntake()
 		{
 			ViewBag.tracks = repo.GetAllTracks();
 			ViewBag.progs= repo.GetITIPrograms();
 			return View();
 		}
+		[Authorize(Roles = "admin")]
 		[HttpPost]
 		public IActionResult AddIntake(Intake intake,List<int> Tracks)
 		{
@@ -398,6 +421,7 @@ namespace Attendance_Tracking_System.Controllers
 			}
 			return View();
 		}
+		[Authorize(Roles = "admin")]
 		public IActionResult GetDetails(int? id)
 		{
 			if(id==null)
@@ -412,6 +436,7 @@ namespace Attendance_Tracking_System.Controllers
 			return View(intake);
 		}
 		[HttpGet]
+		
 		public IActionResult CheckEmailUniqueness(string email,int id)
 		{
 			if (!repo.CheckEmailUniqueness(email,id))
@@ -421,6 +446,7 @@ namespace Attendance_Tracking_System.Controllers
 
 			return Json(new { isUnique = true });
 		}
+	
 		[HttpGet]
 		public IActionResult CheckEmailUniquenessForNewUsers(string email)
 		{

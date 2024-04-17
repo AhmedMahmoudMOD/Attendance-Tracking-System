@@ -11,7 +11,7 @@
 	<meta name="author" content="" />
 	<title>@ViewData["Title"]</title>
 	<link href="/css/styles.css" rel="stylesheet" />
-	
+
 	<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css">
@@ -26,19 +26,68 @@
 <body class="sb-nav-fixed">
 	<nav class="sb-topnav navbar navbar-expand">
 		<!-- Navbar Brand-->
-		<a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
+
+		<b class="navbar-brand ps-3" id="headerWord">Welcome @currentUser</b>
+
 		<!-- Sidebar Toggle-->
 		<button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars" style="color:white"></i></button>
 		<!-- Navbar-->
 		<div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"></div>
 		<ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
 			<li class="nav-item">
-				<a class="nav-link" asp-action="index" asp-controller="student">
-					<span class="me-2">
-						<i class="fas fa-user"></i>
-					</span>
-					Welcome, @User.Identity.Name
-				</a>
+				@if (User.IsInRole("admin"))
+				{
+					<a class="nav-link" asp-action="profile" asp-controller="admin">
+						<span class="me-2">
+							<i class="fas fa-user"></i>
+						</span>
+						@User.Identity.Name
+					</a>
+				}
+				else if (User.IsInRole("student"))
+				{
+					<a class="nav-link" asp-action="Index" asp-controller="Student">
+						<span class="me-2">
+							<i class="fas fa-user"></i>
+						</span>
+						@User.Identity.Name
+					</a>
+				}
+				else if (User.IsInRole("instructor"))
+				{
+					<a class="nav-link" asp-action="Details" asp-asp-controller="instructor" asp-route-Id="">
+						<span class="me-2">
+							<i class="fas fa-user"></i>
+						</span>
+						@User.Identity.Name
+					</a>
+				}else if (User.IsInRole("StudentAffairs"))
+                {
+                    <a class="nav-link" asp-action="ViewProfile" asp-controller="StudentAffairs">
+                        <span class="me-2">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        @User.Identity.Name
+                    </a>
+                }
+                else if (User.IsInRole("Security"))
+                {
+                    <a class="nav-link" asp-action="ViewProfile" asp-controller="Security">
+                        <span class="me-2">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        @User.Identity.Name
+					</a>
+				}
+				else
+				{
+					<a class="nav-link" asp-action="Index" asp-controller="Home">
+                        <span class="me-2">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        @User.Identity.Name
+                    </a>
+				}
 			</li>
 
 			<li class="nav-item dropdown">
@@ -73,7 +122,7 @@
 								<div class="sb-nav-link-icon">
 									<i class="fas fa-graduation-cap"></i>
 								</div>
-								Students 
+								Students
 							</a>
 
 							<a class="nav-link m-1" asp-controller="Admin" asp-action="GetEmployees">
@@ -100,7 +149,7 @@
 								<div class="sb-nav-link-icon">
 									<i class="fas fa-calendar"></i>
 								</div>
-								Intake 
+								Intake
 							</a>
 
 							<a class="nav-link m-1" asp-controller="Track" asp-action="Index">
@@ -109,12 +158,29 @@
 								</div>
 								Tracks
 							</a>
-							<a class="nav-link m-1" asp-controller="Security" asp-action="StaffAttendance">
-								<div class="sb-nav-link-icon">
-									<i class=" fas fa-user-tie"></i>
-								</div>
-								Staff Attendance
+							<div class="sb-sidenav-menu-heading" style="color:#001F3D">Attendance</div>
+							<a class="nav-link collapsed m-1" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+								<div class="sb-nav-link-icon">	<i class="fa-solid fa-clipboard-user"></i></div>
+								Attendance
+								<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
 							</a>
+							<div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+								<nav class="sb-sidenav-menu-nested nav">
+
+									<a class="nav-link m-1" asp-controller="Attendance" asp-action="ShowStudentsAttendance">
+										Student Daily 
+									</a>
+									<a class="nav-link m-1" asp-controller="Attendance" asp-action="StudentsRangeAttendance">
+										Student In Date Range
+									</a>
+									<a class="nav-link m-1" asp-controller="Attendance" asp-action="ShowStaffAttendance">
+										Staff Daily
+									</a>
+									<a class="nav-link m-1" asp-controller="Attendance" asp-action="StaffRangeAttendance">
+										Staff In Date Range
+									</a>
+								</nav>
+							</div>
 
 						}
 						else if (User.IsInRole("student"))
@@ -144,22 +210,22 @@
 								Profile
 							</a>
 
-							<a class="nav-link collapsed m-1" asp-action="Edit" asp-controller="instructor" >
+							<a class="nav-link collapsed m-1" asp-action="Edit" asp-controller="instructor">
 								<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
 								Edit Profile
 							</a>
 
-							<a class="nav-link collapsed m-1" asp-action="TrackSchedule" asp-controller="instructor" >
+							<a class="nav-link collapsed m-1" asp-action="TrackSchedule" asp-controller="instructor">
 								<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
 								Track Shedulue
 							</a>
 
-							<a class="nav-link collapsed m-1" asp-action="Permission" asp-controller="instructor" >
+							<a class="nav-link collapsed m-1" asp-action="Permission" asp-controller="instructor">
 								<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
 								Permission
 							</a>
 
-							<a class="nav-link collapsed m-1" asp-action="AddWeeklyShedule" asp-controller="instructor" >
+							<a class="nav-link collapsed m-1" asp-action="AddWeeklyShedule" asp-controller="instructor">
 								<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
 								Add Schedule
 							</a>
@@ -168,7 +234,7 @@
 								Show Attandence
 							</a>
 
-							
+
 						}
 						else if (User.IsInRole("StudentAffairs"))
 						{
@@ -186,19 +252,30 @@
 							</a>
 
 							<a class="nav-link m-1 selected" asp-controller="StudentAffairs" asp-action="GetStudents">
-									<div class="sb-nav-link-icon">
+								<div class="sb-nav-link-icon">
 									<i class="fas fa-user"></i>
-									</div>
+								</div>
 								View All Students & Edit Student Profile
 							</a>
-							
+
 							<a class="nav-link m-1 selected" asp-controller="StudentAffairs" asp-action="ShowAttendance">
 								<div class="sb-nav-link-icon">
 									<i class="fas fa-user"></i>
 								</div>
 								ShowAttendance
 							</a>
+							<div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+								<nav class="sb-sidenav-menu-nested nav">
 
+									<a class="nav-link m-1" asp-controller="Attendance" asp-action="ShowStudentsAttendance">
+										Student Daily
+									</a>
+									<a class="nav-link m-1" asp-controller="Attendance" asp-action="StudentsRangeAttendance">
+										Student In Date Range
+									</a>
+									
+								</nav>
+							</div>
 						}
 						else if (User.IsInRole("Supervisor"))
 						{
@@ -250,7 +327,7 @@
 			<main class="pb-3 mt-3">
 				@RenderBody()
 			</main>
-			
+
 		</div>
 	</div>
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -265,11 +342,17 @@
 	<script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
 	<script src="https://cdn.datatables.net/buttons/3.0.1/js/dataTables.buttons.js"></script>
 	<script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.dataTables.js"></script>
-	<script src ="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 	<script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.html5.min.js"></script>
 	<script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.print.min.js"></script>
+	<script>
+		var text = document.getElementById("headerWord").textContent.split(" ");
+		text[1] = text[1].charAt(0).toUpperCase() + text[1].slice(1);
+		document.getElementById("headerWord").textContent = text.join(" ");
+
+	</script>
 
 	@await RenderSectionAsync("Scripts", required: false)
 </body>

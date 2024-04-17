@@ -22,7 +22,7 @@ namespace Attendance_Tracking_System.Repositories
             // get only the instructors who does not have attendance for today
             var today = DateOnly.FromDateTime(DateTime.Now);
             var list = db.Instructor
-                .Where(s => !db.Attendance.Any(a => a.UserID == s.Id && a.Date == today))
+                .Where(s => !db.Attendance.Any(a => a.UserID == s.Id && a.Date == today) && s.IsDeleted==false)
                 .ToList();
 
             return list;
@@ -43,7 +43,7 @@ namespace Attendance_Tracking_System.Repositories
         {
 
 
-            var list = db.Instructor.Include(i => i.Attendances)
+            var list = db.Instructor.Include(i => i.Attendances.Where(a => a.Date >= date && a.Date <= endDate))
                 .Where(i => i.Attendances.Any(a => a.Date >= date && a.Date <=endDate))
                 .ToList();
 
