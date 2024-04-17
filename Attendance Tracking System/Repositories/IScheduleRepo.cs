@@ -12,7 +12,9 @@ namespace Attendance_Tracking_System.Repositories
         void UpdateSchedule (Schedule schedule);
         void DeleteSchedule (int scheduleId);
         Schedule GetScheduleForToday(int TrackId,DateOnly date);
+        public List<Schedule> GetSheduleForTrack(int? id);
 
-        void AddWeeklySchedules(List<Schedule> schedules);
+
+		void AddWeeklySchedules(List<Schedule> schedules);
     }
 }

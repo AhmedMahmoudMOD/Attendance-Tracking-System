@@ -1,0 +1,29 @@
+﻿@model List<Schedule>
+@{
+    ViewData["Title"] = "ShowSchedule";
+}
+
+<!DOCTYPE html>
+    <html>
+    <head>
+        <title></title>
+    </head>
+    <body>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <td>Date</td>
+                <td>Time</td>
+            </tr>
+        </thead>
+        <tbody>
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td>@item.Date</td>
+					<td>@item.StartTime</td>
+				</tr>
+			}
+    </table>
+    </body>
+    </html>

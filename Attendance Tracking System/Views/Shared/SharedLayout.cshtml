@@ -120,22 +120,26 @@
 						else if (User.IsInRole("student"))
 						{
                             <a class="nav-link m-1" asp-action="Index" asp-controller="Home">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+								<div class="sb-nav-link-icon"><i class="fa-solid fa-house-user"></i></div>
                             Home
                         </a>
                         <a class="nav-link collapsed m-1" asp-action="Index" asp-controller="Student">
-                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+								<div class="sb-nav-link-icon"><i class="fa-solid fa-user"></i></div>
                             Profile
                         </a>
-                        <a class="nav-link m-1" asp-action="GetAllPermission" asp-controller="Student">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+							<a class="nav-link m-1" asp-action="GetAllPermission" asp-controller="Student">
+								<div class="sb-nav-link-icon"><i class="fa-solid fa-file-lines"></i></div>
                             Permission
                         </a>
-                        <a class="nav-link m-1" asp-action="ShowAttendence" asp-controller="Student">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+							<a class="nav-link m-1" asp-action="ShowAttendence" asp-controller="Student">
+								<div class="sb-nav-link-icon"><i class="fa-solid fa-clipboard-user"></i></div>
                             Attendance
                         </a>
-                  
+							<a class="nav-link m-1" asp-action="ShowSchedule" asp-controller="Student">
+								<div class="sb-nav-link-icon"><i class="fa-regular fa-calendar-days"></i></div>
+								Schedule
+							</a>
+
 						}
 						else if (User.IsInRole("instructor"))
 						{

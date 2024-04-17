@@ -45,7 +45,12 @@ namespace Attendance_Tracking_System.Repositories
             return schedule;
         }
 
-        public void AddSchedule(Schedule schedule)
+        public List<Schedule> GetSheduleForTrack(int? id)
+        {
+			return db.Schedule.Include(a => a.Track).Where(a => a.TrackID == id).ToList();
+		}
+
+		public void AddSchedule(Schedule schedule)
         {
             
             db.Schedule.Add(schedule);
