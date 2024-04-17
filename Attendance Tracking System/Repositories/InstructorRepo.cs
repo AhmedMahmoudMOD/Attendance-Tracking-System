@@ -43,7 +43,7 @@ namespace Attendance_Tracking_System.Repositories
         {
 
 
-            var list = db.Instructor.Include(i => i.Attendances)
+            var list = db.Instructor.Include(i => i.Attendances.Where(a => a.Date >= date && a.Date <= endDate))
                 .Where(i => i.Attendances.Any(a => a.Date >= date && a.Date <=endDate))
                 .ToList();
 

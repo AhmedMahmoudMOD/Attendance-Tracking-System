@@ -96,7 +96,7 @@ namespace Attendance_Tracking_System.Repositories
         {
 
 
-            var list = db.Employee.Include(e => e.Attendances)
+            var list = db.Employee.Include(e => e.Attendances.Where(a => a.Date >= date && a.Date <= endDate))
                 .Where(e => e.Attendances.Any(a => a.Date >= date && a.Date<=endDate))
                 .ToList();
 
