@@ -16,7 +16,7 @@ namespace Attendance_Tracking_System.Repositories
         public Intake GetCurrentIntake(int Pid)
         {
             var today = DateOnly.FromDateTime(DateTime.Now);
-            var target = db.Intake.SingleOrDefault(i => i.StartDate < today && i.EndDate > today && i.ProgramID==Pid);
+            var target = db.Intake.SingleOrDefault(i => i.StartDate < today && i.EndDate > today && i.ProgramID==Pid && i.IsDeleted==false);
             return target;
         }
         public List<Intake> GetAll()

@@ -75,7 +75,7 @@ namespace Attendance_Tracking_System.Repositories
             // get only the Employees who does not have attendance for today
             var today = DateOnly.FromDateTime(DateTime.Now);
             var list = db.Employee
-                .Where(s => !db.Attendance.Any(a => a.UserID == s.Id && a.Date == today))
+                .Where(s => !db.Attendance.Any(a => a.UserID == s.Id && a.Date == today) && s.IsDeleted==false)
                 .ToList();
 
             return list;
