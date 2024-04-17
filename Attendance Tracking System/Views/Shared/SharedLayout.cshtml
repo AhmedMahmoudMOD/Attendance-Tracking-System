@@ -135,10 +135,22 @@
 								<div class="sb-nav-link-icon"><i class="fa-solid fa-clipboard-user"></i></div>
                             Attendance
                         </a>
-							<a class="nav-link m-1" asp-action="ShowSchedule" asp-controller="Student">
+							@* <a class="nav-link m-1" asp-action="ShowSchedule" asp-controller="Student">
 								<div class="sb-nav-link-icon"><i class="fa-regular fa-calendar-days"></i></div>
 								Schedule
-							</a>
+							</a> *@
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+									<div class="sb-nav-link-icon"><i class="fa-regular fa-calendar-days"></i></div>
+									Schedule
+								</a>
+								<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+									<li><a class="dropdown-item" asp-action="ShowWeeklySchedule" asp-controller="Student">Weekly</a></li>
+									<li><hr class="dropdown-divider"></li>
+									<li><a class="dropdown-item" asp-action="ShowAllSchedules" asp-controller="Student">All</a></li>
+								</ul>
+							</li>
+
 
 						}
 						else if (User.IsInRole("instructor"))

@@ -148,13 +148,18 @@ namespace Attendance_Tracking_System.Controllers
             return RedirectToAction("GetAllPermission",Stdid);
         }
 
-        public IActionResult ShowSchedule()
+        public IActionResult ShowWeeklySchedule()
         {
 			var id = GetCurrentUser();
             var student = studentRepo.GetStudentById(id);
-            var schedule = scheduleRepo.GetSheduleForTrack(student.TrackID);
+            var schedule = scheduleRepo.GetWeeklyShedule(student.TrackID);
             return View(schedule);
 		}
+        public IActionResult ShowAllSchedules()
+        {
+            var schedule = scheduleRepo.GetAllSchedules();
+			return View(schedule);
+        }
 		public int GetCurrentUser()
 		{
 			ClaimsIdentity? identity = HttpContext.User.Identity as ClaimsIdentity;

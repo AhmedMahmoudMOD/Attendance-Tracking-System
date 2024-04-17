@@ -46,6 +46,7 @@ namespace Attendance_Tracking_System.Repositories
             var schedule = db.Schedule.SingleOrDefault(s => s.TrackID == TrackId && s.Date == date);
             return schedule;
         }
+        //Function Get the date of the first day of the week for a given date\\
         public static DateOnly GetFirstDayOfWeek(DateOnly date)
         {
             // Calculate the difference between the current day of the week and the first day of the week (usually Sunday)
@@ -57,7 +58,7 @@ namespace Attendance_Tracking_System.Repositories
             return firstDayOfWeek;
         }
 
-        public List<Schedule> GetSheduleForTrack(int? id)
+        public List<Schedule> GetWeeklyShedule(int? id)
         {
 			var todayDate = DateOnly.FromDateTime(DateTime.Now);
             var firstDayOfWeek = GetFirstDayOfWeek(todayDate);
