@@ -111,42 +111,50 @@ namespace Attendance_Tracking_System.Controllers
             string[] filePaths = Directory.GetFiles(DirectoryPath);
             string FoundFileName = string.Empty;
             string FoundFilpath = string.Empty;
-
-            foreach (string filePath in filePaths)
+            if (InsImg != null)
             {
-                string filename = filePath.Replace(DirectoryPath + "\\", "");
-                if (filename.StartsWith($"{instructor.Id}"))
+                foreach (string filePath in filePaths)
                 {
-                    using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+                    string filename = filePath.Replace(DirectoryPath + "\\", "");
+                    if (filename.StartsWith($"{instructor.Id}"))
                     {
-                        fs.Close();
-                        FoundFileName = filename;
-                        FoundFilpath = filePath;
-                        System.IO.File.Delete(filePath);
-                    }
-                    using (FileStream fs = new FileStream(FoundFilpath, FileMode.Create))
-                    {
-                        if(InsImg!=null)
+                        using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
                         {
+                            fs.Close();
+                            FoundFileName = filename;
+                            FoundFilpath = filePath;
+                            System.IO.File.Delete(filePath);
+                        }
+                        using (FileStream fs = new FileStream(FoundFilpath, FileMode.Create))
+                        {
+
                             await InsImg.CopyToAsync(fs);
                             instructor.UserImage = FoundFileName;
                             instructorRepo.UpdateInstructorImage(FoundFileName, instructor.Id);
+
                         }
+                        return View(instructor);
                     }
-                    return View(instructor);
+
                 }
-                
-            }
                 FoundFileName = $"{instructor.Id}.{InsImg.FileName.Split(".").Last()}";
                 FoundFilpath = Path.Combine(DirectoryPath, FoundFileName);
-      
-            using (FileStream fs = new FileStream(FoundFilpath, FileMode.Create))
-            {
-                await InsImg.CopyToAsync(fs);
-                instructor.UserImage = FoundFileName;
-                instructorRepo.UpdateInstructorImage(FoundFileName, instructor.Id);
+
+                using (FileStream fs = new FileStream(FoundFilpath, FileMode.Create))
+                {
+                    await InsImg.CopyToAsync(fs);
+                    instructor.UserImage = FoundFileName;
+                    instructorRepo.UpdateInstructorImage(FoundFileName, instructor.Id);
+                }
+                return View(instructor);
             }
-            return View(instructor);
+            else
+            {
+                var Old = instructorRepo.GetInstructorById(instructor.Id);
+                instructor.UserImage = Old.UserImage;
+                return View(instructor);
+            }
+           
         }
         
 
