@@ -1,15 +1,9 @@
 ﻿@model ITIProgram
 @{
     ViewData["Title"] = "Create";
-    // List<Track> tracks = ViewBag.Tracks;
-    // SelectList alltracks = new SelectList(tracks,"Id", "Name");
-    // List<Intake> intakes = ViewBag.Intakes;
-    // SelectList allintakes = new SelectList(intakes, "No", "Name");
-    // List<Instructor> instructors = ViewBag.Instructors;
-    // SelectList allinstructors = new SelectList(instructors,"Id","Name");
-
+   
 }
-<h1 style="color:#15859c;margin-left:11%;">Create Program</h1>
+<h1 style="color:#15859c;margin-left:13%;">Create Program</h1>
 <div class="w-75 m-auto mt-4">
         <div class="card mb-3">
             <div class="card-body">
@@ -32,8 +26,7 @@
             </select>
             <span asp-validation-for="Duration" class="text-danger"></span>
         </div>
-
-                <div class="form-group mt-3">
+         <div class="form-group mt-3">
             <label asp-for="IsDeleted" class="control-label mb-2"></label>
             <select asp-for="IsDeleted" class="form-control">
                 <option value="false">No</option>
@@ -41,14 +34,12 @@
             </select>
             <span asp-validation-for="IsDeleted" class="text-danger"></span>
         </div>
-
-                <div class="form-group  mt-3">
+         <div class="form-group  mt-3">
                     <input type="submit" value="Submit" class="btn w-25" style="background-color:#15859c;color:#fff"/>
             <a class="btn w-25" style="background-color:#1472cc;color:#fff"
                asp-action="Index" asp-controller="Program">
                 Back
             </a>
-
         </div>
     </form>
 </div>
