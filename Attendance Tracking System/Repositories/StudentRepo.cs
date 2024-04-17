@@ -74,7 +74,7 @@ namespace Attendance_Tracking_System.Repositories
             var today = DateOnly.FromDateTime(DateTime.Now);
             var list = db.Student
                 .Where(s => !db.Attendance.Any(a => a.UserID == s.Id && a.Date == today))
-                .Where(s => s.ProgramID == Pid && s.TrackID == Tid && s.IntakeNo == Ino)
+                .Where(s => s.ProgramID == Pid && s.TrackID == Tid && s.IntakeNo == Ino && s.RegisterationStatus==Enums.RegisterationStatus.Approved && s.IsDeleted==false)
                 .ToList();
 
             return list;

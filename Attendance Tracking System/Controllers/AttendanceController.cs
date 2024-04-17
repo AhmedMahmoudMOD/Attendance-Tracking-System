@@ -36,19 +36,26 @@ namespace Attendance_Tracking_System.Controllers
         {
             // get the schedule of the track for today
             var schedule = scheduleRepo.GetScheduleForToday(TrackID, DateOnly.FromDateTime(DateTime.Now));
-            studentAttendance.ScheduleID = schedule.Id;
+            studentAttendance.ScheduleID = schedule?.Id;
             studentAttendance.ArrivalTime = TimeOnly.FromDateTime(DateTime.Now);
             studentAttendance.IsMarked = false;
             if (ModelState.IsValid)
             {
                 // check if the arrival time is within five minutes of the scheduled time
-                if (studentAttendance.ArrivalTime >= schedule.StartTime && studentAttendance.ArrivalTime <= schedule.StartTime.AddMinutes(5)||studentAttendance.ArrivalTime<schedule.StartTime)
+                if (schedule != null)
                 {
-                    studentAttendance.AttendanceStatus = Enums.AttendanceStatus.Present;
+                    if (studentAttendance.ArrivalTime >= schedule.StartTime && studentAttendance.ArrivalTime <= schedule.StartTime.AddMinutes(5) || studentAttendance.ArrivalTime < schedule.StartTime)
+                    {
+                        studentAttendance.AttendanceStatus = Enums.AttendanceStatus.Present;
+                    }
+                    else
+                    {
+                        studentAttendance.AttendanceStatus = Enums.AttendanceStatus.Late;
+                    }
                 }
                 else
                 {
-                    studentAttendance.AttendanceStatus = Enums.AttendanceStatus.Late;
+                    studentAttendance.AttendanceStatus = Enums.AttendanceStatus.Present;
                 }
                 studentAttendanceRepo.Add(studentAttendance);
                 return Json(new { success = true });
@@ -79,7 +86,7 @@ namespace Attendance_Tracking_System.Controllers
         {
             // get the schedule of the track for today
             var schedule = scheduleRepo.GetScheduleForToday(TrackID, DateOnly.FromDateTime(DateTime.Now));
-            studentAttendance.ScheduleID = schedule.Id;
+            studentAttendance.ScheduleID = schedule?.Id;
             if (ModelState.IsValid)
             {
                 studentAttendance.AttendanceStatus = Enums.AttendanceStatus.Absent;
@@ -166,10 +173,10 @@ namespace Attendance_Tracking_System.Controllers
         public IActionResult MarkStdAbsence(int Pid,int Tid , int Ino)
         {
             var Schedule = scheduleRepo.GetScheduleForToday(Tid, DateOnly.FromDateTime(DateTime.Now));
-            var ScheduleID = Schedule.Id;
+            var ScheduleID = Schedule?.Id;
             var stdlist = studentRepo.GetForAttendance(Pid, Tid, Ino);
 
-            if (studentAttendanceRepo.MarkAbsence(stdlist, ScheduleID))
+            if (studentAttendanceRepo.MarkAbsence(stdlist, ScheduleID.Value))
             {
                 return Json(new { success = true });
             }

@@ -57,7 +57,7 @@ namespace Attendance_Tracking_System.Controllers
             var currentIntake = intakeRepo.GetCurrentIntake(Pid);
             return Json(currentIntake); 
         }
-		[Authorize(Roles = "Security,StudentAffairs,admin")]
+		[Authorize(Roles = "Security")]
 		public IActionResult GetAttendanceList(int Pid,int Tid,int Ino) {
 
             var list = studentRepo.GetForAttendance(Pid, Tid, Ino);
@@ -118,6 +118,7 @@ namespace Attendance_Tracking_System.Controllers
                 return View(Emp);
             }
         }
+        /*
         [HttpPost]
 		[Authorize(Roles = "Security")]
 		public async Task<IActionResult> Add(Employee Emp, IFormFile? EmpImage)
@@ -156,8 +157,9 @@ namespace Attendance_Tracking_System.Controllers
             employeeRepo.Delete(id);
             return RedirectToAction("Index"); // placeholder for now will be implemented later by admin 
         }
+        */
 
-		[Authorize(Roles = "Security,StudentAffairs,admin")]
+		[Authorize(Roles = "Security")]
         [HttpGet]
 		public IActionResult StaffAttendance()
         {
