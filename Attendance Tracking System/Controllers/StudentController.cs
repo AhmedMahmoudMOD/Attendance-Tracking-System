@@ -2,6 +2,7 @@
 using Attendance_Tracking_System.Repositories;
 using Attendance_Tracking_System.View_Models;
 using CRUD.CustomFilters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using System.Security.Claims;
@@ -9,6 +10,7 @@ using System.Security.Claims;
 namespace Attendance_Tracking_System.Controllers
 {
 	[AuthFilter]
+	[Authorize(Roles = "student")]
 	public class StudentController : Controller
     {
         private readonly IStudentRepo studentRepo;
@@ -21,11 +23,13 @@ namespace Attendance_Tracking_System.Controllers
             this.AttendanceRepo = _AttendanceRepo;
             this.permissionRepo = permissionRepo;
         }
+
        
             //private int? GetUserIdFromCookie()
             //{
             //    // Retrieve the value of the "UserId" cookie
             //    string userIdString = HttpContext.Request.Cookies["Id"];
+
 
             //    // Check if the cookie exists and has a value
             //    if (!string.IsNullOrEmpty(userIdString) && int.TryParse(userIdString, out int userId))

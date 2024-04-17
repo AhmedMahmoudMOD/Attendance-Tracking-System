@@ -2,6 +2,7 @@
 using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
 using CRUD.CustomFilters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading;
@@ -26,7 +27,8 @@ namespace Attendance_Tracking_System.Controllers
             this.instructorRepo = instructorRepo;
         }
         [HttpGet]
-        public IActionResult Index()
+		[Authorize(Roles = "Security")]
+		public IActionResult Index()
         {
             var plist = programRepo.GetAll();
             ViewBag.Programs = plist;
@@ -37,8 +39,8 @@ namespace Attendance_Tracking_System.Controllers
 
             return View();
         }
-
-        public IActionResult GetTracks(int id)
+		[Authorize(Roles = "Security")]
+		public IActionResult GetTracks(int id)
         {
             var target = programRepo.GetByID(id);
             if (target!=null)
@@ -49,28 +51,30 @@ namespace Attendance_Tracking_System.Controllers
             }else { return Json(null); }
     
         }
-
-        public IActionResult GetCurrentIntake(int Pid)
+		[Authorize(Roles = "Security")]
+		public IActionResult GetCurrentIntake(int Pid)
         {
             var currentIntake = intakeRepo.GetCurrentIntake(Pid);
             return Json(currentIntake); 
         }
-
-        public IActionResult GetAttendanceList(int Pid,int Tid,int Ino) {
+		[Authorize(Roles = "Security,StudentAffairs,admin")]
+		public IActionResult GetAttendanceList(int Pid,int Tid,int Ino) {
 
             var list = studentRepo.GetForAttendance(Pid, Tid, Ino);
             ViewBag.CurentTrackId = Tid;
             return PartialView("_StudentAttendancePartial",list);
         }
-
-        public IActionResult ViewProfile() {
+		[Authorize(Roles = "Security")]
+		
+		public IActionResult ViewProfile() {
 			 EmpId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 			var model = employeeRepo.GetByID(EmpId);
             return View(model);
         
         }
-
-        public IActionResult EditProfile(int? id)
+		[Authorize(Roles = "Security")]
+		
+		public IActionResult EditProfile(int? id)
         {
             if (id == null)
             {
@@ -83,7 +87,9 @@ namespace Attendance_Tracking_System.Controllers
             return View("EditProfile2",model); 
         }
         [HttpPost]
-        public async Task<IActionResult> EditProfile(Employee Emp , IFormFile? EmpImage)
+		[Authorize(Roles = "Security")]
+		
+		public async Task<IActionResult> EditProfile(Employee Emp , IFormFile? EmpImage)
         {
             if (ModelState.IsValid)
             {
@@ -113,7 +119,8 @@ namespace Attendance_Tracking_System.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> Add(Employee Emp, IFormFile? EmpImage)
+		[Authorize(Roles = "Security")]
+		public async Task<IActionResult> Add(Employee Emp, IFormFile? EmpImage)
         {
             if (ModelState.IsValid)
             {
@@ -142,20 +149,22 @@ namespace Attendance_Tracking_System.Controllers
                 return View(Emp);
             }
         }
-
-        public  IActionResult Delete(int id)
+		[Authorize(Roles = "Security,StudentAffairs,admin")]
+		
+		public  IActionResult Delete(int id)
         {
             employeeRepo.Delete(id);
             return RedirectToAction("Index"); // placeholder for now will be implemented later by admin 
         }
 
+		[Authorize(Roles = "Security,StudentAffairs,admin")]
         [HttpGet]
-        public IActionResult StaffAttendance()
+		public IActionResult StaffAttendance()
         {
             return View();
         }
-
-        public IActionResult GetStaffAttendanceList(int TypeNo)
+		
+		public IActionResult GetStaffAttendanceList(int TypeNo)
         {
             switch (TypeNo)
             {
@@ -169,8 +178,8 @@ namespace Attendance_Tracking_System.Controllers
                     return PartialView("_StaffAttendancePartial", null);
             }
         }
-
-        public IActionResult MyAttendance()
+		[Authorize(Roles = "Security")]
+		public IActionResult MyAttendance()
         {
             EmpId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var list = employeeRepo.GetAttendancesByEmpID(EmpId);

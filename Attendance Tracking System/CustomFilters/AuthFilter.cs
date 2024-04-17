@@ -5,6 +5,7 @@ namespace CRUD.CustomFilters
 {
 	public class AuthFilter:ActionFilterAttribute
 	{
+		
 		//befor action execute. 
 		public override void OnActionExecuting(ActionExecutingContext context)
 		{
@@ -12,9 +13,11 @@ namespace CRUD.CustomFilters
 			if (context.HttpContext.User.Identity.IsAuthenticated==false)
 			{
 				context.Result=new RedirectToActionResult("Login","Account",null);
-			} 
+			}
+			
 			base.OnActionExecuting(context);
 		}
+	
 	}
 }
   

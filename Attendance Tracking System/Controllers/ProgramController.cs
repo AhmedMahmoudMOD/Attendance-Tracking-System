@@ -4,6 +4,7 @@ using Attendance_Tracking_System.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using CRUD.CustomFilters;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Attendance_Tracking_System.Controllers
 {
@@ -26,16 +27,20 @@ namespace Attendance_Tracking_System.Controllers
             this.studentRepo = studentRepo;
             this.trackRepo = trackRepo;
         }
-        public IActionResult Show()
+		[Authorize(Roles = "admin")]
+		
+		public IActionResult Show()
         {
             return View();
         }
-        public IActionResult Index()
+		[Authorize(Roles = "admin")]
+		public IActionResult Index()
         {
             var programms = programRepo.GetAll();  
             return View(programms);
         }
-        public IActionResult Create()
+		[Authorize(Roles = "admin")]
+		public IActionResult Create()
         {
             try
             {
@@ -58,8 +63,9 @@ namespace Attendance_Tracking_System.Controllers
                 return RedirectToAction("Error", "Home");
             }
         }
+		[Authorize(Roles = "admin")]
 
-        [HttpPost]
+		[HttpPost]
         public IActionResult Create(ITIProgram program)
         {
             if (program != null)
@@ -77,10 +83,9 @@ namespace Attendance_Tracking_System.Controllers
             List<Student> students = studentRepo.GetAll();
             ViewBag.Students = students;
             return View(program);
-       
         }
-
-        public IActionResult Delete(int ?id) {
+		[Authorize(Roles = "admin")]
+		public IActionResult Delete(int ?id) {
             if (id == 0 ||id== null)
             {
                 return BadRequest();
@@ -93,7 +98,8 @@ namespace Attendance_Tracking_System.Controllers
             programRepo.Delete(id.Value);
             return RedirectToAction("Index", "Program");
         }
-        public IActionResult Update(int ?id)
+		[Authorize(Roles = "admin")]
+		public IActionResult Update(int ?id)
         {
             if (id == null)
             {
@@ -110,7 +116,8 @@ namespace Attendance_Tracking_System.Controllers
             ViewBag.Intakes = intakes;
             return View(program);
         }
-        [HttpPost]
+		[Authorize(Roles = "admin")]
+		[HttpPost]
         public IActionResult Update(ITIProgram program) { 
             if(ModelState.IsValid)
             {
@@ -123,29 +130,33 @@ namespace Attendance_Tracking_System.Controllers
             ViewBag.Intakes = intakes;
             return View(program);
         }
-        public IActionResult ShowProgramTracks(int ? id)
+		[Authorize(Roles = "admin")]
+		public IActionResult ShowProgramTracks(int ? id)
+        {
+            var program = programRepo.GetByID(id.Value);
+            return View(program);
+        }
+		[Authorize(Roles = "admin")]
+
+		public IActionResult ShowProgramIntakes(int? id)
         {
             var program = programRepo.GetByID(id.Value);
             return View(program);
         }
 
-        public IActionResult ShowProgramIntakes(int? id)
+		[Authorize(Roles = "admin")]
+		public IActionResult ShowProgramInstructors(int? id) {
+            var program = programRepo.GetByID(id.Value);
+            return View(program);
+        }
+		[Authorize(Roles = "admin")]
+		public IActionResult ShowProgramStudents(int? id)
         {
             var program = programRepo.GetByID(id.Value);
             return View(program);
         }
-
-        public IActionResult ShowProgramInstructors(int? id) {
-            var program = programRepo.GetByID(id.Value);
-            return View(program);
-        }
-
-        public IActionResult ShowProgramStudents(int? id)
-        {
-            var program = programRepo.GetByID(id.Value);
-            return View(program);
-        }
-        public IActionResult Details(int ?id)
+		[Authorize(Roles = "admin")]
+		public IActionResult Details(int ?id)
         {
             if (id == null)
             {
