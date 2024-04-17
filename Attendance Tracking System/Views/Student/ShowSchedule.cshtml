@@ -4,26 +4,38 @@
 }
 
 <!DOCTYPE html>
-    <html>
-    <head>
-        <title></title>
-    </head>
-    <body>
-    <table class="table table-bordered">
+<html>
+<head>
+    <title>Show Schedule</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.dataTables.css">
+</head>
+<body>
+    <table class="table table-bordered" id="schedule">
         <thead>
             <tr>
-                <td>Date</td>
-                <td>Time</td>
+                <th>Date</th>
+                <th>Time</th>
             </tr>
         </thead>
         <tbody>
-			@foreach (var item in Model)
-			{
-				<tr>
-					<td>@item.Date</td>
-					<td>@item.StartTime</td>
-				</tr>
-			}
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Date</td>
+                    <td>@item.StartTime</td>
+                </tr>
+            }
+        </tbody>
     </table>
-    </body>
-    </html>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#schedule').DataTable();
+        });
+    </script>
+</body>
+</html>
