@@ -94,13 +94,10 @@ namespace Attendance_Tracking_System.Controllers
                     ModelState.AddModelError(nameof(instructor.Email), "Email already exists");
                 }
             }
-
           
             ViewBag.AllTracks = trackRepo.GetAll();
             return View(instructor);
         }
-
-
 
         public int GetCurrentUserId()
         {
@@ -118,15 +115,6 @@ namespace Attendance_Tracking_System.Controllers
         {
             int id = GetCurrentUserId();
             List<Role> roles = adminRepo.GetUserRoles(id);
-            
-            //foreach (var _role in roles)
-            //{
-            //    if (_role.RoleType=="admin")
-            //    {
-            //        id = int.Parse(RouteData.Values["id"].ToString());
-            //        break;
-            //    }
-            //}
             var Instructor = instructorRepo.GetInstructorById(id);
             return View(Instructor);
         }
@@ -328,6 +316,7 @@ namespace Attendance_Tracking_System.Controllers
 
 
 
+
 		[HttpPost]
 		[Authorize(Roles = "instructor,Supervisor")]
 		public IActionResult AddWeeklyShedule(List<Schedule> schedules)
@@ -337,8 +326,6 @@ namespace Attendance_Tracking_System.Controllers
 			scheduleRepo.AddWeeklySchedules(schedules,trackid);
             return RedirectToAction("AddWeeklyShedule");
         }
-
-
 
 		[Authorize(Roles = "instructor,Supervisor")]
 		public IActionResult Attandence()
@@ -379,5 +366,4 @@ namespace Attendance_Tracking_System.Controllers
         }
     }
 }
-
 
