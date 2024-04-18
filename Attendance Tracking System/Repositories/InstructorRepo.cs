@@ -8,6 +8,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Attendance_Tracking_System.Repositories
 {
+
     public class InstructorRepo : IInstructorRepo
     {
         private readonly ITISysContext db;

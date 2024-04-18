@@ -19,6 +19,7 @@ namespace Attendance_Tracking_System.Models
         public bool? IsDeleted { get; set; }
         [Required(ErrorMessage = "Date is required")]
         public DateOnly Date { get; set; }
+        
         public PermissionType Type { get; set; }
 
         [ForeignKey("Student")]

@@ -1,0 +1,85 @@
+﻿@model Instructor
+@{
+    ViewData["Title"] = "Edit Instructor";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<style>
+		.field-validation-error {
+			color: red;
+		}
+	</style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+	<div class="container">
+		<div style="display:flex;flex-direction:row">
+			<h2 class="text-center " style="color:#5D0E41;">Update Instructor</h2>
+			<a class="btn btn-dark" style="height:40px;margin-left:10px" asp-action="Index">Back </a>
+		</div>
+		<br />
+		<div class="col-lg-6">
+			<form id="UpdateForm" method="post" asp-action="EditInstructor" class="border border-dark p-4">
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label asp-for="Name">Name</label>
+						<input asp-for="Name" class="form-control" id="inputEmail4" placeholder="Name">
+						<span asp-validation-for="Name"></span>
+					</div>
+					<div class="form-group col-md-6">
+						<label asp-for="Age">Age</label>
+						<input asp-for="Age" class="form-control" id="inputPassword4" placeholder="Age">
+						<span asp-validation-for="Age"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label asp-for="Email">Email</label>
+					<input asp-for="Email" class="form-control" id="Email" placeholder="Email">
+					<span asp-validation-for="Email"></span>
+					<span id="emailError" style="color:red"></span>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label asp-for="Password">Password</label>
+						<input asp-for="Password" class="form-control" id="inputPassword" placeholder="Password">
+						<span asp-validation-for="Password"></span>
+					</div>
+					<div class="form-group col-md-6">
+						<label asp-for="PhoneNumber">Phone</label>
+						<input asp-for="PhoneNumber" type="tel" class="form-control" id="inputPhone" placeholder="Phone">
+						<span asp-validation-for="PhoneNumber"></span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-md-6">
+						@* <label asp-for="UserImage" >Image</label> *@
+						<input type="file" name="Img" class="form-control-file" hidden asp-for="UserImage" id="img" />
+						<span id="imageError" class="text-danger"></span>
+					</div>
+					<div class="col-md-12">
+						<label asp-for="Salary"></label>
+						<input class="form-control" asp-for="Salary" />
+					</div>
+				</div>
+				
+				<button type="submit" class="btn btn-danger btn-block">Save Changes</button>
+
+			</form>
+		</div>
+	</div>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script>
+		
+
+	</script>
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>
+
