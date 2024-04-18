@@ -15,8 +15,8 @@ namespace Attendance_Tracking_System.Repositories
          List<Schedule> GetWeeklyShedule(int? id);
         List<Schedule> GetAllScheduleForTrack(int? TrackId);
 
+        void AddWeeklySchedules(List<Schedule> schedules, int id);
 
 
-        void AddWeeklySchedules(List<Schedule> schedules);
-    }
+	}
 }

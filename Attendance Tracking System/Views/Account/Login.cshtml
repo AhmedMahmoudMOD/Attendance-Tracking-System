@@ -1,7 +1,7 @@
 ﻿@model LoginViewModel
 @{
 	Layout = null;
-	ViewData["Title"] = "login";
+	ViewData["Title"] = "Login";
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -9,7 +9,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+	<title>Login</title>
 	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 	<style>
 		body {
@@ -72,7 +72,7 @@
 				<h4> @Html.ValidationMessage("UserIsDeleted")</h4>
 			</div>
 		}
-		<h1 style="text-align:center;color:#001F3D;margin-top:10px"> Attendance Managment system</h1>
+		<h1 style="text-align:center;color:#001F3D;margin-top:10px"> Attendance Managment System</h1>
 		<div class="row">
 			<div class="col-lg-5">
 				<img src="~/images/login-animate.svg" />
@@ -108,7 +108,7 @@
 								<button type="submit" class="btn btn-block" style="color:white;background-color:#001F3D">Login</button>
 							</form>
 							<br />
-							<p>Are You new Student? <a asp-action="SignUp" asp-controller="StudentRegister">Create Account</a></p>
+							<p>Are you a new student? <a asp-action="SignUp" asp-controller="StudentRegister">Create Account</a></p>
 						</div>
 					</div>
 				</div>

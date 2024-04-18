@@ -79,13 +79,13 @@ namespace Attendance_Tracking_System.Repositories
             db.SaveChanges();
         }
 
-        public void AddWeeklySchedules(List<Schedule> schedules)
+        public void AddWeeklySchedules(List<Schedule> schedules,int id)
         {
-            List<Schedule> AllSC = GetAllSchedules();
+            List<Schedule> AllSC = getAllSchedulesByTrack(id);
             bool FoundDayAdded = false;
             foreach (var schedule in schedules)
             {
-                var ScheduleDay = AllSC.FirstOrDefault(a => a.Date == schedule.Date);
+                var ScheduleDay = AllSC.FirstOrDefault(a => a.Date == schedule.Date );
                 if (ScheduleDay != null) 
                 {
                     FoundDayAdded = true;
@@ -97,6 +97,12 @@ namespace Attendance_Tracking_System.Repositories
                 db.Schedule.AddRange(schedules);
                 db.SaveChanges();
             }
+        }
+
+
+        public List<Schedule> getAllSchedulesByTrack(int TrackID)
+        {
+            return db.Schedule.Where(a=>a.TrackID==TrackID).ToList();
         }
     }
 }
