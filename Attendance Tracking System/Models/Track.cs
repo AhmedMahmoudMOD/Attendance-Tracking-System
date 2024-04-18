@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace Attendance_Tracking_System.Models
@@ -6,10 +7,11 @@ namespace Attendance_Tracking_System.Models
     public class Track
     {
         public int Id { get; set; }
-
-        public string Name { get; set; }
-
-        public int Capacity { get; set; }
+		[Required]
+		[RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Only alphabetic characters are allowed.")]
+		public string Name { get; set; }
+		[Range(0, 100, ErrorMessage = "The value must be between 0 and 100.")]
+		public int Capacity { get; set; }
 
         public bool Status { get; set; } = true;
 

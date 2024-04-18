@@ -18,10 +18,19 @@
         <form  method="post" enctype="multipart/form-data">
             <input type="hidden" asp-for="Id" />
             <partial name="CreateEdit"></partial>
+
+
+            <div class="row">
+                <div class="col-2 d-flex align-items-center justify-content-center">
+                </div>
+                <div class="col-7">
+                    <input type="hidden" asp-for="Password" class="form-control" />
+                </div>
+            </div>
+
             <div class="text-center d-grid gap-2 col-4 mx-auto">
                 <input type="submit" value="Save" class="btn btn-info" />
            </div>
-            
         </form>
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
