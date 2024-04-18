@@ -2,6 +2,7 @@
 using Attendance_Tracking_System.Repositories;
 using Attendance_Tracking_System.View_Models;
 using CRUD.CustomFilters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.DependencyResolver;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -31,7 +32,8 @@ namespace Attendance_Tracking_System.Controllers
             this.attendanceRepo = attendanceRepo;
             this.instructorRepo = instructorRepo;
         }
-        [HttpPost]
+		[Authorize(Roles = "Security")]
+		[HttpPost]
         public IActionResult SetArrivalTime(StudentAttendance studentAttendance,int TrackID)
         {
             // get the schedule of the track for today
@@ -65,8 +67,8 @@ namespace Attendance_Tracking_System.Controllers
 
 
         }
-
-        public IActionResult SetLeaveTime(LeaveTimeVM leaveTimeVM)
+		[Authorize(Roles = "Security")]
+		public IActionResult SetLeaveTime(LeaveTimeVM leaveTimeVM)
         {
             var studentAttendance = studentAttendanceRepo.GetStudentAttendance(leaveTimeVM.UserId, leaveTimeVM.Date);
             if (ModelState.IsValid)
@@ -81,8 +83,8 @@ namespace Attendance_Tracking_System.Controllers
 
             }
         }
-
-        public IActionResult SetAbsent(StudentAttendance studentAttendance, int TrackID)
+		[Authorize(Roles = "Security")]
+		public IActionResult SetAbsent(StudentAttendance studentAttendance, int TrackID)
         {
             // get the schedule of the track for today
             var schedule = scheduleRepo.GetScheduleForToday(TrackID, DateOnly.FromDateTime(DateTime.Now));
@@ -101,8 +103,8 @@ namespace Attendance_Tracking_System.Controllers
 
 
         }
-
-        public IActionResult SetStaffArrivalTime(Attendance attendance)
+		[Authorize(Roles = "Security")]
+		public IActionResult SetStaffArrivalTime(Attendance attendance)
         {
  
             if (ModelState.IsValid)
@@ -121,8 +123,8 @@ namespace Attendance_Tracking_System.Controllers
 
 
         }
-
-        public IActionResult SetStaffLeaveTime(LeaveTimeVM leaveTimeVM)
+		[Authorize(Roles = "Security")]
+		public IActionResult SetStaffLeaveTime(LeaveTimeVM leaveTimeVM)
         {
             var attendance = attendanceRepo.GetAttendance(leaveTimeVM.UserId, leaveTimeVM.Date);
             if (ModelState.IsValid)
@@ -138,8 +140,8 @@ namespace Attendance_Tracking_System.Controllers
 
             }
         }
-
-        public IActionResult SetStaffAbsent(Attendance attendance)
+		[Authorize(Roles = "Security")]
+		public IActionResult SetStaffAbsent(Attendance attendance)
         {
            
             
@@ -156,8 +158,8 @@ namespace Attendance_Tracking_System.Controllers
 
 
         }
-
-        public IActionResult ShowStudentsAttendance()
+		[Authorize(Roles = "Admin,StudentAffairs")]
+		public IActionResult ShowStudentsAttendance()
         {
             var plist = programRepo.GetAll();
             ViewBag.Programs = plist;
@@ -169,8 +171,8 @@ namespace Attendance_Tracking_System.Controllers
             return View("StudentsAttendance");
 
         }
-
-        public IActionResult MarkStdAbsence(int Pid,int Tid , int Ino)
+		[Authorize(Roles = "Security")]
+		public IActionResult MarkStdAbsence(int Pid,int Tid , int Ino)
         {
             var Schedule = scheduleRepo.GetScheduleForToday(Tid, DateOnly.FromDateTime(DateTime.Now));
             var ScheduleID = Schedule?.Id;
@@ -186,7 +188,8 @@ namespace Attendance_Tracking_System.Controllers
             }
 
         }
-        public IActionResult MarkStaffAbsence(int TypeNo)
+		[Authorize(Roles = "Security")]
+		public IActionResult MarkStaffAbsence(int TypeNo)
         {
            switch (TypeNo)
             {
@@ -215,27 +218,27 @@ namespace Attendance_Tracking_System.Controllers
             }
 
         }
-
-        public IActionResult GetStudentsAttendace (int Pid, int Tid, int Ino,DateOnly Date)
+		[Authorize(Roles = "Admin,StudentAffairs")]
+		public IActionResult GetStudentsAttendace (int Pid, int Tid, int Ino,DateOnly Date)
         {
             var list = studentRepo.GetForAttendanceExplicit(Pid, Tid, Ino,Date);
             ViewBag.CurentTrackId = Tid;
             return PartialView("_StudentsAttListPartial", list);
         }
-
-        public IActionResult GetRangeStudentsAttendace(int Pid, int Tid, int Ino, DateOnly Date,DateOnly EndDate)
+		[Authorize(Roles = "Admin,StudentAffairs")]
+		public IActionResult GetRangeStudentsAttendace(int Pid, int Tid, int Ino, DateOnly Date,DateOnly EndDate)
         {
             var list = studentRepo.GetForRangeAttendanceExplicit(Pid, Tid, Ino, Date,EndDate);
             ViewBag.CurentTrackId = Tid;
             return PartialView("_StudentsRangeAttListPartial", list);
         }
-
-        public IActionResult ShowStaffAttendance()
+		[Authorize(Roles = "Admin,StudentAffairs")]
+		public IActionResult ShowStaffAttendance()
         {
             return View("StaffAttendance");
         }
-
-        public IActionResult StudentsRangeAttendance()
+		[Authorize(Roles = "Admin,StudentAffairs")]
+		public IActionResult StudentsRangeAttendance()
         {
             var plist = programRepo.GetAll();
             ViewBag.Programs = plist;
@@ -245,13 +248,13 @@ namespace Attendance_Tracking_System.Controllers
             ViewBag.Intake = currentIntake;
             return View();
         }
-
-        public IActionResult StaffRangeAttendance()
+		[Authorize(Roles = "Admin,StudentAffairs")]
+		public IActionResult StaffRangeAttendance()
         {
             return View();
         }
-
-        public IActionResult GetStaffAttendance(int TypeNo , DateOnly Date)
+		[Authorize(Roles = "Admin,StudentAffairs")]
+		public IActionResult GetStaffAttendance(int TypeNo , DateOnly Date)
         {
             switch (TypeNo)
             {
@@ -265,8 +268,8 @@ namespace Attendance_Tracking_System.Controllers
                     return BadRequest();
             }
         }
-
-        public IActionResult GetRangeStaffAttendance(int TypeNo, DateOnly Date,DateOnly EndDate)
+		[Authorize(Roles = "Admin,StudentAffairs")]
+		public IActionResult GetRangeStaffAttendance(int TypeNo, DateOnly Date,DateOnly EndDate)
         {
             switch (TypeNo)
             {
@@ -281,75 +284,75 @@ namespace Attendance_Tracking_System.Controllers
             }
         }
 
-        //public IActionResult CalculateStudentsAttendace()
-        //{
-        //    int Pid = 1; int Tid = 4; int Ino = 2; DateOnly Date = new DateOnly(2024, 04, 09); DateOnly EndDate = new DateOnly(2024, 04, 09);
-        //    var list = studentRepo.GetForUpdateAttendanceDegExplicit(Pid, Tid, Ino, Date, EndDate);
+		//public IActionResult CalculateStudentsAttendace()
+		//{
+		//    int Pid = 1; int Tid = 4; int Ino = 2; DateOnly Date = new DateOnly(2024, 04, 09); DateOnly EndDate = new DateOnly(2024, 04, 09);
+		//    var list = studentRepo.GetForUpdateAttendanceDegExplicit(Pid, Tid, Ino, Date, EndDate);
 
-        //    foreach (var student in list)
-        //    {
-        //        studentAttendanceRepo.CalculateNoOfDeductions(student);
-        //    }
-        //    foreach (var student in list)
-        //    {
-        //        for (DateOnly date = Date; date <= EndDate; date = date.AddDays(1)){
-        //            //var stdAttendance = student.StudentAttendances.SingleOrDefault(a => a.Date == date && ( a.AttendanceStatus==Enums.AttendanceStatus.Late || a.AttendanceStatus==Enums.AttendanceStatus.Absent));
-        //            var stdAttendance = studentAttendanceRepo.GetStdAttendance(student, date);
-        //            if (stdAttendance != null)
-        //            {
-        //                var permission = student.Permissions.SingleOrDefault(p => p.Date == date);
-        //                if(permission != null)
-        //                {
-        //                    if(permission.IsAccepted==true)
-        //                    {
-        //                        if(student.NoOfDeductions>=0&& student.NoOfDeductions < 3)
-        //                        {
-        //                            student.AttendanceDegrees -= 5;
-        //                            student.NoOfDeductions++;
-        //                            stdAttendance.IsMarked = true;
-        //                        }
-        //                        else if(student.NoOfDeductions>=3&& student.NoOfDeductions < 6)
-        //                        {
-        //                            student.AttendanceDegrees -= 10;
-        //                            student.NoOfDeductions++;
-        //                            stdAttendance.IsMarked = true;
-        //                        }
-        //                        else if(student.NoOfDeductions>=6)
-        //                        {
-        //                            student.AttendanceDegrees -= 15;
-        //                            student.NoOfDeductions++;
-        //                            stdAttendance.IsMarked = true;
-        //                        }
-                                
-        //                    }
-        //                    else
-        //                    {
-        //                        student.AttendanceDegrees -= 25;
-        //                        student.NoOfDeductions++;
-        //                        stdAttendance.IsMarked = true;
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    student.AttendanceDegrees -= 25;
-        //                    student.NoOfDeductions++;
-        //                    stdAttendance.IsMarked = true;
-        //                }
-        //            }
+		//    foreach (var student in list)
+		//    {
+		//        studentAttendanceRepo.CalculateNoOfDeductions(student);
+		//    }
+		//    foreach (var student in list)
+		//    {
+		//        for (DateOnly date = Date; date <= EndDate; date = date.AddDays(1)){
+		//            //var stdAttendance = student.StudentAttendances.SingleOrDefault(a => a.Date == date && ( a.AttendanceStatus==Enums.AttendanceStatus.Late || a.AttendanceStatus==Enums.AttendanceStatus.Absent));
+		//            var stdAttendance = studentAttendanceRepo.GetStdAttendance(student, date);
+		//            if (stdAttendance != null)
+		//            {
+		//                var permission = student.Permissions.SingleOrDefault(p => p.Date == date);
+		//                if(permission != null)
+		//                {
+		//                    if(permission.IsAccepted==true)
+		//                    {
+		//                        if(student.NoOfDeductions>=0&& student.NoOfDeductions < 3)
+		//                        {
+		//                            student.AttendanceDegrees -= 5;
+		//                            student.NoOfDeductions++;
+		//                            stdAttendance.IsMarked = true;
+		//                        }
+		//                        else if(student.NoOfDeductions>=3&& student.NoOfDeductions < 6)
+		//                        {
+		//                            student.AttendanceDegrees -= 10;
+		//                            student.NoOfDeductions++;
+		//                            stdAttendance.IsMarked = true;
+		//                        }
+		//                        else if(student.NoOfDeductions>=6)
+		//                        {
+		//                            student.AttendanceDegrees -= 15;
+		//                            student.NoOfDeductions++;
+		//                            stdAttendance.IsMarked = true;
+		//                        }
 
-        //        }
-        //    }
-        //    if (studentRepo.UpdateAttendanceDegrees(list))
-        //    {
-        //        return Json(new { success = true });
-        //    }
-        //    else
-        //    {
-        //        return Json(new { success = false });
-        //    }
-        //}
+		//                    }
+		//                    else
+		//                    {
+		//                        student.AttendanceDegrees -= 25;
+		//                        student.NoOfDeductions++;
+		//                        stdAttendance.IsMarked = true;
+		//                    }
+		//                }
+		//                else
+		//                {
+		//                    student.AttendanceDegrees -= 25;
+		//                    student.NoOfDeductions++;
+		//                    stdAttendance.IsMarked = true;
+		//                }
+		//            }
 
-        public IActionResult CalculateStudentsAttendace(int Pid,int Tid,int Ino,DateOnly Date , DateOnly EndDate)
+		//        }
+		//    }
+		//    if (studentRepo.UpdateAttendanceDegrees(list))
+		//    {
+		//        return Json(new { success = true });
+		//    }
+		//    else
+		//    {
+		//        return Json(new { success = false });
+		//    }
+		//}
+		[Authorize(Roles = "Admin,StudentAffairs")]
+		public IActionResult CalculateStudentsAttendace(int Pid,int Tid,int Ino,DateOnly Date , DateOnly EndDate)
         {
             var list = studentRepo.GetForUpdateAttendanceDegExplicit(Pid, Tid, Ino, Date, EndDate);
 
