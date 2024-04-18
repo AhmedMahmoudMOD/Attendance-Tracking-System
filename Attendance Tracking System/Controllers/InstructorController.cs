@@ -103,7 +103,6 @@ namespace Attendance_Tracking_System.Controllers
 
 
         public int GetCurrentUserId()
-        public int GetCurrentUserId()
         {
             ClaimsIdentity? identity = HttpContext.User.Identity as ClaimsIdentity;
             var userId = identity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
