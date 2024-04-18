@@ -129,11 +129,9 @@ namespace Attendance_Tracking_System.Controllers
         [HttpPost]
         public IActionResult AddPermission(Permission permission)
         {
-           
-               var per = permissionRepo.addPermission(permission);
-               var std = studentRepo.GetStudentById(per.StudentID);
-                return View("Index",std);
-            
+                var per = permissionRepo.addPermission(permission);
+                var std = studentRepo.GetStudentById(per.StudentID);
+                return View("Index", std);
         
         }
         public IActionResult GetAllPermission()
