@@ -203,34 +203,34 @@
                         </a>
                   
 						}
-						else if (User.IsInRole("instructor"))
+						else if (User.IsInRole("instructor") )
 						{
 							<a class="nav-link m-1" asp-action="Details" asp-asp-controller="instructor" asp-route-Id="">
-								<div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+								<div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
 								Profile
 							</a>
 
 							<a class="nav-link collapsed m-1" asp-action="Edit" asp-controller="instructor">
-								<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+								<div class="sb-nav-link-icon"><i class="fas fa-user-edit"></i></div>
 								Edit Profile
 							</a>
 
 							<a class="nav-link collapsed m-1" asp-action="TrackSchedule" asp-controller="instructor">
-								<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+								<div class="sb-nav-link-icon"><i class="fas fa-calendar-alt"></i></div>
 								Track Shedulue
 							</a>
 
 							<a class="nav-link collapsed m-1" asp-action="Permission" asp-controller="instructor">
-								<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+								<div class="sb-nav-link-icon"><i class="fas fa-lock"></i></div>
 								Permission
 							</a>
 
 							<a class="nav-link collapsed m-1" asp-action="AddWeeklyShedule" asp-controller="instructor">
-								<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+								<div class="sb-nav-link-icon"><i class="fas fa-calendar-edit"></i></div>
 								Add Schedule
 							</a>
 							<a class="nav-link collapsed m-1" asp-action="Attandence" asp-controller="instructor">
-								<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+								<div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
 								Show Attandence
 							</a>
 

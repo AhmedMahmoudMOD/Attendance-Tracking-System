@@ -274,5 +274,13 @@ namespace Attendance_Tracking_System.Repositories
 			return context.Program.Where(p => p.IsDeleted == false).ToList();
 		}
 
-	}
+
+        public List<Role> GetUserRoles(int UserID)
+		{
+			var AllRoles = context.roles.Include(a => a.user);
+			var user = context.User.Include(a=>a.role).SingleOrDefault(a => a.Id == UserID);
+			return user.role.ToList();
+        }
+
+    }
 }
