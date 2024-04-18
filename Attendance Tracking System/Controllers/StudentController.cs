@@ -92,6 +92,7 @@ namespace Attendance_Tracking_System.Controllers
         public IActionResult ShowAttendence()
         {
             var id = GetCurrentUser();
+            ViewBag.degree = studentRepo.GetStudentById(id).AttendanceDegrees;
             var attendance = AttendanceRepo.getAllAttendance(id);
             return View(attendance);
         }
@@ -159,7 +160,10 @@ namespace Attendance_Tracking_System.Controllers
 		}
         public IActionResult ShowAllSchedules()
         {
-            var schedule = scheduleRepo.GetAllSchedules();
+            var id = GetCurrentUser();
+            var student = studentRepo.GetStudentById(id);
+            var trackId = student.TrackID;
+            var schedule = scheduleRepo.GetAllScheduleForTrack(trackId);
 			return View(schedule);
         }
 		public int GetCurrentUser()

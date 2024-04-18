@@ -66,6 +66,11 @@ namespace Attendance_Tracking_System.Repositories
 			var schedule = db.Schedule.Include(a => a.Track).Where(a => a.TrackID == id && a.Date >= firstDayOfWeek && a.Date <= lastDayOfWeek ).ToList();
             return schedule;
 		}
+        public List<Schedule> GetAllScheduleForTrack(int? id)
+        {
+            var AllSchedules = db.Schedule.Include(a => a.Track).Where(a => a.TrackID == id).ToList();
+            return AllSchedules;
+        }
 
 		public void AddSchedule(Schedule schedule)
         {
