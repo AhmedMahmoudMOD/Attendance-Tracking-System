@@ -11,14 +11,14 @@ namespace Attendance_Tracking_System.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PermissionID { get; set; }
+        [Required(ErrorMessage = "Reason is required"), MaxLength(100), MinLength(4)]
         public string Reason { get; set; }
 
         public bool? IsAccepted { get; set; }
 
         public bool? IsDeleted { get; set; }
-       
+        [Required(ErrorMessage = "Date is required")]
         public DateOnly Date { get; set; }
-
         public PermissionType Type { get; set; }
 
         [ForeignKey("Student")]

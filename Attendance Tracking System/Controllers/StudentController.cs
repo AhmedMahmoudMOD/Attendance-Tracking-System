@@ -16,12 +16,14 @@ namespace Attendance_Tracking_System.Controllers
         private readonly IStudentRepo studentRepo;
         private readonly IAttendanceRepo AttendanceRepo;
         private readonly IPermissionRepo permissionRepo;
+        private readonly IScheduleRepo scheduleRepo;
 
-        public StudentController(IStudentRepo studentRepo, IAttendanceRepo _AttendanceRepo ,IPermissionRepo permissionRepo)
+        public StudentController(IStudentRepo _studentRepo, IAttendanceRepo _AttendanceRepo ,IPermissionRepo _permissionRepo, IScheduleRepo _scheduleRepo)
         {
-            this.studentRepo = studentRepo;
+            this.studentRepo = _studentRepo;
             this.AttendanceRepo = _AttendanceRepo;
-            this.permissionRepo = permissionRepo;
+            this.permissionRepo = _permissionRepo;
+            this.scheduleRepo = _scheduleRepo;
         }
 
        
@@ -87,8 +89,9 @@ namespace Attendance_Tracking_System.Controllers
         //    }
         //}
 
-        public IActionResult ShowAttendence(int id)
+        public IActionResult ShowAttendence()
         {
+            var id = GetCurrentUser();
             var attendance = AttendanceRepo.getAllAttendance(id);
             return View(attendance);
         }
@@ -147,6 +150,19 @@ namespace Attendance_Tracking_System.Controllers
         {
             permissionRepo.removePermission(Perid);
             return RedirectToAction("GetAllPermission",Stdid);
+        }
+
+        public IActionResult ShowWeeklySchedule()
+        {
+			var id = GetCurrentUser();
+            var student = studentRepo.GetStudentById(id);
+            var schedule = scheduleRepo.GetWeeklyShedule(student.TrackID);
+            return View(schedule);
+		}
+        public IActionResult ShowAllSchedules()
+        {
+            var schedule = scheduleRepo.GetAllSchedules();
+			return View(schedule);
         }
 		public int GetCurrentUser()
 		{

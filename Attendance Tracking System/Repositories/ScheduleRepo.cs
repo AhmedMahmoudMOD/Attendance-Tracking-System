@@ -1,6 +1,8 @@
 ﻿using Attendance_Tracking_System.Data;
 using Attendance_Tracking_System.Models;
 using Microsoft.EntityFrameworkCore;
+using Syncfusion.EJ2.Schedule;
+using Schedule = Attendance_Tracking_System.Models.Schedule;
 
 namespace Attendance_Tracking_System.Repositories
 {
@@ -44,8 +46,28 @@ namespace Attendance_Tracking_System.Repositories
             var schedule = db.Schedule.SingleOrDefault(s => s.TrackID == TrackId && s.Date == date);
             return schedule;
         }
+        //Function Get the date of the first day of the week for a given date\\
+        public static DateOnly GetFirstDayOfWeek(DateOnly date)
+        {
+            // Calculate the difference between the current day of the week and the first day of the week (usually Sunday)
+            int diff = (7 + (date.DayOfWeek - DayOfWeek.Sunday)) % 7;
 
-        public void AddSchedule(Schedule schedule)
+            // Subtract the difference from the current date to get the date of the first day of the week
+            DateOnly firstDayOfWeek = date.AddDays(-diff);
+
+            return firstDayOfWeek;
+        }
+
+        public List<Schedule> GetWeeklyShedule(int? id)
+        {
+			var todayDate = DateOnly.FromDateTime(DateTime.Now);
+            var firstDayOfWeek = GetFirstDayOfWeek(todayDate);
+            var lastDayOfWeek = firstDayOfWeek.AddDays(5);
+			var schedule = db.Schedule.Include(a => a.Track).Where(a => a.TrackID == id && a.Date >= firstDayOfWeek && a.Date <= lastDayOfWeek ).ToList();
+            return schedule;
+		}
+
+		public void AddSchedule(Schedule schedule)
         {
             
             db.Schedule.Add(schedule);
