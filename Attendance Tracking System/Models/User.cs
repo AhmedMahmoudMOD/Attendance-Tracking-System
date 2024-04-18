@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations.Schema;
+using Attendance_Tracking_System.CustomFilters;
 
 namespace Attendance_Tracking_System.Models
 {
@@ -13,6 +14,7 @@ namespace Attendance_Tracking_System.Models
         public string Name { get; set; }
 
         [DataType(DataType.EmailAddress)]
+       
 		[RegularExpression(@"^[^\s@]+@[^\s@]+\.[^\s@]+$", ErrorMessage = "Please enter a valid email address.")]
 		public string Email { get; set; }
         [Required]

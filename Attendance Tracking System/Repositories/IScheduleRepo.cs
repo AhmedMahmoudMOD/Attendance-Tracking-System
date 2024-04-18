@@ -14,7 +14,7 @@ namespace Attendance_Tracking_System.Repositories
         Schedule GetScheduleForToday(int TrackId,DateOnly date);
          List<Schedule> GetWeeklyShedule(int? id);
 
+        void AddWeeklySchedules(List<Schedule> schedules, int id);
 
-		void AddWeeklySchedules(List<Schedule> schedules);
-    }
+	}
 }

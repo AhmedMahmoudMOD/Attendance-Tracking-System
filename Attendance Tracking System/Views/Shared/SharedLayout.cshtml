@@ -219,7 +219,7 @@
 
 
 						}
-						else if (User.IsInRole("instructor") )
+						else if (User.IsInRole("instructor") && (User.IsInRole("Supervisor"))) 
 						{
 							<a class="nav-link m-1" asp-action="Details" asp-asp-controller="instructor" asp-route-Id="">
 								<div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
@@ -298,9 +298,21 @@
 								</nav>
 							</div>
 						}
-						else if (User.IsInRole("Supervisor"))
+						else if (User.IsInRole("instructor"))
 						{
-							//actions of Supervisor
+							<a class="nav-link m-1" asp-action="Details" asp-asp-controller="instructor" asp-route-Id="">
+								<div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+								Profile
+							</a>
+
+							<a class="nav-link collapsed m-1" asp-action="Edit" asp-controller="instructor">
+								<div class="sb-nav-link-icon"><i class="fas fa-user-edit"></i></div>
+								Edit Profile
+							</a>
+							<a class="nav-link collapsed m-1" asp-action="Attandence" asp-controller="instructor">
+								<div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+								Show Attandence
+							</a>
 
 						}
 						else if (User.IsInRole("Security"))
