@@ -84,12 +84,20 @@ namespace Attendance_Tracking_System.Controllers
         [HttpPost]
         public IActionResult Edit(Track track,List<int> RemovedIns,List<int> AddedIns)
         {
-			if(RemovedIns!=null)
-			TrackRepo.RemoveInsFromTrack(RemovedIns, track.Id);
-            if (AddedIns != null)
-                TrackRepo.AddInstructorToTrack(AddedIns, track.Id);
-			TrackRepo.UpdateTrack(track);
-            return RedirectToAction("index");
+			if (ModelState.IsValid)
+			{
+				if (RemovedIns != null)
+					TrackRepo.RemoveInsFromTrack(RemovedIns, track.Id);
+				if (AddedIns != null)
+					TrackRepo.AddInstructorToTrack(AddedIns, track.Id);
+				TrackRepo.UpdateTrack(track);
+				return RedirectToAction("index");
+			}
+			else
+			{
+				return View(track);	
+			}
+			
         }
 
 
@@ -116,7 +124,13 @@ namespace Attendance_Tracking_System.Controllers
                     TrackRepo.AddInstructorToTrack(AddedIns, _track.Id);
                 return RedirectToAction("index");
             }
-			else{ 
+			else{
+				var programs = programRepo.GetAllPrograms();
+				var InsNotSuperVisor = TrackRepo.NotSuperVisor();
+				var AllInstructor = InstructorRepo.GetAll();
+				ViewBag.InsNotSuperVisor = InsNotSuperVisor;
+				ViewBag.programs = programs;
+				ViewBag.AllInstructor = AllInstructor;
 				return View(new Track());
 			}
 		}

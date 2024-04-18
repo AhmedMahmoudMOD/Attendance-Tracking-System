@@ -184,6 +184,27 @@
                         </div>
                         <hr />
                         <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Program</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">@Model.Program.Name</div>
+                        </div>
+                        <hr />
+                        <div class="row">
+							<div class="col-sm-3">
+								<h6 class="mb-0">Intake</h6>
+							</div>
+							<div class="col-sm-9 text-secondary">@Model.Intake.Name</div>
+                            </div>
+                            <hr />
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Track</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">@Model.Track.Name</div>
+                        </div>
+                        <hr />
+                        <div class="row">
                             <div class="col-sm-12">
                                 <a class="btn btn-info"
                                    asp-action="EditStd" asp-route-id="@Model.Id">Edit</a>

@@ -71,16 +71,20 @@
             <div>
                 <label for="Reason">Reason</label>
                 <input type="text" id="Reason" asp-for="Reason" />
+                                <span asp-validation-for="Reason" class="text-danger"></span>
+
             </div>
             <div>
-                <label for="Date">Date and Time</label>
+                <label for="Date">Date</label>
                 <input type="date" id="Date" asp-for="Date" />
+                <span asp-validation-for="Date" class="text-danger"></span>
             </div>
             <div>
                 <label for="Type">Permission Type</label>
                 <select id="Type" asp-for="Type">
                     <option value="1">Late</option>
                     <option value="2">Absent</option>
+
                 </select>
             </div>
 

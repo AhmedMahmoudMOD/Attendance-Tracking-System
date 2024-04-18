@@ -8,6 +8,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Attendance_Tracking_System.Repositories
 {
+
     public class InstructorRepo : IInstructorRepo
     {
         private readonly ITISysContext db;
@@ -99,7 +100,7 @@ namespace Attendance_Tracking_System.Repositories
             OldInstructor.Name = Ins.Name;
             OldInstructor.Age = Ins.Age;
             OldInstructor.Email = Ins.Email;
-            OldInstructor.Salary = Ins.Salary;
+           // OldInstructor.Salary = Ins.Salary;
             OldInstructor.PhoneNumber = Ins.PhoneNumber;
             //var existingInstructor = db.Instructor.Find(Ins.Id);
             //if (existingInstructor != null)
@@ -147,8 +148,8 @@ namespace Attendance_Tracking_System.Repositories
         {
             int trackId = db.Track.FirstOrDefault(a => a.SuperID == id).Id;
             List<Permission> pers = db.Permission.Include(a => a.Student).ToList();              
-              List<Permission>filter=  pers.Where(a =>a.Student.TrackID==trackId).ToList();
-            return filter;
+            List<Permission>filter=  pers.Where(a =>a.Student.TrackID==trackId).ToList();
+             return filter;
         }
 
 

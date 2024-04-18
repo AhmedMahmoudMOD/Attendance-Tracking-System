@@ -95,10 +95,10 @@
 				document.getElementById('salError').innerText = 'salary must be between 1000 & 20.000';
 				event.preventDefault();
 			}
-			if (!userImage) {
-				document.getElementById('imageError').innerText = 'Please select an image.';
-				event.preventDefault();
-			}
+			// if (!userImage) {
+			// 	document.getElementById('imageError').innerText = 'Please select an image.';
+			// 	event.preventDefault();
+			// }
 		});
 		$('#Email').on('blur', function () {
 			var email = $(this).val();
