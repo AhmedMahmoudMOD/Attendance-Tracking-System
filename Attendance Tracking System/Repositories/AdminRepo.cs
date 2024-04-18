@@ -116,7 +116,7 @@ namespace Attendance_Tracking_System.Repositories
 			if (res != null)
 			{
 				res.Name = student.Name;
-				res.IntakeNo = student.IntakeNo;
+
 				res.TrackID = student.TrackID;
 				var tId = student.TrackID;
 				var track = context.Track.FirstOrDefault(a => a.Id == tId);
@@ -129,8 +129,10 @@ namespace Attendance_Tracking_System.Repositories
 				res.Password = student.Password;
 				res.PhoneNumber = student.PhoneNumber;
 				res.RegisterationStatus = student.RegisterationStatus;
+				var intake = context.Intake.FirstOrDefault(i => i.ProgramID == progId);
+				res.IntakeNo = intake.No;
 				res.University = student.University;
-				res.UserImage = student.UserImage;
+				//res.UserImage = student.UserImage;
 				res.AttendanceDegrees = student.AttendanceDegrees;
 				res.RegisterationStatus = student.RegisterationStatus;
 				context.SaveChanges();
@@ -174,7 +176,7 @@ namespace Attendance_Tracking_System.Repositories
 				res.Age = employee.Age;
 				res.Password = employee.Password;
 				res.PhoneNumber = employee.PhoneNumber;
-				res.UserImage = employee.UserImage;
+				//res.UserImage = employee.UserImage;
 				res.Salary = employee.Salary;
 				res.Type = employee.Type;
 				context.SaveChanges();
@@ -193,8 +195,7 @@ namespace Attendance_Tracking_System.Repositories
 		{
 			if (emp != null)
 			{
-				emp.UserImage = userImageFileName;
-
+			//	emp.UserImage = userImageFileName;
 				context.Employee.Add(emp);
 				context.SaveChanges();
 			}

@@ -1,8 +1,8 @@
-﻿@model Employee
+﻿@model Instructor
 @{
-	ViewData["Title"] = "UpdateEmployee";
-	
+    ViewData["Title"] = "Edit Instructor";
 }
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,14 +19,13 @@
 <body>
 	<div class="container">
 		<div style="display:flex;flex-direction:row">
-			<h2 class="text-center " style="color:#5D0E41;">Update Employee</h2>
-			<a class="btn btn-dark" style="height:40px;margin-left:10px" asp-action="GetEmployees">Back </a>
+			<h2 class="text-center " style="color:#5D0E41;">Update Instructor</h2>
+			<a class="btn btn-dark" style="height:40px;margin-left:10px" asp-action="Index">Back </a>
 		</div>
 		<br />
 		<div class="col-lg-6">
-			<form id="UpdateForm" method="post" asp-action="UpdateEmployee" class="border border-dark p-4" enctype="multipart/form-data">
+			<form id="UpdateForm" method="post" asp-action="EditInstructor" class="border border-dark p-4">
 				<div class="form-row">
-					@* <input type="hidden" name="RoleId" value="@RoleId" /> *@
 					<div class="form-group col-md-6">
 						<label asp-for="Name">Name</label>
 						<input asp-for="Name" class="form-control" id="inputEmail4" placeholder="Name">
@@ -58,24 +57,16 @@
 				</div>
 				<div class="row form-group">
 					<div class="col-md-6">
-						<label asp-for="UserImage">Image</label>
-						<input type="file" name="Img" class="form-control-file" asp-for="UserImage"  id="img"/>
+						@* <label asp-for="UserImage" >Image</label> *@
+						<input type="file" name="Img" class="form-control-file" hidden asp-for="UserImage" id="img" />
 						<span id="imageError" class="text-danger"></span>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-12">
 						<label asp-for="Salary"></label>
-						<input  class="form-control" asp-for="Salary" />
+						<input class="form-control" asp-for="Salary" />
 					</div>
 				</div>
-				<div class="col-md-6">
-					<label asp-for="Type">Employee Type:</label>
-					<br />
-					<input type="radio" asp-for="Type" name="Type" value="StudentAffairs">
-					<label for="StudentAffairs">student Affair</label>
-					<br />
-					<input type="radio" asp-for="Type" name="Type" value="Security">
-					<label for="Security">Secuirity</label>
-				</div>
+				
 				<button type="submit" class="btn btn-danger btn-block">Save Changes</button>
 
 			</form>
@@ -83,39 +74,7 @@
 	</div>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script>
-		// document.getElementById('UpdateForm').addEventListener('submit', function (event) {
-		// 	var userImage = document.getElementById('img').files[0];
-		// 	document.getElementById('imageError').innerText = '';
-		// 	if (!userImage) {
-		// 		document.getElementById('imageError').innerText = 'Please select an image.';
-		// 		event.preventDefault();
-		// 	}
-		// });
-
-		$('#Email').on('blur', function () {
-			var email = $(this).val();
-			var id = @Model.Id;
-			if (email) {
-				$.ajax({
-					url: '/Admin/CheckEmailUniqueness',
-					type: 'GET',
-					data: { email: email, id: id },
-					success: function (response) {
-						if (response.isUnique) {
-							// Email is unique
-							$('#emailError').text('');
-						} else {
-							// Email already exists
-							$('#emailError').text('Email already exists');
-							event.preventDefault();
-						}
-					},
-					error: function (xhr, status, error) {
-						console.error(xhr.responseText);
-					}
-				});
-			}
-		});
+		
 
 	</script>
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -123,3 +82,4 @@
 	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 </body>
 </html>
+

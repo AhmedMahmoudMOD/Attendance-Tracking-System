@@ -31,7 +31,7 @@ namespace Attendance_Tracking_System.Controllers
 		{
 			ClaimsIdentity? identity = HttpContext.User.Identity as ClaimsIdentity;
 			var role = identity?.FindFirst(ClaimTypes.Role)?.Value;
-			ViewBag.role=role;
+			ViewBag.role = role;
 			ViewBag.currentUser = GetCurrentUser();
 			return View();
 		}
@@ -68,7 +68,7 @@ namespace Attendance_Tracking_System.Controllers
 					admin.UserImage = fileName;
 					repo.uploadImg(fileName, admin.Id);
 				}
-				if (repo.CheckEmailUniqueness(admin.Email,admin.Id))
+				if (repo.CheckEmailUniqueness(admin.Email, admin.Id))
 				{
 					await repo.EditAdminData(admin);
 					return RedirectToAction("Profile");
@@ -193,18 +193,21 @@ namespace Attendance_Tracking_System.Controllers
 			}
 			if (ModelState.IsValid)
 			{
-				string fileName = $"{student.Id}.{Img.FileName}";
-				string filePath = Path.Combine("wwwroot/images/", fileName);
-				if (System.IO.File.Exists(filePath))
+				if (Img != null)
 				{
-					System.IO.File.Delete(filePath);
-				}
-				using (var fs = new FileStream("wwwroot/images/" + fileName,
-				FileMode.CreateNew))
-				{
-					await Img.CopyToAsync(fs);
-					student.UserImage = fileName;
-					repo.uploadImg(fileName, student.Id);
+					string fileName = $"{student.Id}.{Img.FileName}";
+					string filePath = Path.Combine("wwwroot/images/", fileName);
+					if (System.IO.File.Exists(filePath))
+					{
+						System.IO.File.Delete(filePath);
+					}
+					using (var fs = new FileStream("wwwroot/images/" + fileName,
+					FileMode.CreateNew))
+					{
+						await Img.CopyToAsync(fs);
+						student.UserImage = fileName;
+						repo.uploadImg(fileName, student.Id);
+					}
 				}
 				repo.UpdateStudentData(student);
 				return RedirectToAction("GetAllStudents");
@@ -283,20 +286,22 @@ namespace Attendance_Tracking_System.Controllers
 
 			if (ModelState.IsValid)
 			{
-				string fileName = $"{employee.Id}.{Img.FileName}";
-				string filePath = Path.Combine("wwwroot/images/", fileName);
-				if (System.IO.File.Exists(filePath))
+				if (Img != null)
 				{
-					System.IO.File.Delete(filePath);
+					string fileName = $"{employee.Id}.{Img.FileName}";
+					string filePath = Path.Combine("wwwroot/images/", fileName);
+					if (System.IO.File.Exists(filePath))
+					{
+						System.IO.File.Delete(filePath);
+					}
+					using (var fs = new FileStream("wwwroot/images/" + fileName,
+					FileMode.CreateNew))
+					{
+						await Img.CopyToAsync(fs);
+						employee.UserImage = fileName;
+						repo.uploadImg(fileName, employee.Id);
+					}
 				}
-				using (var fs = new FileStream("wwwroot/images/" + fileName,
-				FileMode.CreateNew))
-				{
-					await Img.CopyToAsync(fs);
-					employee.UserImage = fileName;
-					repo.uploadImg(fileName, employee.Id);
-				}
-
 				repo.UpdateEmployeeData(employee);
 				var roleId = repo.GetRoleId(employee.Type.ToString());
 				repo.UpdateUserRole(employee.Id, roleId);
@@ -314,25 +319,29 @@ namespace Attendance_Tracking_System.Controllers
 		public async Task<IActionResult> AddEmployee(Employee employee, IFormFile Img)
 		{
 
-			if (Img == null || Img.Length == 0)
-			{
-				ModelState.AddModelError("Img", "Please select a file.");
-				return View(employee);
-			}
+			//if (Img == null || Img.Length == 0)
+			//{
+			//	ModelState.AddModelError("Img", "Please select a file.");
+			//	return View(employee);
+			//}
 
 			if (ModelState.IsValid)
 			{
 				if (repo.CheckEmailUniquenessForNewUsers(employee.Email))
 				{
-					string fileName = $"{employee.Id}.{Img.FileName}";
-					string filePath = Path.Combine("wwwroot/images/", fileName);
-					if (System.IO.File.Exists(filePath))
+					string fileName = "";
+					if (Img != null)
 					{
-						System.IO.File.Delete(filePath);
-					}
-					using (var fs = new FileStream(filePath, FileMode.Create))
-					{
-						await Img.CopyToAsync(fs);
+						fileName = $"{employee.Id}.{Img.FileName}";
+						string filePath = Path.Combine("wwwroot/images/", fileName);
+						if (System.IO.File.Exists(filePath))
+						{
+							System.IO.File.Delete(filePath);
+						}
+						using (var fs = new FileStream(filePath, FileMode.Create))
+						{
+							await Img.CopyToAsync(fs);
+						}
 					}
 					repo.AddEmployee(employee, fileName);
 					var roleId = repo.GetRoleId(employee.Type.ToString());
@@ -405,18 +414,18 @@ namespace Attendance_Tracking_System.Controllers
 		public IActionResult AddIntake()
 		{
 			ViewBag.tracks = repo.GetAllTracks();
-			ViewBag.progs= repo.GetITIPrograms();
+			ViewBag.progs = repo.GetITIPrograms();
 			return View();
 		}
 		[Authorize(Roles = "admin")]
 		[HttpPost]
-		public IActionResult AddIntake(Intake intake,List<int> Tracks)
+		public IActionResult AddIntake(Intake intake, List<int> Tracks)
 		{
 			ViewBag.progs = repo.GetITIPrograms();
 			if (ModelState.IsValid)
 			{
 				repo.AddIntake(intake);
-				repo.AddTracksToIntake(intake.No, Tracks) ;
+				repo.AddTracksToIntake(intake.No, Tracks);
 				return RedirectToAction("GetAllIntakes");
 			}
 			return View();
@@ -424,7 +433,7 @@ namespace Attendance_Tracking_System.Controllers
 		[Authorize(Roles = "admin")]
 		public IActionResult GetDetails(int? id)
 		{
-			if(id==null)
+			if (id == null)
 			{
 				return NotFound();
 			}
@@ -432,21 +441,21 @@ namespace Attendance_Tracking_System.Controllers
 			{
 				return BadRequest();
 			}
-			var intake=repo.GetIntakeById(id.Value);
+			var intake = repo.GetIntakeById(id.Value);
 			return View(intake);
 		}
 		[HttpGet]
-		
-		public IActionResult CheckEmailUniqueness(string email,int id)
+
+		public IActionResult CheckEmailUniqueness(string email, int id)
 		{
-			if (!repo.CheckEmailUniqueness(email,id))
+			if (!repo.CheckEmailUniqueness(email, id))
 			{
 				return Json(new { isUnique = false });
 			}
 
 			return Json(new { isUnique = true });
 		}
-	
+
 		[HttpGet]
 		public IActionResult CheckEmailUniquenessForNewUsers(string email)
 		{
