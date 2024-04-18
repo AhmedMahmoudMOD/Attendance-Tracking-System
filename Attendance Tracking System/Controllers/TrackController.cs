@@ -19,13 +19,16 @@ namespace Attendance_Tracking_System.Controllers
          IInstructorRepo InstructorRepo { get;  set; }
          IStudentRepo StudentRepo { get;  set; }
 
-		ITISysContext db =new ITISysContext();
+		 IAdminRepo adminRepo { get; set; }	
 
-        public TrackController(ITrackRepo _trackrepo,IProgramRepo _programRepo,IInstructorRepo _instructorRepo, IStudentRepo _studentRepo) { 
+		//ITISysContext db =new ITISysContext();
+
+        public TrackController(ITrackRepo _trackrepo,IProgramRepo _programRepo,IInstructorRepo _instructorRepo, IStudentRepo _studentRepo,IAdminRepo _adminrepo) { 
 			TrackRepo = _trackrepo;
 			programRepo = _programRepo;
 			InstructorRepo =_instructorRepo;
 			StudentRepo =_studentRepo;
+			adminRepo = _adminrepo;
         }
 		public IActionResult Index()
 		{
@@ -122,6 +125,7 @@ namespace Attendance_Tracking_System.Controllers
                 TrackRepo.AddTrack(_track);
                 if (AddedIns != null)
                     TrackRepo.AddInstructorToTrack(AddedIns, _track.Id);
+				var superVisorID=_track.SuperID;
                 return RedirectToAction("index");
             }
 			else{

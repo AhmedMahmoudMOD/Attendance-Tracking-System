@@ -7,10 +7,11 @@ namespace Attendance_Tracking_System.Repositories
     public class TrackRepo : ITrackRepo
     {
         private readonly ITISysContext db;
-
-       public TrackRepo(ITISysContext db)
+        IAdminRepo adminRepo;
+        public TrackRepo(ITISysContext db, IAdminRepo _adminrepo)
         {
-            this.db = db; 
+            this.db = db;
+            adminRepo = _adminrepo;
         }
         public List<Track> GetAll()
         {
@@ -119,6 +120,9 @@ namespace Attendance_Tracking_System.Repositories
         {
            db.Track.Add(_track);
            db.SaveChanges();
+            int instructorID = _track.SuperID.Value;
+            int RoleID = db.roles.SingleOrDefault(a => a.RoleType == "Supervisor").Id;
+            adminRepo.AssignRoleToUser(instructorID, RoleID);
         }
     }
 }
