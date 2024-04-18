@@ -1,4 +1,8 @@
 ﻿@model List<StudentAttendance>
+@{
+    ViewData["Title"] = "Show Attendence";
+    var degree = ViewBag.Degree;
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -23,13 +27,18 @@
         }
 
         table.dataTable tbody td {
-            vertical-align: middle; /* Center align table body text vertically */
+            vertical-align: middle; 
+        }
+        #degree{
+            color: red;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1 class="my-4">Student Attendance</h1>
+        <h4 class="my-4">Your Attendance Degree:<h3 id="degree" class="my-4">@degree</h3> </h4>
+       
         <div class="table-responsive">
             <table class="table table-bordered table-striped" id="permission">
                 <thead class="bg-primary text-white">
