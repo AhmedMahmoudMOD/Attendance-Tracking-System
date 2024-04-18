@@ -43,8 +43,9 @@
                 <td>@item.Age</td>
                 <td>@item.Salary</td>
                 <td>
-                    <a asp-action="Edit" asp-controller="Instructor" asp-route-Id="@item.Id">
-                        <i class="fa-regular fa-pen-to-square" style="color: #00224D; font-size: 24px;"></i></a>
+
+                    <a asp-action="EditInstructor" asp-controller="Instructor" asp-route-Id="@item.Id"><i class="fa-regular fa-pen-to-square" style="color: #00224D; font-size: 24px;"></i></a>
+
                 </td>
                 <td>
                     <a asp-action="Details" asp-controller="Instructor" asp-route-Id="@item.Id"><i class="fa-solid fa-eye" style="color: #5D0E41; font-size: 24px;"></i></a>

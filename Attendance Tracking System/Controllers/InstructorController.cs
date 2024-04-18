@@ -2,11 +2,13 @@
 using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
 using CRUD.CustomFilters;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using MimeKit.Encodings;
 using NuGet.Packaging;
 using System.Linq;
 using System.Security.Claims;
@@ -15,10 +17,10 @@ using System.Security.Claims;
 
 namespace Attendance_Tracking_System.Controllers
 {
-   
-	
+
+
 	[AuthFilter]
-	
+
 	public class InstructorController : Controller
     {
         ITISysContext db = new ITISysContext();
@@ -49,11 +51,9 @@ namespace Attendance_Tracking_System.Controllers
             // ViewBag.permission = per;
             return View(Instructors);
         }
-
-
-
 		[Authorize(Roles = "admin")]
 		[HttpGet]
+
         public IActionResult Add()
         {
             ViewBag.AllTracks= trackRepo.GetAll();        
@@ -61,8 +61,10 @@ namespace Attendance_Tracking_System.Controllers
         }
 
 
+
 		[Authorize(Roles = "admin")]
 		[HttpPost]
+
         public async Task<IActionResult> Add(Instructor instructor, IFormFile InsImg)
         {
             if (ModelState.IsValid)
@@ -221,6 +223,7 @@ namespace Attendance_Tracking_System.Controllers
             return View(instructor);
         }
 
+
 		[Authorize(Roles = "instructor,Supervisor")]
 
 		public IActionResult AllTrackSchedules()
@@ -231,8 +234,10 @@ namespace Attendance_Tracking_System.Controllers
         }
 
 
+
 		[Authorize(Roles = "instructor,Supervisor")]
 		[HttpPost]
+
         public IActionResult TrackSchedule(TimeOnly StartTime, DateOnly Date)
         {
             int id = GetCurrentUserId();
@@ -288,21 +293,23 @@ namespace Attendance_Tracking_System.Controllers
             var FliteredPer = instructorRepo.getPermissionsByDateAndTrack(date, permissions);
             return Json(FliteredPer);
         }
+
 		/*----------------------------------------------------------------------------------------------*/
 		[Authorize(Roles = "instructor,Supervisor")]
 		[HttpPost]
-		
-        public ActionResult InstructorResponse(int permissionId, bool acceptanceValue)
-        {
-            var per = permissionRepo.getPermissionByID(permissionId); 
-            permissionRepo.UpdatePermissionAcceptance(per,acceptanceValue);
-           
-            return Json(" Permission ID: " + permissionId + "Acceptance Value: " + acceptanceValue);
-        }
+
+		public ActionResult InstructorResponse(int permissionId, bool acceptanceValue)
+		{
+			var per = permissionRepo.getPermissionByID(permissionId);
+			permissionRepo.UpdatePermissionAcceptance(per, acceptanceValue);
+
+			return Json(" Permission ID: " + permissionId + "Acceptance Value: " + acceptanceValue);
+		}
 		[HttpGet]
 
 		[Authorize(Roles = "instructor,Supervisor")]
 		public IActionResult AddWeeklyShedule()
+
         {
             int id = GetCurrentUserId();
             var instructor=instructorRepo.GetInstructorById(id);
@@ -312,23 +319,51 @@ namespace Attendance_Tracking_System.Controllers
             return View(instructor);
         }
 
+
 		[HttpPost]
 		[Authorize(Roles = "instructor,Supervisor")]
 
 		public IActionResult AddWeeklyShedule(List<Schedule> schedules)
-        {
-            int id = GetCurrentUserId();
-            scheduleRepo.AddWeeklySchedules(schedules);
-            return RedirectToAction("AddWeeklyShedule");
-        }
+		{
+			int id = GetCurrentUser().Id;
+			scheduleRepo.AddWeeklySchedules(schedules);
+			return RedirectToAction("AddWeeklyShedule");
+		}
 		[Authorize(Roles = "instructor,Supervisor")]
 		public IActionResult Attandence()
-        {
-            int id = GetCurrentUserId();
-            var AttandenecRecords=instructorRepo.getAttandence(id);
-            return View(AttandenecRecords);
-        }
-        
+		{
+			int id = GetCurrentUser().Id;
+			var AttandenecRecords = instructorRepo.getAttandence(id);
+			return View(AttandenecRecords);
+		}
+		public IActionResult EditInstructor(int id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+			if (id == -1)
+			{
+				return BadRequest();
+			}
 
-    }
-}
+			var res = instructorRepo.GetInstructorById(id);
+			return View(res);
+
+		}
+		[HttpPost]
+		public async Task<IActionResult> EditInstructor(Instructor instructor)
+		{
+			if (!ModelState.IsValid)
+			{
+				return View(instructor);
+			}
+			else
+			{
+
+				instructorRepo.EditInstructor(instructor);
+				return RedirectToAction("Index");
+			}
+
+		}
+		
