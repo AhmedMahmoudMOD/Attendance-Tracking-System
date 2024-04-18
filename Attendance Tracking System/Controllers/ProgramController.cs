@@ -46,19 +46,20 @@ namespace Attendance_Tracking_System.Controllers
             {
                 List<Track> tracks = trackRepo.GetAll() ?? new List<Track>();
                 ViewBag.Tracks = tracks;
-
+              
                 List<Intake> intakes = intakeRepo.GetAll() ?? new List<Intake>();
                 ViewBag.Intakes = intakes;
 
                 List<Instructor> instructors = instructorRepo.GetAll() ?? new List<Instructor>();
                 ViewBag.Instructors = instructors;
 
-              
+                List<Student> Students = studentRepo.GetAll() ?? new List<Student>();
+                ViewBag.Students = Students;
+
                 return View();
             }
             catch (Exception ex)
             {
-                // Log the exception
                 Console.WriteLine($"Error occurred while retrieving ViewBag data: {ex.Message}");
                 return RedirectToAction("Error", "Home");
             }
@@ -110,10 +111,10 @@ namespace Attendance_Tracking_System.Controllers
             {
                 return NotFound();
             }
-            List<Track> tracks = trackRepo.GetAll();
-            ViewBag.Tracks = tracks;
-            List<Intake> intakes = intakeRepo.GetAll();
-            ViewBag.Intakes = intakes;
+            //List<Track> tracks = trackRepo.GetAll();
+            //ViewBag.Tracks = tracks;
+            //List<Intake> intakes = intakeRepo.GetAll();
+            //ViewBag.Intakes = intakes;
             return View(program);
         }
 		[Authorize(Roles = "admin")]
@@ -124,10 +125,10 @@ namespace Attendance_Tracking_System.Controllers
                 programRepo.Update(program);
                 return RedirectToAction("Index", "Program");
             }
-            List<Track> tracks = trackRepo.GetAll();
-            ViewBag.Tracks = tracks;
-            List<Intake> intakes = intakeRepo.GetAll();
-            ViewBag.Intakes = intakes;
+            //List<Track> tracks = trackRepo.GetAll();
+            //ViewBag.Tracks = tracks;
+            //List<Intake> intakes = intakeRepo.GetAll();
+            //ViewBag.Intakes = intakes;
             return View(program);
         }
 		[Authorize(Roles = "admin")]
