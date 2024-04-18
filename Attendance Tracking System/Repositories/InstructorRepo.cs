@@ -11,10 +11,12 @@ namespace Attendance_Tracking_System.Repositories
     public class InstructorRepo : IInstructorRepo
     {
         private readonly ITISysContext db;
+        IAdminRepo adminRepo;
 
-        public InstructorRepo(ITISysContext db)
+        public InstructorRepo(ITISysContext db,IAdminRepo _adminrepo)
         {
             this.db = db;
+            adminRepo = _adminrepo;
         }
 
         public List<Instructor> GetForAttendance()
@@ -86,8 +88,12 @@ namespace Attendance_Tracking_System.Repositories
 
         public void AddNewInstructor(Instructor instructor)
         {
-             db.Instructor.Add(instructor);
-             db.SaveChanges();
+            db.Instructor.Add(instructor);
+            db.SaveChanges();
+            int instructorID = instructor.Id;
+            int RoleID = db.roles.SingleOrDefault(a => a.RoleType == "instructor").Id;
+            adminRepo.AssignRoleToUser(instructorID, RoleID);
+
         }
         public void DeleteInstructor(int InsID)
         {
@@ -101,12 +107,6 @@ namespace Attendance_Tracking_System.Repositories
             OldInstructor.Email = Ins.Email;
            // OldInstructor.Salary = Ins.Salary;
             OldInstructor.PhoneNumber = Ins.PhoneNumber;
-            //var existingInstructor = db.Instructor.Find(Ins.Id);
-            //if (existingInstructor != null)
-            //{
-            //db.Entry(existingInstructor).State = EntityState.Detached;
-            //}
-            //db.Instructor.Update(Ins);
             db.SaveChanges();
         }
 
@@ -165,17 +165,17 @@ namespace Attendance_Tracking_System.Repositories
 
         public List<Schedule> getWeeklyTable(int id, DateOnly date)
         {
-            int trackId = db.Track.SingleOrDefault(a => a.SuperID == id)?.Id ?? -1; // Default value if not found
+            int trackId = db.Track.SingleOrDefault(a => a.SuperID == id)?.Id ?? -1; 
             if (trackId == -1)
             {
-                // Handle the case where the track is not found
+               
                 return new List<Schedule>();
             }
 
             Schedule schedule = db.Schedule.SingleOrDefault(sh => sh.TrackID == trackId && sh.Date == date);
             if (schedule == null)
             {
-                // Handle the case where the schedule is not found
+                
                 return new List<Schedule>();
             }
 
