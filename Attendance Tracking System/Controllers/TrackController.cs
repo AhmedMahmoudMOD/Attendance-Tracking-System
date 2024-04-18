@@ -2,6 +2,7 @@
 using Attendance_Tracking_System.Models;
 using Attendance_Tracking_System.Repositories;
 using CRUD.CustomFilters;
+using Microsoft.AspNetCore.Authorization;
 using DocumentFormat.OpenXml.Office2019.Presentation;
 using Microsoft.AspNetCore.Mvc;
 using Track = Attendance_Tracking_System.Models.Track;
@@ -9,6 +10,7 @@ using Track = Attendance_Tracking_System.Models.Track;
 namespace Attendance_Tracking_System.Controllers
 {
 	[AuthFilter]
+	[Authorize(Roles = "admin")]
 	public class TrackController : Controller
 	{
 		ITrackRepo TrackRepo { get; set; }
