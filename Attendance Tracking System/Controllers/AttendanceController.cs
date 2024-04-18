@@ -158,7 +158,7 @@ namespace Attendance_Tracking_System.Controllers
 
 
         }
-		[Authorize(Roles = "Admin,StudentAffairs")]
+		[Authorize(Roles = "admin,StudentAffairs")]
 		public IActionResult ShowStudentsAttendance()
         {
             var plist = programRepo.GetAll();
@@ -218,26 +218,26 @@ namespace Attendance_Tracking_System.Controllers
             }
 
         }
-		[Authorize(Roles = "Admin,StudentAffairs")]
+		[Authorize(Roles = "admin,StudentAffairs")]
 		public IActionResult GetStudentsAttendace (int Pid, int Tid, int Ino,DateOnly Date)
         {
             var list = studentRepo.GetForAttendanceExplicit(Pid, Tid, Ino,Date);
             ViewBag.CurentTrackId = Tid;
             return PartialView("_StudentsAttListPartial", list);
         }
-		[Authorize(Roles = "Admin,StudentAffairs")]
+		[Authorize(Roles = "admin,StudentAffairs")]
 		public IActionResult GetRangeStudentsAttendace(int Pid, int Tid, int Ino, DateOnly Date,DateOnly EndDate)
         {
             var list = studentRepo.GetForRangeAttendanceExplicit(Pid, Tid, Ino, Date,EndDate);
             ViewBag.CurentTrackId = Tid;
             return PartialView("_StudentsRangeAttListPartial", list);
         }
-		[Authorize(Roles = "Admin,StudentAffairs")]
+		[Authorize(Roles = "admin,StudentAffairs")]
 		public IActionResult ShowStaffAttendance()
         {
             return View("StaffAttendance");
         }
-		[Authorize(Roles = "Admin,StudentAffairs")]
+		[Authorize(Roles = "admin,StudentAffairs")]
 		public IActionResult StudentsRangeAttendance()
         {
             var plist = programRepo.GetAll();
@@ -248,12 +248,12 @@ namespace Attendance_Tracking_System.Controllers
             ViewBag.Intake = currentIntake;
             return View();
         }
-		[Authorize(Roles = "Admin,StudentAffairs")]
+		[Authorize(Roles = "admin,StudentAffairs")]
 		public IActionResult StaffRangeAttendance()
         {
             return View();
         }
-		[Authorize(Roles = "Admin,StudentAffairs")]
+		[Authorize(Roles = "admin,StudentAffairs")]
 		public IActionResult GetStaffAttendance(int TypeNo , DateOnly Date)
         {
             switch (TypeNo)
@@ -268,7 +268,7 @@ namespace Attendance_Tracking_System.Controllers
                     return BadRequest();
             }
         }
-		[Authorize(Roles = "Admin,StudentAffairs")]
+		[Authorize(Roles = "admin,StudentAffairs")]
 		public IActionResult GetRangeStaffAttendance(int TypeNo, DateOnly Date,DateOnly EndDate)
         {
             switch (TypeNo)
@@ -351,7 +351,7 @@ namespace Attendance_Tracking_System.Controllers
 		//        return Json(new { success = false });
 		//    }
 		//}
-		[Authorize(Roles = "Admin,StudentAffairs")]
+		[Authorize(Roles = "admin,StudentAffairs")]
 		public IActionResult CalculateStudentsAttendace(int Pid,int Tid,int Ino,DateOnly Date , DateOnly EndDate)
         {
             var list = studentRepo.GetForUpdateAttendanceDegExplicit(Pid, Tid, Ino, Date, EndDate);

@@ -91,7 +91,7 @@ namespace Attendance_Tracking_System.Controllers
         }
 
 
-		[Authorize(Roles = "instructor,Supervisor")]
+		[Authorize(Roles = "instructor,supervisor,admin")]
 		[HttpGet]
         public IActionResult Edit()
         {

@@ -55,7 +55,8 @@ namespace Attendance_Tracking_System.Repositories
                         AttendanceStatus = AttendanceStatus.Absent,
                         AttendanceType = "StudentAttendance",
                         UserID = student.Id,
-                        ScheduleID = ScheduleID
+                        ScheduleID = ScheduleID,
+                        IsMarked = false
                     };
                     db.StudentAttendance.Add(studentAttendance);
                 }
