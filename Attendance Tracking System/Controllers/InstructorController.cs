@@ -99,6 +99,9 @@ namespace Attendance_Tracking_System.Controllers
             return View(instructor);
         }
 
+
+
+      
         public int GetCurrentUserId()
         {
             ClaimsIdentity? identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -175,8 +178,8 @@ namespace Attendance_Tracking_System.Controllers
             {
                 return View(instructor);
             }
-
         }
+
 
         [Authorize(Roles = "instructor,Supervisor,admin")]
         public IActionResult Details()
@@ -266,6 +269,8 @@ namespace Attendance_Tracking_System.Controllers
             else
                 return Json(null);
         }
+
+
         [Authorize(Roles = "instructor,Supervisor")]
         public IActionResult Permission()
         {
