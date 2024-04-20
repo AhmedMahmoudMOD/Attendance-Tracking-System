@@ -1,0 +1,89 @@
+﻿@model Instructor
+
+@{
+	ViewData["Title"] = "Instructor Details";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>@ViewData["Title"]</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f4f4f4;
+			margin: 0;
+			padding: 20px;
+		}
+
+		h1 {
+			color: #333;
+		}
+
+		dl {
+			display: grid;
+			grid-template-columns: repeat(4, minmax(200px, 1fr));
+			gap: 10px;
+			padding: 10px;
+		}
+
+		dt {
+			font-weight: bold;
+			color: #00224D;
+		}
+
+		dd {
+			color: #333;
+			margin-left: 0;
+		}
+
+		img {
+			width: 100px;
+			border-radius: 50%;
+			margin-bottom: 10px;
+		}
+
+		.not-available {
+			color: #999;
+			font-style: italic;
+		}
+	</style>
+</head>
+<body>
+	<div style="display:flex;flex-direction:row">
+		<h1>Instructor Details</h1>
+		<a class="btn btn-dark" style="height:40px;margin-left:10px" asp-action="Index">Back </a>
+	</div>
+	<img src="@Url.Content("~/images/" + @Model?.UserImage)" alt="Student Image">
+	<div style="background-color:white">
+		<dl>
+			<dt>Instructor ID:</dt>
+			<dd>@Model?.Id</dd>
+			<dt>Name:</dt>
+			<dd>@Model?.Name</dd>
+			<dt>Email:</dt>
+			<dd>@Model?.Email</dd>
+			<dt>Age:</dt>
+			<dd>@Model?.Age</dd>
+			<dt>Phone Number:</dt>
+			<dd>@Model?.PhoneNumber</dd>
+			<dt>Salary</dt>
+			<dd>@Model?.Salary</dd>
+			<dt>Tracks</dt>
+			@if (Model.Tracks.Count() == 0)
+			{
+				<dd>No Tracks Yet</dd>
+			}
+			else
+			{
+
+				foreach (var item in Model.Tracks)
+				{
+					<dd>@item.Name</dd>
+
+				}
+			}
+		</dl>
+	</div>
+</body>
+</html>
