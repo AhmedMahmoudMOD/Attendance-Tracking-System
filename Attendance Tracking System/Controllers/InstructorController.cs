@@ -369,6 +369,15 @@ namespace Attendance_Tracking_System.Controllers
             }
 
         }
+        public IActionResult InstructorDetails(int? id)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+			var res = instructorRepo.GetInstructorById((int)id);
+			return View(res);
+		}
     }
 }
 
